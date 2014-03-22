@@ -3,9 +3,8 @@ and may not be redistributed without written permission.*/
 
 //The headers
 #include "SDL/SDL.h"
-#include "SDL/SDL_opengl.h"
-
-//Screen attributes
+#include <GL/gl.h>
+#include <GL/glu.h>
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 const int SCREEN_BPP = 32;
