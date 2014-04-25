@@ -1,290 +1,233 @@
 /*This source code copyrighted by Lazy Foo' Productions (2004-2013)
 and may not be redistributed without written permission.*/
 
-//The headers
-#include "SDL/SDL.h"
-#include <GL/gl.h>
-#include <GL/glu.h>
+//Using SDL, SDL OpenGL, standard IO, and, strings
+#include <SDL2\SDL.h>
+#include <SDL2\SDL_opengl.h>
+#include <GL\GLU.h>
+#include <stdio.h>
+#include <string>
+
+//Screen dimension constants
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
-const int SCREEN_BPP = 32;
 
-//The frame rate
-const int FRAMES_PER_SECOND = 60;
+//Starts up SDL, creates window, and initializes OpenGL
+bool init();
 
-//Event handler
-SDL_Event event;
+//Initializes matrices and clear color
+bool initGL();
 
-//Rendering flag
-bool renderQuad = true;
+//Input handler
+void handleKeys( unsigned char key, int x, int y );
 
-//The timer
-class Timer
-{
-    private:
-    //The clock time when the timer started
-    int startTicks;
+//Per frame update
+void update();
 
-    //The ticks stored when the timer was paused
-    int pausedTicks;
+//Renders quad to the screen
+void render();
 
-    //The timer status
-    bool paused;
-    bool started;
+//Frees media and shuts down SDL
+void close();
 
-    public:
-    //Initializes variables
-    Timer();
+//The window we'll be rendering to
+SDL_Window* gWindow = NULL;
 
-    //The various clock actions
-    void start();
-    void stop();
-    void pause();
-    void unpause();
+//OpenGL context
+SDL_GLContext gContext;
 
-    //Gets the timer's time
-    int get_ticks();
-
-    //Checks the status of the timer
-    bool is_started();
-    bool is_paused();
-};
-
-bool initGL()
-{
-    //Initialize Projection Matrix
-    glMatrixMode( GL_PROJECTION );
-    glLoadIdentity();
-
-    //Initialize Modelview Matrix
-    glMatrixMode( GL_MODELVIEW );
-    glLoadIdentity();
-
-    //Initialize clear color
-    glClearColor( 0.f, 0.f, 0.f, 1.f );
-
-    //Check for error
-    GLenum error = glGetError();
-    if( error != GL_NO_ERROR )
-    {
-        printf( "Error initializing OpenGL! %s\n", gluErrorString( error ) );
-        return false;
-    }
-
-    return true;
-}
+//Render flag
+bool gRenderQuad = true;
 
 bool init()
 {
-    //Initialize SDL
-    if( SDL_Init( SDL_INIT_EVERYTHING ) < 0 )
-    {
-        return false;
-    }
+	//Initialization flag
+	bool success = true;
 
-    //Create Window
-    if( SDL_SetVideoMode( SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_OPENGL ) == NULL )
-    {
-        return false;
-    }
+	//Initialize SDL
+	if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
+	{
+		printf( "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
+		success = false;
+	}
+	else
+	{
+		//Use OpenGL 2.1
+		SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, 2 );
+		SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, 1 );
 
-    //Enable unicode
-    SDL_EnableUNICODE( SDL_TRUE );
+		//Create window
+		gWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN );
+		if( gWindow == NULL )
+		{
+			printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
+			success = false;
+		}
+		else
+		{
+			//Create context
+			gContext = SDL_GL_CreateContext( gWindow );
+			if( gContext == NULL )
+			{
+				printf( "OpenGL context could not be created! SDL Error: %s\n", SDL_GetError() );
+				success = false;
+			}
+			else
+			{
+				//Use Vsync
+				if( SDL_GL_SetSwapInterval( 1 ) < 0 )
+				{
+					printf( "Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError() );
+				}
 
-    //Initialize OpenGL
-    if( initGL() == false )
-    {
-        return false;
-    }
+				//Initialize OpenGL
+				if( !initGL() )
+				{
+					printf( "Unable to initialize OpenGL!\n" );
+					success = false;
+				}
+			}
+		}
+	}
 
-    //Set caption
-    SDL_WM_SetCaption( "OpenGL Test", NULL );
+	return success;
+}
 
-    return true;
+bool initGL()
+{
+	bool success = true;
+	GLenum error = GL_NO_ERROR;
+
+	//Initialize Projection Matrix
+	glMatrixMode( GL_PROJECTION );
+	glLoadIdentity();
+	
+	//Check for error
+	error = glGetError();
+	if( error != GL_NO_ERROR )
+	{
+		printf( "Error initializing OpenGL! %s\n", gluErrorString( error ) );
+		success = false;
+	}
+
+	//Initialize Modelview Matrix
+	glMatrixMode( GL_MODELVIEW );
+	glLoadIdentity();
+
+	//Check for error
+	error = glGetError();
+	if( error != GL_NO_ERROR )
+	{
+		printf( "Error initializing OpenGL! %s\n", gluErrorString( error ) );
+		success = false;
+	}
+	
+	//Initialize clear color
+	glClearColor( 0.f, 0.f, 0.f, 1.f );
+	
+	//Check for error
+	error = glGetError();
+	if( error != GL_NO_ERROR )
+	{
+		printf( "Error initializing OpenGL! %s\n", gluErrorString( error ) );
+		success = false;
+	}
+	
+	return success;
 }
 
 void handleKeys( unsigned char key, int x, int y )
 {
-    //Toggle quad
-    if( key == 'q' )
-    {
-        renderQuad = !renderQuad;
-    }
+	//Toggle quad
+	if( key == 'q' )
+	{
+		gRenderQuad = !gRenderQuad;
+	}
 }
 
 void update()
 {
-
+	//No per frame update needed
 }
 
 void render()
 {
-    //Clear color buffer
-    glClear( GL_COLOR_BUFFER_BIT );
-
-    //Render quad
-    if( renderQuad == true )
-    {
-        glBegin( GL_QUADS );
-            glVertex2f( -0.5f, -0.5f );
-            glVertex2f(  0.5f, -0.5f );
-            glVertex2f(  0.5f,  0.5f );
-            glVertex2f( -0.5f,  0.5f );
-        glEnd();
-    }
-
-    //Update screen
-    SDL_GL_SwapBuffers();
-}
-
-void clean_up()
-{
-    //Quit SDL
-    SDL_Quit();
-}
-
-Timer::Timer()
-{
-    //Initialize the variables
-    startTicks = 0;
-    pausedTicks = 0;
-    paused = false;
-    started = false;
-}
-
-void Timer::start()
-{
-    //Start the timer
-    started = true;
-
-    //Unpause the timer
-    paused = false;
-
-    //Get the current clock time
-    startTicks = SDL_GetTicks();
-}
-
-void Timer::stop()
-{
-    //Stop the timer
-    started = false;
-
-    //Unpause the timer
-    paused = false;
-}
-
-void Timer::pause()
-{
-    //If the timer is running and isn't already paused
-    if( ( started == true ) && ( paused == false ) )
-    {
-        //Pause the timer
-        paused = true;
-
-        //Calculate the paused ticks
-        pausedTicks = SDL_GetTicks() - startTicks;
-    }
-}
-
-void Timer::unpause()
-{
-    //If the timer is paused
-    if( paused == true )
-    {
-        //Unpause the timer
-        paused = false;
-
-        //Reset the starting ticks
-        startTicks = SDL_GetTicks() - pausedTicks;
-
-        //Reset the paused ticks
-        pausedTicks = 0;
-    }
-}
-
-int Timer::get_ticks()
-{
-    //If the timer is running
-    if( started == true )
-    {
-        //If the timer is paused
-        if( paused == true )
-        {
-            //Return the number of ticks when the timer was paused
-            return pausedTicks;
-        }
-        else
-        {
-            //Return the current time minus the start time
-            return SDL_GetTicks() - startTicks;
-        }
-    }
-
-    //If the timer isn't running
-    return 0;
-}
-
-bool Timer::is_started()
-{
-    return started;
-}
-
-bool Timer::is_paused()
-{
-    return paused;
-}
-
-int main( int argc, char *argv[] )
-{
-    //Quit flag
-    bool quit = false;
-
-    //Initialize
-    if( init() == false )
-    {
-        return 1;
-    }
-
-    //The frame rate regulator
-    Timer fps;
-
-	//Wait for user exit
-	while( quit == false )
+	//Clear color buffer
+	glClear( GL_COLOR_BUFFER_BIT );
+	
+	//Render quad
+	if( gRenderQuad )
 	{
-        //Start the frame timer
-        fps.start();
+		glBegin( GL_QUADS );
+			glVertex2f( -0.5f, -0.5f );
+			glVertex2f( 0.5f, -0.5f );
+			glVertex2f( 0.5f, 0.5f );
+			glVertex2f( -0.5f, 0.5f );
+		glEnd();
+	}
+}
 
-        //While there are events to handle
-		while( SDL_PollEvent( &event ) )
+void close()
+{
+	//Destroy window	
+	SDL_DestroyWindow( gWindow );
+	gWindow = NULL;
+
+	//Quit SDL subsystems
+	SDL_Quit();
+}
+
+int main( int argc, char* args[] )
+{
+	//Start up SDL and create window
+	if( !init() )
+	{
+		printf( "Failed to initialize!\n" );
+	}
+	else
+	{
+		//Main loop flag
+		bool quit = false;
+
+		//Event handler
+		SDL_Event e;
+		
+		//Enable text input
+		SDL_StartTextInput();
+
+		//While application is running
+		while( !quit )
 		{
-			if( event.type == SDL_QUIT )
+			//Handle events on queue
+			while( SDL_PollEvent( &e ) != 0 )
 			{
-                quit = true;
-            }
-            else if( event.type == SDL_KEYDOWN )
-            {
-                //Handle keypress with current mouse position
-                int x = 0, y = 0;
-                SDL_GetMouseState( &x, &y );
-                handleKeys( event.key.keysym.unicode, x, y );
-            }
+				//User requests quit
+				if( e.type == SDL_QUIT )
+				{
+					quit = true;
+				}
+				//Handle keypress with current mouse position
+				else if( e.type == SDL_TEXTINPUT )
+				{
+					int x = 0, y = 0;
+					SDL_GetMouseState( &x, &y );
+					handleKeys( e.text.text[ 0 ], x, y );
+				}
+			}
+
+			//Render quad
+			render();
+			
+			//Update screen
+			SDL_GL_SwapWindow( gWindow );
 		}
-
-        //Run frame update
-        update();
-
-        //Render frame
-        render();
-
-        //Cap the frame rate
-        if( fps.get_ticks() < 1000 / FRAMES_PER_SECOND )
-        {
-            SDL_Delay( ( 1000 / FRAMES_PER_SECOND ) - fps.get_ticks() );
-        }
+		
+		//Disable text input
+		SDL_StopTextInput();
 	}
 
-	//Clean up
-	clean_up();
+	//Free resources and close SDL
+	close();
 
 	return 0;
 }
