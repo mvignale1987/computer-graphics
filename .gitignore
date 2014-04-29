@@ -1,1 +1,10 @@
 *.exe
+# archivos que genera el VS para los usuarios
+*.suo
+*.sdf
+Debug
+x64/Debug
+*.user
+# archivos de log (son al pedo)
+log.txt
+assimp_log.txt
