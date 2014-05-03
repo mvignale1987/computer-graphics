@@ -1,5 +1,4 @@
-#ifndef VECTOR3_H
-#define VECTOR3_H
+#pragma once
 
 #include <SDL_opengl.h>
 #include <iostream>
@@ -63,5 +62,3 @@ void glRotate(GLfloat angle, const Vector3& v);
 void glColor(const Vector3& v);
 void glVertex(const Vector3& v);
 std::ostream& operator <<(std::ostream& stream, const Vector3& v);
-
-#endif

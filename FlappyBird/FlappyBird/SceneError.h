@@ -1,5 +1,4 @@
-#ifndef SCENE_ERROR_H
-#define SCENE_ERROR_H
+#pragma once
 
 #include <exception>
 #include <string>
@@ -15,5 +14,3 @@ public:
 	static SceneError fromGLError(GLenum glGetErrorRes, const string &msg);
 	virtual ~SceneError();
 };
-
-#endif

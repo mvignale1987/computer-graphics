@@ -1,5 +1,4 @@
-#ifndef MODEL_H
-#define MODEL_H
+#pragma once
 
 #include <string>
 #include <map>
@@ -31,5 +30,3 @@ private:
 	void applyMaterial(const aiMaterial *mtl);
 	void recursiveRender(const struct aiScene *sc, const struct aiNode* nd, float scale);
 };
-
-#endif

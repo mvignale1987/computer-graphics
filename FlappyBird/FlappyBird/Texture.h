@@ -1,5 +1,4 @@
-#ifndef TEXTURE_H
-#define TEXTURE_H
+#pragma once
 
 #include <SDL_opengl.h>
 #include <string>
@@ -22,5 +21,3 @@ public:
 	GLuint height() const; // texture height
 	void glTexCoord(int x, int y) const; // shortcut for glTexCoord2f(x/(GLfloat) width() , y/(GLfloat) height() );
 };
-
-#endif 

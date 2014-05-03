@@ -1,5 +1,4 @@
-#ifndef SPRITE_H
-#define SPRITE_H
+#pragma once
 
 #include "Texture.h"
 #include <vector>
@@ -27,4 +26,3 @@ public:
 	static vector<Sprite> loadFromImageAndXML(const string& texturePath, const string& xml, int border = 0);
 };
 
-#endif
