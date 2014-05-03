@@ -2,8 +2,11 @@
 # archivos que genera el VS para los usuarios
 *.suo
 *.sdf
+*.opensdf
 Debug
+Release
 x64/Debug
+x64/Release
 *.user
 # archivos de log (son al pedo)
 log.txt
