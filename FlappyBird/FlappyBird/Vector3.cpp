@@ -8,7 +8,7 @@ const Vector3 Vector3::right    = Vector3( 1,  0,  0);
 const Vector3 Vector3::forward  = Vector3( 0,  0,  1);
 const Vector3 Vector3::backward = Vector3( 0,  0, -1);
 const Vector3 Vector3::zero     = Vector3( 0,  0,  0);
-const Vector3 Vector3::one      = Vector3( 0,  0,  1);
+const Vector3 Vector3::one      = Vector3( 1,  1,  1);
 
 Vector3::Vector3()
 {
@@ -119,6 +119,16 @@ GLfloat Vector3::distanceSquared(const Vector3& v) const
 Vector3 Vector3::scale(GLfloat x, GLfloat y, GLfloat z) const 
 {
 	return Vector3(coords[0] * x, coords[1] * y, coords[2] * z);
+}
+
+SDL_Color Vector3::toSDLColor() const
+{
+	SDL_Color res = {
+		(unsigned char) coords[0] * 255,
+		(unsigned char) coords[1] * 255,
+		(unsigned char) coords[2] * 255,
+		255 };
+	return res;
 }
 
 Vector3 Vector3::operator -() const

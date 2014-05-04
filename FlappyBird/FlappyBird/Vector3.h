@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SDL_opengl.h>
+#include <SDL.h>
 #include <iostream>
 #include <string>
 
@@ -55,6 +56,8 @@ public:
     GLfloat distance(const Vector3& v) const;
     GLfloat distanceSquared(const Vector3& v) const;
 	Vector3 scale(GLfloat x, GLfloat y, GLfloat z) const;
+
+	SDL_Color toSDLColor() const; // clamps to [0,1] to 0, 255 and returns the SDL color
 };
 
 Vector3 operator * (GLfloat k, const Vector3& v);
