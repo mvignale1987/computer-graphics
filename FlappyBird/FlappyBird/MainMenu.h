@@ -6,6 +6,7 @@ class MainMenu: public Scene
 {
 private:
 	Texture logo;
+	GLfloat logoAnimTime;
 protected:
 	void init();
 	void reshape(int w, int h);

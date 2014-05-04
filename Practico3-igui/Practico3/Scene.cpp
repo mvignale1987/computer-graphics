@@ -85,6 +85,18 @@ int Scene::initWindow()
 		return 1;
 	}
 
+	// load app icon
+	SDL_Surface *image;
+	image = IMG_Load(appIconPath().c_str());
+	if(!image) {
+		stringstream ss;
+		ss << "Loading App icon Error: IMG_Load: " << IMG_GetError();
+		log(ss.str());
+	} else {
+		SDL_SetWindowIcon(win, image); 
+		SDL_FreeSurface(image);
+	}
+
 	// Settings for antialiasing
     SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
@@ -121,18 +133,6 @@ int Scene::initWindow()
 	{
 		logSDLError("SDL_GL_CreateContext Error");
 		return 1;
-	}
-
-	// load app icon
-	SDL_Surface *image;
-	image = IMG_Load(appIconPath().c_str());
-	if(!image) {
-		stringstream ss;
-		ss << "Loading App icon Error: IMG_Load: " << IMG_GetError();
-		log(ss.str());
-	} else {
-		SDL_SetWindowIcon(win, image); 
-		SDL_FreeSurface(image);
 	}
 
 	//Use Vsync
