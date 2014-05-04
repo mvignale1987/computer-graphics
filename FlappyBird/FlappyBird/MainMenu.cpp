@@ -1,6 +1,12 @@
 #include "MainMenu.h"
 #include "Vector3.h"
+#include "SceneError.h"
 #include <GL/GLU.h>
+
+MainMenu::MainMenu():
+	font(NULL)
+{
+}
 
 void MainMenu::init()
 {
@@ -11,28 +17,19 @@ void MainMenu::init()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glClearColor(Vector3::fromRGB(1, 134, 149));
-}
-
-void MainMenu::renderLogo()
-{
-	const GLfloat width = 0.5f;
-	const GLfloat height = 0.134f;
-
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture(logo);
-	glBegin(GL_QUADS);
-	{
-		glTexCoord2f(0, 0);
-		glVertex2f(-width, height);
-		glTexCoord2f(0, 1);
-		glVertex2f(-width, -height);
-		glTexCoord2f(1, 1);
-		glVertex2f(width, -height);
-		glTexCoord2f(1, 0);
-		glVertex2f(width, height);
-	}
-	glEnd();
-	glDisable(GL_TEXTURE_2D);
+
+	font = TTF_OpenFont("Flappy.ttf", 42);
+	if (font == NULL){
+		throw SceneError::fromSDLError("Couldn't load font: TTF_OpenFont");
+    }
+
+	playText = Text("Play", font, Vector3::one, CENTER, 0, 0);
+	optionsText = Text("Options", font, Vector3::one, CENTER, 0, 50);
+	quitText = Text("Quit", font, Vector3::one, CENTER, 0, 100);
+
+	//SDL_ShowCursor(0);
+	cursor = Cursor("cursor.png", -4, -2);
 }
 
 void MainMenu::reshape(int width, int height)
@@ -56,16 +53,26 @@ void MainMenu::render()
 	glLoadIdentity();
 
 	float angle = sinf(logoAnimTime * 2 * (GLfloat) M_PI) * 6.0f;
-	float offsetDistance = sinf(logoAnimTime * 3.2f * (GLfloat) M_PI) * 0.07f;
+	float offsetDistance = sinf(logoAnimTime * 3 * (GLfloat) M_PI) * 0.15f;
 
-	glTranslate(Vector3::up * 0.4f);
-	glTranslate(Vector3::backward * (2 + offsetDistance));
-	glRotate(angle, Vector3::forward);
-	renderLogo();
+	glPushMatrix();
+	{
+		glTranslate(Vector3::up);
+		glTranslate(Vector3::backward * (4 + offsetDistance));
+		glRotate(angle, Vector3::forward);
+		logo.render();
+	}
+	glPopMatrix();
+
+	playText.render(getWindow());
+	optionsText.render(getWindow());
+	quitText.render(getWindow());
+
+	cursor.render(getWindow());
 
 	logoAnimTime += getFrameTime() * 0.05f;
-	if(logoAnimTime > 1)
-		logoAnimTime -= 1;
+	if(logoAnimTime > 6)
+		logoAnimTime -= 6;
 }
 
 std::string MainMenu::windowTitle()

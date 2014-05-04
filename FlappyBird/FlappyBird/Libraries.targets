@@ -10,6 +10,8 @@
     <DllFiles Include="$(ProjectDir)\lib\$(PlatformTarget)\libjpeg-9.dll"/>
     <DllFiles Include="$(ProjectDir)\lib\$(PlatformTarget)\assimp$(PlatformArchitecture).dll"/>
     <DllFiles Include="$(ProjectDir)\lib\$(PlatformTarget)\freeglut.dll"/>
+    <DllFiles Include="$(ProjectDir)\lib\$(PlatformTarget)\SDL2_ttf.dll"/>
+    <DllFiles Include="$(ProjectDir)\lib\$(PlatformTarget)\libfreetype-6.dll"/>
   </ItemGroup>
 
   <Target Name="CopyDLLs" AfterTargets="AfterLink" Inputs="@(DllFiles)" Outputs="@(DllFiles->'$(OutputPath)%(Filename)%(Extension)')">
@@ -24,6 +26,7 @@
     <Resources Include="@(Text)"/>
     <Resources Include="@(Xml)"/>
     <Resources Include="@(Image)"/>
+    <Resources Include="@(Font)"/>
   </ItemGroup>
 
   <Target Name="CopyResource" AfterTargets="AfterLink" Inputs="@(Resources)" Outputs="@(Resources->'$(OutputPath)%(Filename)%(Extension)')">

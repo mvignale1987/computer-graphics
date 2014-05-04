@@ -1,11 +1,12 @@
 #include "Scene.h"
 #include "SceneError.h"
 #include <SDL_opengl.h>
+#include <SDL_image.h>
+#include <SDL_ttf.h>
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <ctime>
-#include <SDL_image.h>
 #include <assimp/DefaultLogger.hpp>
 #include <GL/freeglut.h>
 
@@ -24,7 +25,7 @@ void Scene::init()
 {
 }
 
-bool Scene::handleEvent(SDL_Event ev)
+bool Scene::handleEvent(SDL_Event)
 {
 	return true;
 }
@@ -138,6 +139,11 @@ int Scene::initWindow()
 	//Use Vsync
 	if(SDL_GL_SetSwapInterval(1) < 0 ){
 		logSDLError("SDL_GL_SetSwapInterval Error");
+	}
+
+	
+	if(TTF_Init() == -1) {
+		logSDLError("TTF_Init Error");
 		return 1;
 	}
 
@@ -182,7 +188,17 @@ int Scene::run(int argc, char **argv)
 		reshape(w, h);
 		checkOpenGLError("Initial Scene reshape");
 	
-		while (pollEvent() == true){
+		while (true){
+			if(SDL_PollEvent(NULL) > 0){
+				if(!pollEvent())
+				{
+					break;
+				} else {
+					continue;
+				}
+			}
+			
+
 			unsigned int windowFlags = SDL_GetWindowFlags(win);
 			if(windowFlags & (SDL_WINDOW_HIDDEN | SDL_WINDOW_MINIMIZED)){
 				continue;
