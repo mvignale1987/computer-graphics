@@ -1,5 +1,6 @@
 #pragma once
 
+#include <SDL.h>
 #include <SDL_opengl.h>
 #include <string>
 
@@ -14,12 +15,18 @@ private:
 public:
 	Texture(); // dummy constructor
 	Texture(int id, GLuint width, GLuint height); // creates a texture from an OpenGL texture id, and dimensions
-	Texture(string path); // load a texture from a path
+	Texture(string path, bool lineal = true); // load a texture from a path (with lineal filtering)
+	Texture(SDL_Surface *surface, bool lineal = true); // load a texture from a surface (with lineal filtering)
 
 	GLuint id() const; // texture OpenGL id
 	GLuint width() const; // texture width
 	GLuint height() const; // texture height
 	void glTexCoord(int x, int y) const; // shortcut for glTexCoord2f(x/(GLfloat) width() , y/(GLfloat) height() );
+	
+	void render() const; // renders the texture entirely
+private:
+	void initFromSurface(SDL_Surface *surface, bool lineal);
 };
 
 void glBindTexture(const Texture& t);
+void glDeleteTextures(const Texture& t);
