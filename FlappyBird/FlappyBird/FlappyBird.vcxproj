@@ -144,6 +144,10 @@
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Vector3.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon.png" />
+    <Image Include="logo.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="Libraries.targets" />

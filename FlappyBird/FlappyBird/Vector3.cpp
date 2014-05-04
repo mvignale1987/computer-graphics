@@ -22,6 +22,12 @@ Vector3::Vector3(GLfloat x, GLfloat y, GLfloat z)
 	coords[2] = z;
 }
 
+Vector3 Vector3::fromRGB(unsigned char r, unsigned char g, unsigned char b)
+{
+	return Vector3(r/256.0f, g/256.0f, b/256.0f);
+}
+	
+
 Vector3 Vector3::random()
 {
 	return Vector3(rand() / (GLfloat)RAND_MAX, rand() / (GLfloat)RAND_MAX, rand() / (GLfloat)RAND_MAX);
@@ -207,6 +213,11 @@ void glRotate(GLfloat angle, const Vector3& v)
 void glTranslate(const Vector3& v)
 {
 	glTranslatef(v.x(), v.y(), v.z());
+}
+
+void glClearColor(const Vector3& v, GLclampf alpha)
+{
+	glClearColor(v.x(), v.y(), v.z(), alpha);
 }
 
 void glColor(const Vector3& v)

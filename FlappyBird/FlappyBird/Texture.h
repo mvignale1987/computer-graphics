@@ -21,3 +21,5 @@ public:
 	GLuint height() const; // texture height
 	void glTexCoord(int x, int y) const; // shortcut for glTexCoord2f(x/(GLfloat) width() , y/(GLfloat) height() );
 };
+
+void glBindTexture(const Texture& t);

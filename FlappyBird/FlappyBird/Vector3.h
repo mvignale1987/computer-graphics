@@ -11,6 +11,7 @@ public:
 	Vector3(); // Vector3(0, 0, 0)
 	Vector3(GLfloat x, GLfloat y, GLfloat z);
 	explicit Vector3(const GLfloat*); // from 3 sized vector
+	static Vector3 fromRGB(unsigned char r, unsigned char g, unsigned char b);
 	static Vector3 random(); // returns a random vector with x,y,z in [0, 1)
 
 	GLfloat x() const; // x coordinate
@@ -59,6 +60,7 @@ public:
 Vector3 operator * (GLfloat k, const Vector3& v);
 void glTranslate(const Vector3& v);
 void glRotate(GLfloat angle, const Vector3& v);
+void glClearColor(const Vector3& v, GLclampf alpha = 1.0f);
 void glColor(const Vector3& v);
 void glVertex(const Vector3& v);
 std::ostream& operator <<(std::ostream& stream, const Vector3& v);

@@ -85,3 +85,8 @@ void Texture::glTexCoord(int x, int y) const
 {
 	glTexCoord2f(x/(GLfloat)w, y/(GLfloat)h);
 }
+
+void glBindTexture(const Texture& t)
+{
+	glBindTexture( GL_TEXTURE_2D, t.id());
+}
