@@ -8,10 +8,10 @@
 class MainMenu: public Scene
 {
 private:
-	TTF_Font *font;
 	Texture logo;
 	GLfloat logoAnimTime;
-	Text	playText, optionsText, quitText;
+	Text	playText, optionsText, quitText,
+			playTextHover, optionsTextHover, quitTextHover;
 	Cursor	cursor;
 public:
 	MainMenu();

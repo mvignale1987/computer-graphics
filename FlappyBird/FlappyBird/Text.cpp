@@ -23,20 +23,7 @@ void Text::render(SDL_Window *win) const
 	int width, height;
 	SDL_GetWindowSize(win, &width, &height);
 
-	int left = offsetX;
-	int right = left + textTexture.width();
-	int top = height - offsetY;
-	int bottom = top - textTexture.height();
-
-	if(placement == CENTER)
-	{
-		int offsetCenterX = width / 2 - textTexture.width() / 2;
-		left += offsetCenterX;
-		right += offsetCenterX;
-		int offsetCenterY = height / 2 - textTexture.height() / 2;
-		top -= offsetCenterY;
-		bottom -= offsetCenterY;
-	}
+	Rect rect = getBoundingRect(win);
 	
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
@@ -51,13 +38,13 @@ void Text::render(SDL_Window *win) const
 			glBegin(GL_QUADS);
 			{
 				glTexCoord2f(0, 0);
-				glVertex2i(left, top);
+				glVertex2f(rect.left(), height - rect.top());
 				glTexCoord2f(0, 1);
-				glVertex2i(left, bottom);
+				glVertex2f(rect.left(), height - rect.bottom());
 				glTexCoord2f(1, 1);
-				glVertex2i(right, bottom);
+				glVertex2f(rect.right(), height - rect.bottom());
 				glTexCoord2f(1, 0);
-				glVertex2i(right, top);
+				glVertex2f(rect.right(), height - rect.top());
 			}
 			glEnd();
 		}
@@ -66,4 +53,38 @@ void Text::render(SDL_Window *win) const
 	glMatrixMode(GL_PROJECTION);
 	glPopMatrix();
 	glMatrixMode(GL_MODELVIEW);
+}
+
+bool Text::mouseHover(SDL_Window *win) const 
+{
+	if(SDL_GetMouseFocus() != win)
+	{
+		return false;
+	}
+	int mouseX, mouseY;
+	SDL_GetMouseState(&mouseX, &mouseY);
+	return getBoundingRect(win).contains(mouseX, mouseY);
+}
+
+Rect Text::getBoundingRect(SDL_Window *win) const
+{
+	int width, height;
+	SDL_GetWindowSize(win, &width, &height);
+
+	int left = offsetX;
+	int right = left + textTexture.width();
+	int top = offsetY;
+	int bottom = top + textTexture.height();
+
+	if(placement == CENTER)
+	{
+		int offsetCenterX = width / 2 - textTexture.width() / 2;
+		left += offsetCenterX;
+		right += offsetCenterX;
+		int offsetCenterY = height / 2 - textTexture.height() / 2;
+		top += offsetCenterY;
+		bottom += offsetCenterY;
+	}
+
+	return Rect(top, left, bottom, right);
 }

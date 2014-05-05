@@ -3,8 +3,7 @@
 #include "SceneError.h"
 #include <GL/GLU.h>
 
-MainMenu::MainMenu():
-	font(NULL)
+MainMenu::MainMenu()
 {
 }
 
@@ -19,16 +18,29 @@ void MainMenu::init()
 	glClearColor(Vector3::fromRGB(1, 134, 149));
 	glEnable(GL_TEXTURE_2D);
 
-	font = TTF_OpenFont("Flappy.ttf", 42);
+	// init fonts
+	TTF_Font *font = TTF_OpenFont("Flappy.ttf", 42);
 	if (font == NULL){
 		throw SceneError::fromSDLError("Couldn't load font: TTF_OpenFont");
     }
+	Vector3 white = Vector3::fromRGB(255,255,255);
+	playText = Text("Play", font, white, CENTER, 0, 0);
+	optionsText = Text("Options", font, white, CENTER, 0, 50);
+	quitText = Text("Quit", font, white, CENTER, 0, 100);
+	TTF_CloseFont(font);
 
-	playText = Text("Play", font, Vector3::one, CENTER, 0, 0);
-	optionsText = Text("Options", font, Vector3::one, CENTER, 0, 50);
-	quitText = Text("Quit", font, Vector3::one, CENTER, 0, 100);
+	TTF_Font *fontHover = TTF_OpenFont("Flappy.ttf", 46);
+	if (fontHover == NULL){
+		throw SceneError::fromSDLError("Couldn't load font: TTF_OpenFont");
+    }
+	Vector3 yellow = Vector3::fromRGB(236, 218, 19);
+	playTextHover = Text("Play", fontHover, yellow, CENTER, 0, 0);
+	optionsTextHover = Text("Options", fontHover, yellow, CENTER, 0, 50);
+	quitTextHover = Text("Quit", fontHover, yellow, CENTER, 0, 100);
+	TTF_CloseFont(fontHover);
 
-	//SDL_ShowCursor(0);
+	// init cursor
+	SDL_ShowCursor(0);
 	cursor = Cursor("cursor.png", -4, -2);
 }
 
@@ -64,9 +76,21 @@ void MainMenu::render()
 	}
 	glPopMatrix();
 
-	playText.render(getWindow());
-	optionsText.render(getWindow());
-	quitText.render(getWindow());
+	if(playTextHover.mouseHover(getWindow())){
+		playTextHover.render(getWindow());
+	} else {
+		playText.render(getWindow());
+	}
+	if(optionsText.mouseHover(getWindow())){
+		optionsTextHover.render(getWindow());
+	} else {
+		optionsText.render(getWindow());
+	}
+	if(quitText.mouseHover(getWindow())){
+		quitTextHover.render(getWindow());
+	} else {
+		quitText.render(getWindow());
+	}
 
 	cursor.render(getWindow());
 

@@ -124,9 +124,9 @@ Vector3 Vector3::scale(GLfloat x, GLfloat y, GLfloat z) const
 SDL_Color Vector3::toSDLColor() const
 {
 	SDL_Color res = {
-		(unsigned char) coords[0] * 255,
-		(unsigned char) coords[1] * 255,
-		(unsigned char) coords[2] * 255,
+		(unsigned char) floorf(coords[0] * 255),
+		(unsigned char) floorf(coords[1] * 255),
+		(unsigned char) floorf(coords[2] * 255),
 		255 };
 	return res;
 }
