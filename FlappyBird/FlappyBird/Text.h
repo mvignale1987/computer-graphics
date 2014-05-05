@@ -23,7 +23,6 @@ public:
 
 	bool mouseHover(SDL_Window *win) const; // true if the mouse is in the font bounding rect
 	void render(SDL_Window *win) const; // renders the text within window coordinates
-
 private:
 	Rect getBoundingRect(SDL_Window *win) const;
 };

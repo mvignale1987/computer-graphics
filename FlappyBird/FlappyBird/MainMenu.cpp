@@ -3,7 +3,10 @@
 #include "SceneError.h"
 #include <GL/GLU.h>
 
-MainMenu::MainMenu()
+MainMenu::MainMenu():
+	music(NULL),
+	menuTick(NULL),
+	playTextIsHover(false), optionsTextIsHover(false), quitTextIsHover(false)
 {
 }
 
@@ -18,30 +21,12 @@ void MainMenu::init()
 	glClearColor(Vector3::fromRGB(1, 134, 149));
 	glEnable(GL_TEXTURE_2D);
 
-	// init fonts
-	TTF_Font *font = TTF_OpenFont("Flappy.ttf", 42);
-	if (font == NULL){
-		throw SceneError::fromSDLError("Couldn't load font: TTF_OpenFont");
-    }
-	Vector3 white = Vector3::fromRGB(255,255,255);
-	playText = Text("Play", font, white, CENTER, 0, 0);
-	optionsText = Text("Options", font, white, CENTER, 0, 50);
-	quitText = Text("Quit", font, white, CENTER, 0, 100);
-	TTF_CloseFont(font);
-
-	TTF_Font *fontHover = TTF_OpenFont("Flappy.ttf", 46);
-	if (fontHover == NULL){
-		throw SceneError::fromSDLError("Couldn't load font: TTF_OpenFont");
-    }
-	Vector3 yellow = Vector3::fromRGB(236, 218, 19);
-	playTextHover = Text("Play", fontHover, yellow, CENTER, 0, 0);
-	optionsTextHover = Text("Options", fontHover, yellow, CENTER, 0, 50);
-	quitTextHover = Text("Quit", fontHover, yellow, CENTER, 0, 100);
-	TTF_CloseFont(fontHover);
-
 	// init cursor
 	SDL_ShowCursor(0);
 	cursor = Cursor("cursor.png", -4, -2);
+	
+	initFonts();
+	initMusic();
 }
 
 void MainMenu::reshape(int width, int height)
@@ -76,21 +61,7 @@ void MainMenu::render()
 	}
 	glPopMatrix();
 
-	if(playTextHover.mouseHover(getWindow())){
-		playTextHover.render(getWindow());
-	} else {
-		playText.render(getWindow());
-	}
-	if(optionsText.mouseHover(getWindow())){
-		optionsTextHover.render(getWindow());
-	} else {
-		optionsText.render(getWindow());
-	}
-	if(quitText.mouseHover(getWindow())){
-		quitTextHover.render(getWindow());
-	} else {
-		quitText.render(getWindow());
-	}
+	renderTextsAndSounds();
 
 	cursor.render(getWindow());
 
@@ -107,4 +78,80 @@ std::string MainMenu::windowTitle()
 std::string MainMenu::appIconPath()
 {
 	return "icon.png";
+}
+
+void MainMenu::initFonts()
+{
+	TTF_Font *font = TTF_OpenFont("Flappy.ttf", 42);
+	if (font == NULL){
+		throw SceneError::fromSDLError("Couldn't load font: TTF_OpenFont");
+    }
+	Vector3 white = Vector3::fromRGB(244,249,245);
+	playText = Text("Jugar", font, white, CENTER, 0, 0);
+	optionsText = Text("Opciones", font, white, CENTER, 0, 50);
+	quitText = Text("Salir", font, white, CENTER, 0, 100);
+	TTF_CloseFont(font);
+
+	TTF_Font *fontHover = TTF_OpenFont("Flappy.ttf", 46);
+	if (fontHover == NULL){
+		throw SceneError::fromSDLError("Couldn't load font: TTF_OpenFont");
+    }
+	Vector3 yellow = Vector3::fromRGB(236, 218, 19);
+	playTextHover = Text("Jugar", fontHover, yellow, CENTER, 0, 0);
+	optionsTextHover = Text("Opciones", fontHover, yellow, CENTER, 0, 50);
+	quitTextHover = Text("Salir", fontHover, yellow, CENTER, 0, 100);
+	TTF_CloseFont(fontHover);
+}
+
+void MainMenu::initMusic()
+{
+	int flags = MIX_INIT_MP3;
+	int initted = Mix_Init(flags);
+	if ((initted & flags) != flags) {
+		logSDLError("Mix_Init: Failed to init required support");
+		return;
+	}
+	if(Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 1024) != 0) {
+		logSDLError("Mix_OpenAudio: Unable to initialize audio");
+		return;
+	}
+	music = Mix_LoadMUS("MenuMusic.mp3");
+	if(!music) {
+		logSDLError("Mix_LoadMUS error");
+		return;
+	}
+	if(Mix_PlayMusic(music, -1) == -1) {
+		logSDLError("Mix_PlayMusic");
+		return;
+	}
+	menuTick = Mix_LoadWAV("MenuTick.wav");
+	if(!menuTick) {
+		logSDLError("Mix_LoadWAV");
+		return;
+	}
+}
+
+void MainMenu::renderTextsAndSounds()
+{
+	SDL_Window *win = getWindow();
+
+	bool playTextWasHover = playTextIsHover;
+	bool optionsTextWasHover = optionsTextIsHover;
+	bool quitTextWasHover = quitTextIsHover;
+
+	playTextIsHover = playTextHover.mouseHover(win);
+	optionsTextIsHover = optionsText.mouseHover(win);
+	quitTextIsHover = quitText.mouseHover(win);
+
+	(playTextIsHover ? playTextHover : playText).render(win);
+	(optionsTextIsHover ? optionsTextHover : optionsText).render(win);
+	(quitTextIsHover ? quitTextHover : quitText).render(win);
+
+	if(playTextIsHover && !playTextWasHover ||
+		optionsTextIsHover && !optionsTextWasHover ||
+		quitTextIsHover && !quitTextWasHover) {
+			if(Mix_PlayChannel(-1, menuTick, 0) == -1) {
+				logSDLError("Unable to play WAV file");
+			}
+	}
 }

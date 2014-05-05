@@ -4,15 +4,19 @@
 #include "Text.h"
 #include "Cursor.h"
 #include <SDL_ttf.h>
+#include <SDL_mixer.h>
 
 class MainMenu: public Scene
 {
 private:
-	Texture logo;
-	GLfloat logoAnimTime;
-	Text	playText, optionsText, quitText,
-			playTextHover, optionsTextHover, quitTextHover;
-	Cursor	cursor;
+	Texture		logo;
+	GLfloat		logoAnimTime;
+	Text		playText, optionsText, quitText,
+				playTextHover, optionsTextHover, quitTextHover;
+	bool		playTextIsHover, optionsTextIsHover, quitTextIsHover;
+	Cursor		cursor;
+	Mix_Music	*music;
+	Mix_Chunk	*menuTick;
 public:
 	MainMenu();
 protected:
@@ -22,5 +26,7 @@ protected:
 	std::string windowTitle();
 	std::string appIconPath();
 private:
-	void renderTexts();
+	void initFonts();
+	void initMusic();
+	void renderTextsAndSounds();
 };

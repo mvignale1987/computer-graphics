@@ -12,6 +12,14 @@
     <DllFiles Include="$(ProjectDir)\lib\$(PlatformTarget)\freeglut.dll"/>
     <DllFiles Include="$(ProjectDir)\lib\$(PlatformTarget)\SDL2_ttf.dll"/>
     <DllFiles Include="$(ProjectDir)\lib\$(PlatformTarget)\libfreetype-6.dll"/>
+    <DllFiles Include="$(ProjectDir)\lib\$(PlatformTarget)\SDL2_mixer.dll"/>
+    <DllFiles Include="$(ProjectDir)\lib\$(PlatformTarget)\libFLAC-8.dll"/>
+    <DllFiles Include="$(ProjectDir)\lib\$(PlatformTarget)\libmikmod-2.dll"/>
+    <DllFiles Include="$(ProjectDir)\lib\$(PlatformTarget)\libmodplug-1.dll"/>
+    <DllFiles Include="$(ProjectDir)\lib\$(PlatformTarget)\libogg-0.dll"/>
+    <DllFiles Include="$(ProjectDir)\lib\$(PlatformTarget)\libvorbis-0.dll"/>
+    <DllFiles Include="$(ProjectDir)\lib\$(PlatformTarget)\libvorbisfile-3.dll"/>
+    <DllFiles Include="$(ProjectDir)\lib\$(PlatformTarget)\smpeg2.dll"/>
   </ItemGroup>
 
   <Target Name="CopyDLLs" AfterTargets="AfterLink" Inputs="@(DllFiles)" Outputs="@(DllFiles->'$(OutputPath)%(Filename)%(Extension)')">
@@ -27,6 +35,7 @@
     <Resources Include="@(Xml)"/>
     <Resources Include="@(Image)"/>
     <Resources Include="@(Font)"/>
+    <Resources Include="@(Media)"/>
   </ItemGroup>
 
   <Target Name="CopyResource" AfterTargets="AfterLink" Inputs="@(Resources)" Outputs="@(Resources->'$(OutputPath)%(Filename)%(Extension)')">
