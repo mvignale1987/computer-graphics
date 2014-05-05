@@ -6,7 +6,8 @@
 MainMenu::MainMenu():
 	music(NULL),
 	menuTick(NULL),
-	playTextIsHover(false), optionsTextIsHover(false), quitTextIsHover(false)
+	playTextIsHover(false), optionsTextIsHover(false), quitTextIsHover(false),
+	quitClicked(false)
 {
 }
 
@@ -41,6 +42,11 @@ void MainMenu::reshape(int width, int height)
 	gluPerspective(45.0f,(GLfloat)width/(GLfloat)height, 0.1f, 100.0f);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+}
+
+bool MainMenu::handleEvent(SDL_Event)
+{
+	return !quitClicked;
 }
 
 void MainMenu::render()
@@ -154,4 +160,6 @@ void MainMenu::renderTextsAndSounds()
 				logSDLError("Unable to play WAV file");
 			}
 	}
+
+	quitClicked = quitClicked || quitText.mouseClick(win);
 }

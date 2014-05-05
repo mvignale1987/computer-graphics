@@ -22,6 +22,7 @@ public:
 		Placement placement = TOP_LEFT, int offsetX = 0, int offsetY = 0);
 
 	bool mouseHover(SDL_Window *win) const; // true if the mouse is in the font bounding rect
+	bool mouseClick(SDL_Window *win) const; // true if the mouse if clicked  in the font bounding rect
 	void render(SDL_Window *win) const; // renders the text within window coordinates
 private:
 	Rect getBoundingRect(SDL_Window *win) const;

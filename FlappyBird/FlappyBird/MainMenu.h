@@ -14,6 +14,7 @@ private:
 	Text		playText, optionsText, quitText,
 				playTextHover, optionsTextHover, quitTextHover;
 	bool		playTextIsHover, optionsTextIsHover, quitTextIsHover;
+	bool		quitClicked;
 	Cursor		cursor;
 	Mix_Music	*music;
 	Mix_Chunk	*menuTick;
@@ -22,6 +23,7 @@ public:
 protected:
 	void init();
 	void reshape(int w, int h);
+	bool handleEvent(SDL_Event ev);
 	void render();
 	std::string windowTitle();
 	std::string appIconPath();

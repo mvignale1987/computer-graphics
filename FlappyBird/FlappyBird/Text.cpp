@@ -66,6 +66,19 @@ bool Text::mouseHover(SDL_Window *win) const
 	return getBoundingRect(win).contains(mouseX, mouseY);
 }
 
+bool Text::mouseClick(SDL_Window *win) const 
+{
+	if(SDL_GetMouseFocus() != win)
+	{
+		return false;
+	}
+	int mouseX, mouseY;
+	int mouseState = SDL_GetMouseState(&mouseX, &mouseY);
+	if((mouseState & (SDL_BUTTON(1) | SDL_BUTTON(2))) == 0)
+		return false;
+	return getBoundingRect(win).contains(mouseX, mouseY);
+}
+
 Rect Text::getBoundingRect(SDL_Window *win) const
 {
 	int width, height;
