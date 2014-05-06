@@ -1,4 +1,5 @@
 #include "Text.h"
+#include "SceneError.h"
 #include <GL/GLU.h>
 
 Text::Text():
@@ -8,14 +9,35 @@ Text::Text():
 {
 }
 
-Text::Text(const std::string& text, TTF_Font *font, Vector3 color, Placement placement, int offsetX, int offsetY):
-	offsetX(offsetX),
-	offsetY(offsetY),
-	placement(placement)
+Text::Text(const TextOptions& options):
+	offsetX(options.offsetX),
+	offsetY(options.offsetY),
+	placement(options.placement)
 {
-	SDL_Surface *textSurface = TTF_RenderText_Blended(font, text.c_str(), color.toSDLColor());
-	textTexture = Texture(textSurface, false);
+	TTF_Font *font = TTF_OpenFont(options.fontPath.c_str(), options.fontSize);
+	if (font == NULL){
+		throw SceneError::fromSDLError("Couldn't load font: TTF_OpenFont");
+    }
+	const char *text = options.text.c_str();
+
+	SDL_Surface *textSurface = TTF_RenderText_Blended(font, text, options.color.toSDLColor());
+	if(options.borderSize == 0)
+	{
+		textTexture = Texture(textSurface, false);
+	} else {
+		TTF_SetFontOutline(font, options.borderSize);
+		SDL_Surface *borderSurface = TTF_RenderText_Blended(font, text, options.borderColor.toSDLColor());
+
+		SDL_Rect destinationRect = { options.borderSize, options.borderSize, textSurface->w, textSurface->h };
+		if(SDL_BlitSurface(textSurface, NULL, borderSurface, &destinationRect) < 0){
+			throw SceneError::fromSDLError("Couldn't load font: SDL_BlitSurface");
+		}
+		textTexture = Texture(borderSurface, false);
+		SDL_FreeSurface(borderSurface);
+	} 
+
 	SDL_FreeSurface(textSurface);
+	TTF_CloseFont(font);
 }
 
 void Text::render(SDL_Window *win) const
@@ -100,4 +122,18 @@ Rect Text::getBoundingRect(SDL_Window *win) const
 	}
 
 	return Rect(top, left, bottom, right);
+}
+
+
+TextOptions::TextOptions():
+	text(""),
+	fontPath(""),
+	fontSize(-1),
+	color(Vector3::one),
+	borderColor(Vector3::zero),
+	placement(TOP_LEFT),
+	offsetX(0),
+	offsetY(0),
+	borderSize(0)
+{
 }

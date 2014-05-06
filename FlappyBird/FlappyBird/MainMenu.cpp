@@ -88,25 +88,41 @@ std::string MainMenu::appIconPath()
 
 void MainMenu::initFonts()
 {
-	TTF_Font *font = TTF_OpenFont("Flappy.ttf", 42);
-	if (font == NULL){
-		throw SceneError::fromSDLError("Couldn't load font: TTF_OpenFont");
-    }
-	Vector3 white = Vector3::fromRGB(244,249,245);
-	playText = Text("Jugar", font, white, CENTER, 0, 0);
-	optionsText = Text("Opciones", font, white, CENTER, 0, 50);
-	quitText = Text("Salir", font, white, CENTER, 0, 100);
-	TTF_CloseFont(font);
+	TextOptions options;
+	options.fontPath = "Flappy.ttf";
+	options.fontSize = 42;
+	options.color =  Vector3::one;
+	options.placement = CENTER;
+	options.borderSize = 2;
+	options.borderColor = Vector3::fromRGB(40, 100, 30);
 
-	TTF_Font *fontHover = TTF_OpenFont("Flappy.ttf", 46);
-	if (fontHover == NULL){
-		throw SceneError::fromSDLError("Couldn't load font: TTF_OpenFont");
-    }
-	Vector3 yellow = Vector3::fromRGB(236, 218, 19);
-	playTextHover = Text("Jugar", fontHover, yellow, CENTER, 0, 0);
-	optionsTextHover = Text("Opciones", fontHover, yellow, CENTER, 0, 50);
-	quitTextHover = Text("Salir", fontHover, yellow, CENTER, 0, 100);
-	TTF_CloseFont(fontHover);
+	// jugar
+	options.text = "Jugar";
+	options.offsetX = options.offsetY = 0;
+	playText = Text(options);
+	// opciones
+	options.text = "Opciones";
+	options.offsetY = 50;
+	optionsText = Text(options);
+	// salir
+	options.text = "Salir";
+	options.offsetY = 100;
+	quitText = Text(options);
+
+	// jugar -- hover
+	options.fontSize = 46;
+	options.color =  Vector3::fromRGB(236, 218, 19);
+	options.offsetY = 0;
+	options.text = "Jugar";
+	playTextHover = Text(options);
+	// opciones -- hover
+	options.text = "Opciones";
+	options.offsetY = 50;
+	optionsTextHover = Text(options);
+	// salir -- hover
+	options.text = "Salir";
+	options.offsetY = 100;
+	quitTextHover = Text(options);
 }
 
 void MainMenu::initMusic()
