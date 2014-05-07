@@ -21,8 +21,8 @@ void MainMenu::init()
 	glClearColor(Vector3::fromRGB(1, 134, 149));
 	glEnable(GL_TEXTURE_2D);
 
-	initFonts();
 	initMusic();
+	initFonts();
 	initCursor();
 }
 
