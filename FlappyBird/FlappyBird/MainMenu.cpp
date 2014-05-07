@@ -11,16 +11,15 @@ MainMenu::MainMenu():
 }
 
 void MainMenu::init()
-{
-	logoAnimTime = 0;
-	logo = Texture("logo.png");
-	
+{	
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glClearColor(Vector3::fromRGB(1, 134, 149));
 	glEnable(GL_TEXTURE_2D);
 
+	logo = new MainMenuLogo("logo.png");
+	addObject(logo);
 	initMusic();
 	initFonts();
 	initCursor();
@@ -50,24 +49,7 @@ void MainMenu::render()
 	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-
-	float angle = sinf(logoAnimTime * 2 * (GLfloat) M_PI) * 6.0f;
-	float offsetDistance = sinf(logoAnimTime * 3 * (GLfloat) M_PI) * 0.15f;
-
-	glPushMatrix();
-	{
-		glTranslate(Vector3::up);
-		glTranslate(Vector3::backward * (4 + offsetDistance));
-		glRotate(angle, Vector3::forward);
-		logo.render();
-	}
-	glPopMatrix();
-
 	quitClicked = quitClicked || quitText->isClicked(*this);
-
-	logoAnimTime += getFrameTime() * 0.05f;
-	if(logoAnimTime > 6)
-		logoAnimTime -= 6;
 }
 
 std::string MainMenu::windowTitle() const

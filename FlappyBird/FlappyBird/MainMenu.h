@@ -3,18 +3,18 @@
 #include "Texture.h"
 #include "TextHover.h"
 #include "Cursor.h"
+#include "MainMenuLogo.h"
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
 
 class MainMenu: public Scene
 {
 private:
-	Texture		logo;
-	GLfloat		logoAnimTime;
-	TextHover	*playText, *optionsText, *quitText;
-	Cursor		*cursor;
-	bool		quitClicked;
-	Mix_Music	*music;
+	MainMenuLogo	*logo;
+	TextHover		*playText, *optionsText, *quitText;
+	Cursor			*cursor;
+	bool			quitClicked;
+	Mix_Music		*music;
 public:
 	MainMenu();
 protected:
