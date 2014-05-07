@@ -48,6 +48,12 @@
     <ClCompile Include="Rect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SceneObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TextHover.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Model.h">
@@ -71,12 +77,6 @@
     <ClInclude Include="MainMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="resource1.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Text.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -84,6 +84,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Rect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TextHover.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

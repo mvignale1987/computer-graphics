@@ -1,12 +1,11 @@
 #include "MainMenu.h"
 #include "Vector3.h"
 #include "SceneError.h"
+#include "SceneObject.h"
 #include <GL/GLU.h>
 
 MainMenu::MainMenu():
 	music(NULL),
-	menuTick(NULL),
-	playTextIsHover(false), optionsTextIsHover(false), quitTextIsHover(false),
 	quitClicked(false)
 {
 }
@@ -22,12 +21,9 @@ void MainMenu::init()
 	glClearColor(Vector3::fromRGB(1, 134, 149));
 	glEnable(GL_TEXTURE_2D);
 
-	// init cursor
-	SDL_ShowCursor(0);
-	cursor = Cursor("cursor.png", -4, -2);
-	
 	initFonts();
 	initMusic();
+	initCursor();
 }
 
 void MainMenu::reshape(int width, int height)
@@ -44,7 +40,7 @@ void MainMenu::reshape(int width, int height)
 	glLoadIdentity();
 }
 
-bool MainMenu::handleEvent(SDL_Event)
+bool MainMenu::handleEvent(const SDL_Event&)
 {
 	return !quitClicked;
 }
@@ -67,21 +63,19 @@ void MainMenu::render()
 	}
 	glPopMatrix();
 
-	renderTextsAndSounds();
-
-	cursor.render(getWindow());
+	quitClicked = quitClicked || quitText->isClicked(*this);
 
 	logoAnimTime += getFrameTime() * 0.05f;
 	if(logoAnimTime > 6)
 		logoAnimTime -= 6;
 }
 
-std::string MainMenu::windowTitle()
+std::string MainMenu::windowTitle() const
 {
 	return "FlappyBird";
 }
 
-std::string MainMenu::appIconPath()
+std::string MainMenu::appIconPath() const
 {
 	return "icon.png";
 }
@@ -99,30 +93,43 @@ void MainMenu::initFonts()
 	// jugar
 	options.text = "Jugar";
 	options.offsetX = options.offsetY = 0;
-	playText = Text(options);
+	Text playTextNormal = Text(options);
 	// opciones
 	options.text = "Opciones";
 	options.offsetY = 50;
-	optionsText = Text(options);
+	Text optionsTextNormal = Text(options);
 	// salir
 	options.text = "Salir";
 	options.offsetY = 100;
-	quitText = Text(options);
+	Text quitTextNormal = Text(options);
 
 	// jugar -- hover
 	options.fontSize = 46;
 	options.color =  Vector3::fromRGB(236, 218, 19);
 	options.offsetY = 0;
 	options.text = "Jugar";
-	playTextHover = Text(options);
+	Text playTextHover = Text(options);
 	// opciones -- hover
 	options.text = "Opciones";
 	options.offsetY = 50;
-	optionsTextHover = Text(options);
+	Text optionsTextHover = Text(options);
 	// salir -- hover
 	options.text = "Salir";
 	options.offsetY = 100;
-	quitTextHover = Text(options);
+	Text quitTextHover = Text(options);
+
+	Mix_Chunk *menuTick = Mix_LoadWAV("MenuTick.wav");
+	if(!menuTick) {
+		logSDLError("Mix_LoadWAV");
+	}
+
+	playText = new TextHover(playTextNormal, playTextHover, menuTick);
+	optionsText = new TextHover(optionsTextNormal, optionsTextHover, menuTick);
+	quitText = new TextHover(quitTextNormal, quitTextHover, menuTick);
+
+	addObject(playText);
+	addObject(optionsText);
+	addObject(quitText);
 }
 
 void MainMenu::initMusic()
@@ -146,36 +153,11 @@ void MainMenu::initMusic()
 		logSDLError("Mix_PlayMusic");
 		return;
 	}
-	menuTick = Mix_LoadWAV("MenuTick.wav");
-	if(!menuTick) {
-		logSDLError("Mix_LoadWAV");
-		return;
-	}
 }
 
-void MainMenu::renderTextsAndSounds()
+void MainMenu::initCursor()
 {
-	SDL_Window *win = getWindow();
-
-	bool playTextWasHover = playTextIsHover;
-	bool optionsTextWasHover = optionsTextIsHover;
-	bool quitTextWasHover = quitTextIsHover;
-
-	playTextIsHover = playTextHover.mouseHover(win);
-	optionsTextIsHover = optionsText.mouseHover(win);
-	quitTextIsHover = quitText.mouseHover(win);
-
-	(playTextIsHover ? playTextHover : playText).render(win);
-	(optionsTextIsHover ? optionsTextHover : optionsText).render(win);
-	(quitTextIsHover ? quitTextHover : quitText).render(win);
-
-	if(playTextIsHover && !playTextWasHover ||
-		optionsTextIsHover && !optionsTextWasHover ||
-		quitTextIsHover && !quitTextWasHover) {
-			if(Mix_PlayChannel(-1, menuTick, 0) == -1) {
-				logSDLError("Unable to play WAV file");
-			}
-	}
-
-	quitClicked = quitClicked || quitText.mouseClick(win);
+	SDL_ShowCursor(0);
+	cursor = new Cursor("cursor.png", -4, -2);
+	addObject(cursor);
 }

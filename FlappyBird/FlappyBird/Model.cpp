@@ -72,9 +72,6 @@ void Model::reload()
 		while (texFound == AI_SUCCESS)
 		{
 			texFound = scene->mMaterials[m]->GetTexture(aiTextureType_DIFFUSE, texIndex, &path);
-			if(texFound == AI_SUCCESS){
-				textureIdMap[path.data] = -1; 
-			}
 			texIndex++;
 		}
 	}

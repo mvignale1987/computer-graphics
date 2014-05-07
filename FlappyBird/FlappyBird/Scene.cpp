@@ -1,5 +1,6 @@
 #include "Scene.h"
 #include "SceneError.h"
+#include "SceneObject.h"
 #include <SDL_opengl.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
@@ -9,6 +10,7 @@
 #include <ctime>
 #include <assimp/DefaultLogger.hpp>
 #include <GL/freeglut.h>
+
 
 using namespace std;
 
@@ -25,7 +27,7 @@ void Scene::init()
 {
 }
 
-bool Scene::handleEvent(SDL_Event)
+bool Scene::handleEvent(const SDL_Event&)
 {
 	return true;
 }
@@ -46,23 +48,23 @@ void Scene::reshape(int, int)
 {
 }
 
-void Scene::logSDLError(const string &prefix)
+void Scene::logSDLError(const string &prefix) const
 {
 	string msg = prefix + ": " + SDL_GetError();
-	
+	log(msg);
 }
 
-string Scene::logFileName()
+string Scene::logFileName() const
 {
 	return "log.txt";
 }
 
-string Scene::windowTitle()
+string Scene::windowTitle() const
 {
 	return "App";
 }
 
-void Scene::logError(const string &msg)
+void Scene::logError(const string &msg) const
 {
 	MessageBox(NULL, msg.c_str(), (windowTitle() + " :: Error").c_str(), MB_OK | MB_ICONERROR);
 }
@@ -152,22 +154,53 @@ int Scene::initWindow()
 
 bool Scene::pollEvent()
 {
-	SDL_Event e;
-	SDL_PollEvent(&e);
-	switch (e.type)  {
-        case SDL_WINDOWEVENT:
-			switch (e.window.event)  {   
-				case SDL_WINDOWEVENT_SIZE_CHANGED: 
-					reshape( e.window.data1, e.window.data2);
-					return true;
-				default:
-					return handleEvent(e);
-			}
-		case SDL_QUIT:
-			return false;
-		default:
-			return handleEvent(e);
+	while(SDL_PollEvent(NULL) > 0)
+	{
+		SDL_Event e;
+		SDL_PollEvent(&e);
+		switch (e.type)  {
+			case SDL_WINDOWEVENT:
+				switch (e.window.event)  {   
+					case SDL_WINDOWEVENT_SIZE_CHANGED: 
+						reshape( e.window.data1, e.window.data2);
+						return true;
+					default:
+						return handleEvent(e);
+				}
+			case SDL_QUIT:
+				return false;
+			default:
+				return handleEvent(e);
+		}
 	}
+	return true;
+}
+
+void Scene::cleanSceneAndChild()
+{
+	for(std::vector<SceneObject *>::iterator it = objects.begin(); it != objects.end(); ++it)
+	{
+		(*it)->clean(*this);
+		checkOpenGLError("Scene child clean");
+	}
+	clean();
+	checkOpenGLError("Scene clean");
+	cleanAssimpLog();
+}
+
+void Scene::renderSceneAndChild()
+{
+	++nFrames;
+	Uint32 start = SDL_GetTicks();
+	render();
+	checkOpenGLError("Scene render");
+	for(std::vector<SceneObject *>::iterator it = objects.begin(); it != objects.end(); ++it)
+	{
+		(*it)->render(*this);
+		checkOpenGLError("Scene child render");
+	}
+	SDL_GL_SwapWindow(win);
+	frameTime = (SDL_GetTicks() - start) / 1000.0f;
 }
 
 int Scene::run(int argc, char **argv)
@@ -188,33 +221,15 @@ int Scene::run(int argc, char **argv)
 		reshape(w, h);
 		checkOpenGLError("Initial Scene reshape");
 	
-		while (true){
-			if(SDL_PollEvent(NULL) > 0){
-				if(!pollEvent())
-				{
-					break;
-				} else {
-					continue;
-				}
-			}
-			
-
+		while (pollEvent()){
 			unsigned int windowFlags = SDL_GetWindowFlags(win);
 			if(windowFlags & (SDL_WINDOW_HIDDEN | SDL_WINDOW_MINIMIZED)){
 				continue;
 			}
-
-			++nFrames;
-			Uint32 start = SDL_GetTicks();
-			render();
-			checkOpenGLError("Scene render");
-			SDL_GL_SwapWindow(win);
-			frameTime = (SDL_GetTicks() - start) / 1000.0f;
+			renderSceneAndChild();
 		}
 
-		clean();
-		checkOpenGLError("Scene clean");
-		cleanAssimpLog();
+		cleanSceneAndChild();
 		retcode = 0;
 	} catch(exception& ex)
 	{
@@ -252,14 +267,31 @@ unsigned int Scene::getRenderedFrames() const
 	return nFrames;
 }
 
-void Scene::checkOpenGLError(const string message)
+/* child object management */
+void Scene::addObject(SceneObject *object)
+{
+	objects.push_back(object);
+}
+
+void Scene::removeObject(SceneObject *object)
+{
+	for(std::vector<SceneObject *>::iterator it = objects.begin(); it != objects.end(); ++it)
+	{
+		if(*it == object){
+			objects.erase(it);
+			return;
+		}
+	}
+}
+
+void Scene::checkOpenGLError(const string message) const
 {
 	GLenum error = glGetError();
 	if(error != GL_NO_ERROR)
 		throw SceneError::fromGLError(error, message);
 }
 
-void Scene::log(const string& message)
+void Scene::log(const string& message) const
 {
 	ofstream logStream;
 	logStream.open(logFileName(), ios_base::app);
@@ -279,7 +311,7 @@ void Scene::log(const string& message)
 	logStream.close();
 }
 
-string Scene::appIconPath()
+string Scene::appIconPath() const
 {
 	return "icon.png";
 }

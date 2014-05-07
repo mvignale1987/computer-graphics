@@ -13,15 +13,15 @@ Cursor::Cursor(const std::string& path, int offsetX, int offsetY):
 {
 }
 
-void Cursor::render(SDL_Window *win) const
+void Cursor::render(Scene &parent)
 {
-	if(SDL_GetMouseFocus() != win)
+	if(SDL_GetMouseFocus() != parent.getWindow())
 	{
 		return;
 	}
 
 	int width, height;
-	SDL_GetWindowSize(win, &width, &height);
+	SDL_GetWindowSize(parent.getWindow(), &width, &height);
 	int mouseX, mouseY;
 	SDL_GetMouseState(&mouseX, &mouseY);
 
@@ -30,7 +30,7 @@ void Cursor::render(SDL_Window *win) const
 	int top = height - mouseY - offsetY;
 	int bottom = top - texture.height();
 
-	bool depthEnabled = glIsEnabled(GL_DEPTH_TEST);
+	GLboolean depthEnabled = glIsEnabled(GL_DEPTH_TEST);
 	glDisable(GL_DEPTH_TEST);
 
 	glMatrixMode(GL_PROJECTION);

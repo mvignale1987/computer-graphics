@@ -1,7 +1,7 @@
 #pragma once
 #include "Scene.h"
 #include "Texture.h"
-#include "Text.h"
+#include "TextHover.h"
 #include "Cursor.h"
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
@@ -11,24 +11,21 @@ class MainMenu: public Scene
 private:
 	Texture		logo;
 	GLfloat		logoAnimTime;
-	Text		playText, optionsText, quitText,
-				playTextHover, optionsTextHover, quitTextHover;
-	bool		playTextIsHover, optionsTextIsHover, quitTextIsHover;
+	TextHover	*playText, *optionsText, *quitText;
+	Cursor		*cursor;
 	bool		quitClicked;
-	Cursor		cursor;
 	Mix_Music	*music;
-	Mix_Chunk	*menuTick;
 public:
 	MainMenu();
 protected:
 	void init();
 	void reshape(int w, int h);
-	bool handleEvent(SDL_Event ev);
+	bool handleEvent(const SDL_Event& ev);
 	void render();
-	std::string windowTitle();
-	std::string appIconPath();
+	std::string windowTitle() const;
+	std::string appIconPath() const;
 private:
 	void initFonts();
 	void initMusic();
-	void renderTextsAndSounds();
+	void initCursor();
 };
