@@ -26,7 +26,7 @@ void MainMenuLogo::render(Scene &parent)
 	}
 	glPopMatrix();
 
-	animTime += parent.getFrameTime() * 0.05f;
+	animTime += parent.app().getFrameTime() * 0.05f;
 	if(animTime > 6)
 		animTime -= 6;
 }

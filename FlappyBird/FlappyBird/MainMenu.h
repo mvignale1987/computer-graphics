@@ -16,7 +16,7 @@ private:
 	bool			quitClicked;
 	Mix_Music		*music;
 public:
-	MainMenu();
+	MainMenu(App &parent);
 protected:
 	void init();
 	void reshape(int w, int h);

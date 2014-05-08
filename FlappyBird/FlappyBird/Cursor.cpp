@@ -15,13 +15,13 @@ Cursor::Cursor(const std::string& path, int offsetX, int offsetY):
 
 void Cursor::render(Scene &parent)
 {
-	if(SDL_GetMouseFocus() != parent.getWindow())
+	if(SDL_GetMouseFocus() != parent.app().getWindow())
 	{
 		return;
 	}
 
 	int width, height;
-	SDL_GetWindowSize(parent.getWindow(), &width, &height);
+	SDL_GetWindowSize(parent.app().getWindow(), &width, &height);
 	int mouseX, mouseY;
 	SDL_GetMouseState(&mouseX, &mouseY);
 

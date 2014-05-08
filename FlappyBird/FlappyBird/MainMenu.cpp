@@ -2,9 +2,11 @@
 #include "Vector3.h"
 #include "SceneError.h"
 #include "SceneObject.h"
+#include "Logger.h"
 #include <GL/GLU.h>
 
-MainMenu::MainMenu():
+MainMenu::MainMenu(App& parent):
+	Scene(parent),
 	music(NULL),
 	quitClicked(false)
 {
@@ -102,7 +104,7 @@ void MainMenu::initFonts()
 
 	Mix_Chunk *menuTick = Mix_LoadWAV("MenuTick.wav");
 	if(!menuTick) {
-		logSDLError("Mix_LoadWAV");
+		Logger::logSDLError("Mix_LoadWAV");
 	}
 
 	playText = new TextHover(playTextNormal, playTextHover, menuTick);
@@ -119,20 +121,20 @@ void MainMenu::initMusic()
 	int flags = MIX_INIT_MP3;
 	int initted = Mix_Init(flags);
 	if ((initted & flags) != flags) {
-		logSDLError("Mix_Init: Failed to init required support");
+		Logger::logSDLError("Mix_Init: Failed to init required support");
 		return;
 	}
 	if(Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 1024) != 0) {
-		logSDLError("Mix_OpenAudio: Unable to initialize audio");
+		Logger::logSDLError("Mix_OpenAudio: Unable to initialize audio");
 		return;
 	}
 	music = Mix_LoadMUS("MenuMusic.mp3");
 	if(!music) {
-		logSDLError("Mix_LoadMUS error");
+		Logger::logSDLError("Mix_LoadMUS error");
 		return;
 	}
 	if(Mix_PlayMusic(music, -1) == -1) {
-		logSDLError("Mix_PlayMusic");
+		Logger::logSDLError("Mix_PlayMusic");
 		return;
 	}
 }
