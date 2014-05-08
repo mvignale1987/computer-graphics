@@ -146,7 +146,6 @@ bool App::pollEvent()
 void App::cleanSceneAndChild()
 {
 	std::vector<SceneObject *> objects = currentScene->getObjects();
-
 	for(std::vector<SceneObject *>::iterator it = objects.begin(); it != objects.end(); ++it)
 	{
 		(*it)->clean(*currentScene);
@@ -159,11 +158,11 @@ void App::cleanSceneAndChild()
 
 void App::renderSceneAndChild()
 {
+	std::vector<SceneObject *> objects = currentScene->getObjects();
 	++nFrames;
 	Uint32 start = SDL_GetTicks();
 	currentScene->render();
 	checkOpenGLError("Scene render");
-	std::vector<SceneObject *> objects = currentScene->getObjects();
 	for(std::vector<SceneObject *>::iterator it = objects.begin(); it != objects.end(); ++it)
 	{
 		(*it)->render(*currentScene);

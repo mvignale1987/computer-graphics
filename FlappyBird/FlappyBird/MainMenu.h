@@ -7,9 +7,12 @@
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
 
+class OptionsMenu;
+
 class MainMenu: public Scene
 {
 private:
+	OptionsMenu		*optionsMenu;
 	MainMenuLogo	*logo;
 	TextHover		*playText, *optionsText, *quitText;
 	Cursor			*cursor;
@@ -17,13 +20,10 @@ private:
 	Mix_Music		*music;
 public:
 	MainMenu(App &parent);
-protected:
 	void init();
 	void reshape(int w, int h);
 	bool handleEvent(const SDL_Event& ev);
 	void render();
-	std::string windowTitle() const;
-	std::string appIconPath() const;
 private:
 	void initFonts();
 	void initMusic();

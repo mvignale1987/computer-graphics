@@ -137,6 +137,7 @@
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="MainMenuLogo.cpp" />
     <ClCompile Include="Model.cpp" />
+    <ClCompile Include="OptionsMenu.cpp" />
     <ClCompile Include="Rect.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneError.cpp" />
@@ -154,6 +155,7 @@
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="MainMenuLogo.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="OptionsMenu.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Scene.h" />

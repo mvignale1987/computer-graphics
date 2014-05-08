@@ -3,6 +3,7 @@
 #include "SceneError.h"
 #include "SceneObject.h"
 #include "Logger.h"
+#include "OptionsMenu.h"
 #include <GL/GLU.h>
 
 MainMenu::MainMenu(App& parent):
@@ -10,6 +11,7 @@ MainMenu::MainMenu(App& parent):
 	music(NULL),
 	quitClicked(false)
 {
+	optionsMenu = new OptionsMenu(*this);
 }
 
 void MainMenu::init()
@@ -52,16 +54,12 @@ void MainMenu::render()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	quitClicked = quitClicked || quitText->isClicked(*this);
-}
 
-std::string MainMenu::windowTitle() const
-{
-	return "FlappyBird";
-}
-
-std::string MainMenu::appIconPath() const
-{
-	return "icon.png";
+	if(optionsText->isClicked(*this))
+	{
+		optionsMenu->init();
+		app().setScene(optionsMenu);
+	}
 }
 
 void MainMenu::initFonts()
