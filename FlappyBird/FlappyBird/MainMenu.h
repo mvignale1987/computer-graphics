@@ -15,6 +15,7 @@ private:
 	OptionsMenu		*optionsMenu;
 	MainMenuLogo	*logo;
 	TextHover		*playText, *optionsText, *quitText;
+	Text			*versionText, *copyrightText;
 	Cursor			*cursor;
 	bool			quitClicked;
 	Mix_Music		*music;
@@ -24,6 +25,9 @@ public:
 	void reshape(int w, int h);
 	bool handleEvent(const SDL_Event& ev);
 	void render();
+
+	Text *getVersionText() const;
+	Text *getCopyrightText() const;
 private:
 	void initFonts();
 	void initMusic();

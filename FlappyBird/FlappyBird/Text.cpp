@@ -40,6 +40,11 @@ Text::Text(const TextOptions& options):
 	TTF_CloseFont(font);
 }
 
+void Text::render(Scene &parent)
+{
+	render(parent.app().getWindow());
+}
+
 void Text::render(SDL_Window *win) const
 {
 	int width, height;
@@ -119,6 +124,14 @@ Rect Text::getBoundingRect(SDL_Window *win) const
 		int offsetCenterY = height / 2 - textTexture.height() / 2;
 		top += offsetCenterY;
 		bottom += offsetCenterY;
+	} else if(placement == BOTTOM_LEFT) {
+		bottom = height - offsetY;
+		top = bottom - textTexture.height();
+	} else if(placement == BOTTOM_RIGHT) {
+		bottom = height - offsetY;
+		top = bottom - textTexture.height();
+		right = width - offsetY;
+		left = right - textTexture.width();
 	}
 
 	return Rect(top, left, bottom, right);

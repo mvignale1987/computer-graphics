@@ -9,7 +9,9 @@
 MainMenu::MainMenu(App& parent):
 	Scene(parent),
 	music(NULL),
-	quitClicked(false)
+	quitClicked(false),
+	playText(NULL), optionsText(NULL), quitText(NULL),
+	versionText(NULL), copyrightText(NULL)
 {
 	optionsMenu = new OptionsMenu(*this);
 }
@@ -112,6 +114,23 @@ void MainMenu::initFonts()
 	addObject(playText);
 	addObject(optionsText);
 	addObject(quitText);
+
+	// version text
+	options.fontSize = 20;
+	options.color =  Vector3::one;
+	options.placement = BOTTOM_LEFT;
+	options.borderSize = 1;
+	options.offsetX = options.offsetY = 10;
+	options.text = "v0.0.1";
+	versionText = new Text(options);
+
+	// copyright text
+	options.placement = BOTTOM_RIGHT;
+	options.text = "2014 CompGraf";
+	copyrightText = new Text(options);
+
+	addObject(versionText);
+	addObject(copyrightText);
 }
 
 void MainMenu::initMusic()
@@ -142,4 +161,14 @@ void MainMenu::initCursor()
 	SDL_ShowCursor(0);
 	cursor = new Cursor("cursor.png", -4, -2);
 	addObject(cursor);
+}
+
+Text *MainMenu::getCopyrightText() const
+{
+	return copyrightText;
+}
+
+Text *MainMenu::getVersionText() const
+{
+	return versionText;
 }

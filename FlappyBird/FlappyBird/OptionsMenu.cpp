@@ -52,6 +52,8 @@ void OptionsMenu::initFonts()
 
 	backText = new TextHover(backTextNormal, backTextHover, menuTick);
 	addObject(backText);
+	addObject(mainMenu.getVersionText());
+	addObject(mainMenu.getCopyrightText());
 }
 
 void OptionsMenu::render()
