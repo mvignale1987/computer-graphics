@@ -163,6 +163,11 @@ void MainMenu::initCursor()
 	addObject(cursor);
 }
 
+MainMenuLogo *MainMenu::getLogo() const 
+{
+	return logo;
+}
+
 Text *MainMenu::getCopyrightText() const
 {
 	return copyrightText;

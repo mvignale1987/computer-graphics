@@ -242,4 +242,3 @@ void App::checkOpenGLError(const string message) const
 	if(error != GL_NO_ERROR)
 		throw SceneError::fromGLError(error, message);
 }
-

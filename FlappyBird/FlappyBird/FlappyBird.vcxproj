@@ -145,6 +145,7 @@
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="TextHover.cpp" />
+    <ClCompile Include="TextSwitchHover.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Vector3.cpp" />
   </ItemGroup>
@@ -164,6 +165,7 @@
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="TextHover.h" />
+    <ClInclude Include="TextSwitchHover.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Vector3.h" />
   </ItemGroup>

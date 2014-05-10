@@ -26,6 +26,7 @@ public:
 	bool handleEvent(const SDL_Event& ev);
 	void render();
 
+	MainMenuLogo *getLogo() const;
 	Text *getVersionText() const;
 	Text *getCopyrightText() const;
 private:
