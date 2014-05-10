@@ -45,8 +45,15 @@ void MainMenu::reshape(int width, int height)
 	glLoadIdentity();
 }
 
-bool MainMenu::handleEvent(const SDL_Event&)
+bool MainMenu::handleEvent(const SDL_Event& ev)
 {
+	if(ev.type == SDL_KEYDOWN &&
+			(ev.key.keysym.scancode == SDL_SCANCODE_Q  || ev.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
+	)
+	{
+		return false;
+	}
+
 	return !quitClicked;
 }
 

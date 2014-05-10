@@ -12,7 +12,13 @@ private:
 	bool indexChanged;
 public: 
 	TextSwitchHover();
-	TextSwitchHover(TextOptions normalStyle, TextOptions hoverStyle, Mix_Chunk *hoverSound, ...);
+	// @param normalStyle	the normal text status style
+	// @param hoverStyle	the options for the hovered text status
+	// @param sound			the sound used when text is hover or clicked
+	// @param ...			a variable length (va_list) of strings (char *) for the different options
+	//						that are switched when the text is clicked. The list must be ended with a
+	//						NULL pointer
+	TextSwitchHover(TextOptions normalStyle, TextOptions hoverStyle, Mix_Chunk *sound, ...);
 
 	int getCurrentIndex() const;
 	bool wasIndexChanged(); // returns true if index changed since the last time it was called

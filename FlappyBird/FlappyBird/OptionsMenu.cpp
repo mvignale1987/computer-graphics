@@ -128,16 +128,22 @@ void OptionsMenu::render()
 {
 	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
+	glLoadIdentity();	
+}
 
+bool OptionsMenu::handleEvent(const SDL_Event& ev)
+{
 	if(backText->isClicked(*this))
 	{
 		app().setScene(&mainMenu);
 	}
-}
+	else if(ev.type == SDL_KEYDOWN &&
+			(ev.key.keysym.scancode == SDL_SCANCODE_Q  || ev.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
+	)
+	{
+		app().setScene(&mainMenu);
+	}
 
-bool OptionsMenu::handleEvent(const SDL_Event& )
-{
 	return true;
 }
 
