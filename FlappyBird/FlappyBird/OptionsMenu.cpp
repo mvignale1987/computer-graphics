@@ -23,6 +23,7 @@ void OptionsMenu::init()
 
 	if(!inited)
 	{
+		addObject(mainMenu.getFloor());
 		addObject(mainMenu.getLogo());
 		initFonts();
 		initCursor();
@@ -162,6 +163,11 @@ bool OptionsMenu::handleEvent(const SDL_Event& ev)
 	if(useVSyncText->wasIndexChanged())
 	{
 		app().setVSync(useVSyncText->getCurrentIndex() == 0);
+	}
+	if(gameSpeedText->wasIndexChanged())
+	{
+		GameSpeed speed = (GameSpeed) gameSpeedText->getCurrentIndex();
+		app().getOptions()->setGameSpeed(speed);
 	}
 
 	return true;

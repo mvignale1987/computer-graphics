@@ -126,7 +126,6 @@ bool App::pollEvent()
 		for(std::vector<SceneObject *>::iterator it = objects.begin(); it != objects.end(); ++it)
 		{
 			(*it)->handleEvent(*currentScene, e);
-			checkOpenGLError("Scene after render");
 		}
 
 		switch (e.type)  {

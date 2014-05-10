@@ -43,6 +43,21 @@ GameSpeed Options::getGameSpeed() const
 	return gameSpeed;
 }
 
+float Options::speedMultiplier() const
+{
+	switch (gameSpeed)
+	{
+	case SLOW:
+		return 0.75f;
+	case MEDIUM:
+		return 1.0f;
+	case FAST:
+		return 1.25f;
+	default:
+		return 1.0f;
+	}
+}
+
 void Options::setGameSpeed(GameSpeed val)
 {
 	gameSpeed = val;

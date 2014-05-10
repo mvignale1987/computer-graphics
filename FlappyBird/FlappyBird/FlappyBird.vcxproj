@@ -132,6 +132,7 @@
   <ItemGroup>
     <ClCompile Include="App.cpp" />
     <ClCompile Include="Cursor.cpp" />
+    <ClCompile Include="Floor.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
@@ -153,6 +154,7 @@
   <ItemGroup>
     <ClInclude Include="App.h" />
     <ClInclude Include="Cursor.h" />
+    <ClInclude Include="Floor.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="MainMenuLogo.h" />
@@ -174,6 +176,7 @@
   <ItemGroup>
     <Image Include="cursor.png" />
     <Image Include="FlappyBird.ico" />
+    <Image Include="green-pattern.jpg" />
     <Image Include="icon.png" />
     <Image Include="logo.png" />
     <Image Include="small.ico" />

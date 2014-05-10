@@ -11,7 +11,8 @@ MainMenu::MainMenu(App& parent):
 	music(NULL),
 	quitClicked(false),
 	playText(NULL), optionsText(NULL), quitText(NULL),
-	versionText(NULL), copyrightText(NULL)
+	versionText(NULL), copyrightText(NULL),
+	floor(NULL)
 {
 	optionsMenu = new OptionsMenu(*this);
 }
@@ -24,6 +25,8 @@ void MainMenu::init()
 	glClearColor(Vector3::fromRGB(1, 134, 149));
 	glEnable(GL_TEXTURE_2D);
 
+	floor = new Floor();
+	addObject(floor);
 	logo = new MainMenuLogo("logo.png");
 	addObject(logo);
 	initMusic();
@@ -54,6 +57,12 @@ bool MainMenu::handleEvent(const SDL_Event& ev)
 		return false;
 	}
 
+	if(ev.type == SDL_MOUSEBUTTONDOWN && optionsText->isClicked(*this))
+	{
+		optionsMenu->init();
+		app().setScene(optionsMenu);
+	}
+
 	return !quitClicked;
 }
 
@@ -63,12 +72,6 @@ void MainMenu::render()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	quitClicked = quitClicked || quitText->isClicked(*this);
-
-	if(optionsText->isClicked(*this))
-	{
-		optionsMenu->init();
-		app().setScene(optionsMenu);
-	}
 }
 
 void MainMenu::initFonts()
@@ -168,6 +171,11 @@ void MainMenu::initCursor()
 	SDL_ShowCursor(0);
 	cursor = new Cursor("cursor.png", -4, -2);
 	addObject(cursor);
+}
+
+Floor *MainMenu::getFloor() const
+{
+	return floor;
 }
 
 MainMenuLogo *MainMenu::getLogo() const 

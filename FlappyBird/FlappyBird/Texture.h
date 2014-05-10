@@ -15,8 +15,8 @@ private:
 public:
 	Texture(); // dummy constructor
 	Texture(int id, GLuint width, GLuint height); // creates a texture from an OpenGL texture id, and dimensions
-	Texture(string path, bool lineal = true); // load a texture from a path (with lineal filtering)
-	Texture(SDL_Surface *surface, bool lineal = true); // load a texture from a surface (with lineal filtering)
+	Texture(string path, bool lineal = true, bool repeat = false); // load a texture from a path (with lineal filtering)
+	Texture(SDL_Surface *surface, bool lineal = true, bool repeat = false); // load a texture from a surface (with lineal filtering)
 
 	GLuint id() const; // texture OpenGL id
 	GLuint width() const; // texture width
@@ -25,7 +25,7 @@ public:
 	
 	void render() const; // renders the texture entirely
 private:
-	void initFromSurface(SDL_Surface *surface, bool lineal);
+	void initFromSurface(SDL_Surface *surface, bool lineal, bool repeat);
 };
 
 void glBindTexture(const Texture& t);

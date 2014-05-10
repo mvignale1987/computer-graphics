@@ -21,6 +21,7 @@ public:
 	bool		getWireframeEnabled() const;
 	void		setWireframeEnabled(bool val);
 	GameSpeed	getGameSpeed() const;
+	float		speedMultiplier() const;
 	void		setGameSpeed(GameSpeed val);
 };
 
