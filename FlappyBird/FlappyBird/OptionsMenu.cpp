@@ -8,7 +8,7 @@ OptionsMenu::OptionsMenu(MainMenu& mainMenu):
 	inited(false),
 	cursor(NULL),
 	backText(NULL),
-	interpolatedText(NULL), wireframeText(NULL), texturedText(NULL),
+	interpolatedText(NULL), wireframeText(NULL), texturedText(NULL), useVSyncText(NULL),
 	gameSpeedText(NULL), lightColorText(NULL), lightDirectionText(NULL)
 {
 }
@@ -57,7 +57,7 @@ void OptionsMenu::initFonts()
 	// volver
 	normalOptions.text = "Volver";
 	normalOptions.offsetX = 0;
-	normalOptions.offsetY = 190;
+	normalOptions.offsetY = 220;
 	Text backTextNormal = Text(normalOptions);	
 	// volver -- hover
 	TextOptions hoverOptions = normalOptions;
@@ -95,6 +95,14 @@ void OptionsMenu::initFonts()
 		"Texturas habilitadas", "Texturas deshabilitadas",  NULL
 		);
 	addObject(texturedText);
+
+	// texturas
+	normalOptions.offsetY = hoverOptions.offsetY += 40;
+	useVSyncText = new TextSwitchHover(
+		normalOptions, hoverOptions, menuTick,
+		"VSync Activado", "VSync Desactivado",  NULL
+		);
+	addObject(useVSyncText);
 
 	// wireframe
 	normalOptions.offsetY = hoverOptions.offsetY += 40;
@@ -150,6 +158,10 @@ bool OptionsMenu::handleEvent(const SDL_Event& ev)
 	if(texturedText->wasIndexChanged())
 	{
 		app().getOptions()->setTexturesEnabled(texturedText->getCurrentIndex() == 0);
+	}
+	if(useVSyncText->wasIndexChanged())
+	{
+		app().setVSync(useVSyncText->getCurrentIndex() == 0);
 	}
 
 	return true;

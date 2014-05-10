@@ -8,7 +8,7 @@ class OptionsMenu: public Scene
 {
 private:
 	MainMenu		&mainMenu;
-	TextSwitchHover *interpolatedText, *wireframeText, *texturedText,
+	TextSwitchHover *interpolatedText, *wireframeText, *texturedText, *useVSyncText,
 					*gameSpeedText, *lightColorText, *lightDirectionText;
 	TextHover		*backText;
 	Cursor			*cursor;

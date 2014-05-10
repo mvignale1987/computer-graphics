@@ -38,6 +38,9 @@ public:
 	float getFrameTime() const;
 	unsigned int getRenderedFrames() const;
 	Options *getOptions();
+
+	/* manejo de vsync */
+	void setVSync(bool enabled);
 private:
 	int initWindow();
 	void initAssimpLog();
