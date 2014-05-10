@@ -6,15 +6,18 @@
 #include "Floor.h"
 #include "Clouds.h"
 #include "MainMenuLogo.h"
+
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
 
 class OptionsMenu;
+class CreditsMenu;
 
 class MainMenu: public Scene
 {
 private:
 	OptionsMenu		*optionsMenu;
+	CreditsMenu		*creditsMenu;
 	MainMenuLogo	*logo;
 	TextHover		*playText, *optionsText, *quitText,*copyrightText ;
 	Text			*versionText;

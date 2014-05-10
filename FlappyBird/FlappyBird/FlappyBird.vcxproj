@@ -132,6 +132,7 @@
   <ItemGroup>
     <ClCompile Include="App.cpp" />
     <ClCompile Include="Clouds.cpp" />
+    <ClCompile Include="CreditsMenu.cpp" />
     <ClCompile Include="Cursor.cpp" />
     <ClCompile Include="Floor.cpp" />
     <ClCompile Include="Logger.cpp" />
@@ -155,6 +156,7 @@
   <ItemGroup>
     <ClInclude Include="App.h" />
     <ClInclude Include="Clouds.h" />
+    <ClInclude Include="CreditsMenu.h" />
     <ClInclude Include="Cursor.h" />
     <ClInclude Include="Floor.h" />
     <ClInclude Include="Logger.h" />
