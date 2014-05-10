@@ -125,6 +125,14 @@ bool App::pollEvent()
 	{
 		SDL_Event e;
 		SDL_PollEvent(&e);
+
+		std::vector<SceneObject *> objects = currentScene->getObjects();
+		for(std::vector<SceneObject *>::iterator it = objects.begin(); it != objects.end(); ++it)
+		{
+			(*it)->handleEvent(*currentScene, e);
+			checkOpenGLError("Scene after render");
+		}
+
 		switch (e.type)  {
 			case SDL_WINDOWEVENT:
 				switch (e.window.event)  {   
@@ -234,6 +242,11 @@ float App::getFrameTime() const
 unsigned int App::getRenderedFrames() const
 {
 	return nFrames;
+}
+
+Options *App::getOptions()
+{
+	return &options;
 }
 
 void App::checkOpenGLError(const string message) const

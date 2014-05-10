@@ -8,7 +8,6 @@ private:
 	std::vector<TextHover> texts;
 	Mix_Chunk *clickSound;
 	int currentIndex;
-	bool isClicked;
 	bool indexChanged;
 public: 
 	TextSwitchHover();
@@ -23,5 +22,6 @@ public:
 	int getCurrentIndex() const;
 	bool wasIndexChanged(); // returns true if index changed since the last time it was called
 
+	void handleEvent(Scene &parent, const SDL_Event& ev);
 	void render(Scene &parent);
 };

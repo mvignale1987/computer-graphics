@@ -133,15 +133,23 @@ void OptionsMenu::render()
 
 bool OptionsMenu::handleEvent(const SDL_Event& ev)
 {
+	// handle if must go back
 	if(backText->isClicked(*this))
 	{
 		app().setScene(&mainMenu);
+		return true;
 	}
 	else if(ev.type == SDL_KEYDOWN &&
 			(ev.key.keysym.scancode == SDL_SCANCODE_Q  || ev.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
 	)
 	{
 		app().setScene(&mainMenu);
+		return true;
+	}
+
+	if(texturedText->wasIndexChanged())
+	{
+		app().getOptions()->setTexturesEnabled(texturedText->getCurrentIndex() == 0);
 	}
 
 	return true;

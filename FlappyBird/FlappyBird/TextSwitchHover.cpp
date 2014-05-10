@@ -4,7 +4,6 @@
 
 TextSwitchHover::TextSwitchHover():
 	currentIndex(0),
-	isClicked(false),
 	indexChanged(false),
 	clickSound(NULL)
 {
@@ -12,7 +11,6 @@ TextSwitchHover::TextSwitchHover():
 
 TextSwitchHover::TextSwitchHover(TextOptions normalStyle, TextOptions hoverStyle, Mix_Chunk *hoverSound, ...):
 	currentIndex(0),
-	isClicked(false),
 	indexChanged(false),
 	clickSound(hoverSound)
 {
@@ -31,6 +29,22 @@ TextSwitchHover::TextSwitchHover(TextOptions normalStyle, TextOptions hoverStyle
 	va_end(vl);
 }
 
+void TextSwitchHover::handleEvent(Scene &parent, const SDL_Event& ev)
+{
+	TextHover& current = texts.at(currentIndex);
+	current.handleEvent(parent, ev);
+
+	if(ev.type != SDL_MOUSEBUTTONDOWN)
+		return;
+	if(current.isClicked(parent))
+	{
+		currentIndex = (currentIndex + 1) % texts.size();
+		indexChanged = true;
+		if(clickSound && Mix_PlayChannel(-1, clickSound, 0) == -1) {
+			Logger::logSDLError("Unable to play WAV file");
+		}
+	}
+}
 
 void TextSwitchHover::render(Scene &parent)
 {
@@ -42,18 +56,6 @@ void TextSwitchHover::render(Scene &parent)
 	}
 	TextHover& current = texts.at(currentIndex);
 	current.render(parent);
-
-	bool wasClicked = isClicked;
-	isClicked = current.isClicked(parent);
-
-	if(isClicked && !wasClicked)
-	{
-		currentIndex = (currentIndex + 1) % texts.size();
-		indexChanged = true;
-		if(clickSound && Mix_PlayChannel(-1, clickSound, 0) == -1) {
-			Logger::logSDLError("Unable to play WAV file");
-		}
-	}
 }
 
 int TextSwitchHover::getCurrentIndex() const

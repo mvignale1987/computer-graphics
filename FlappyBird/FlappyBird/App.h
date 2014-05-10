@@ -3,6 +3,7 @@
 #include <SDL.h>
 #include <vector>
 #include <string>
+#include "Options.h"
 
 class Scene;
 
@@ -15,6 +16,9 @@ private:
 	SDL_GLContext glContext;
 	float frameTime;
 	unsigned long nFrames;
+
+	// options
+	Options options;
 
 	// constants
 	static const std::string windowTitle;
@@ -33,6 +37,7 @@ public:
 	SDL_GLContext getGlContext() const;
 	float getFrameTime() const;
 	unsigned int getRenderedFrames() const;
+	Options *getOptions();
 private:
 	int initWindow();
 	void initAssimpLog();
