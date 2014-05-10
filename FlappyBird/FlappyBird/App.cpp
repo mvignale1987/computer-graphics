@@ -74,7 +74,7 @@ int App::initWindow()
 	win = SDL_CreateWindow(
 		windowTitle.c_str(),
 		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-		640, 480,
+		800, 600,
 		SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE 
 	);
 	if (win == nullptr){
@@ -105,11 +105,7 @@ int App::initWindow()
 		SDL_FreeSurface(image);
 	}
 
-	//Use Vsync
-	if(SDL_GL_SetSwapInterval(1) < 0 ){
-		Logger::logSDLError("SDL_GL_SetSwapInterval Error");
-	}
-
+	setVSync(true);
 	
 	if(TTF_Init() == -1) {
 		Logger::logSDLError("TTF_Init Error");
@@ -125,6 +121,13 @@ bool App::pollEvent()
 	{
 		SDL_Event e;
 		SDL_PollEvent(&e);
+
+		std::vector<SceneObject *> objects = currentScene->getObjects();
+		for(std::vector<SceneObject *>::iterator it = objects.begin(); it != objects.end(); ++it)
+		{
+			(*it)->handleEvent(*currentScene, e);
+		}
+
 		switch (e.type)  {
 			case SDL_WINDOWEVENT:
 				switch (e.window.event)  {   
@@ -236,10 +239,22 @@ unsigned int App::getRenderedFrames() const
 	return nFrames;
 }
 
+Options *App::getOptions()
+{
+	return &options;
+}
+
+void App::setVSync(bool enabled)
+{
+	//Use Vsync
+	if(SDL_GL_SetSwapInterval(enabled ? 1: 0) < 0 ){
+		Logger::logSDLError("SDL_GL_SetSwapInterval Error");
+	}
+}
+
 void App::checkOpenGLError(const string message) const
 {
 	GLenum error = glGetError();
 	if(error != GL_NO_ERROR)
 		throw SceneError::fromGLError(error, message);
 }
-

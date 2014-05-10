@@ -3,6 +3,8 @@
 #include "Texture.h"
 #include "TextHover.h"
 #include "Cursor.h"
+#include "Floor.h"
+#include "Clouds.h"
 #include "MainMenuLogo.h"
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
@@ -16,6 +18,8 @@ private:
 	MainMenuLogo	*logo;
 	TextHover		*playText, *optionsText, *quitText,*copyrightText ;
 	Text			*versionText;
+	Floor			*floor;
+	Clouds			*clouds;
 	Cursor			*cursor;
 	bool			quitClicked;
 	Mix_Music		*music;
@@ -26,6 +30,9 @@ public:
 	bool handleEvent(const SDL_Event& ev);
 	void render();
 
+	Clouds *getClouds() const;
+	Floor *getFloor() const;
+	MainMenuLogo *getLogo() const;
 	Text *getVersionText() const;
 //	Text *getCopyrightText() const;
 private:

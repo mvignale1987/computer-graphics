@@ -66,6 +66,18 @@
     <ClCompile Include="OptionsMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TextSwitchHover.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Options.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Floor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Clouds.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Model.h">
@@ -119,6 +131,18 @@
     <ClInclude Include="OptionsMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TextSwitchHover.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Options.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Floor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Clouds.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="icon.png">
@@ -134,6 +158,12 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="cursor.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="green-pattern.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="clouds.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

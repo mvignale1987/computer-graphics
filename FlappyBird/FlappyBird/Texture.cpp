@@ -12,23 +12,23 @@ Texture::Texture(int id, GLuint width, GLuint height):
 {
 }
 
-Texture::Texture(string path, bool lineal)
+Texture::Texture(string path, bool lineal, bool repeat)
 {
 	SDL_Surface *surface = IMG_Load(path.c_str());
 	if(surface == NULL)
 	{
 		throw exception(("Couldn't load texture " + path).c_str());
 	}
-	initFromSurface(surface, lineal);
+	initFromSurface(surface, lineal, repeat);
 	SDL_FreeSurface(surface);
 }
 
-Texture::Texture(SDL_Surface *surface, bool lineal)
+Texture::Texture(SDL_Surface *surface, bool lineal, bool repeat)
 {
-	initFromSurface(surface, lineal);
+	initFromSurface(surface, lineal, repeat);
 }
 
-void Texture::initFromSurface(SDL_Surface *surface, bool lineal)
+void Texture::initFromSurface(SDL_Surface *surface, bool lineal, bool repeat)
 {
 	GLenum texture_format;
 	
@@ -62,8 +62,8 @@ void Texture::initFromSurface(SDL_Surface *surface, bool lineal)
 	// Set the texture's stretching properties
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, lineal ? GL_LINEAR : GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, lineal ? GL_LINEAR : GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP); 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, repeat ? GL_REPEAT : GL_CLAMP); 
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, repeat ? GL_REPEAT : GL_CLAMP);
  
 	// Edit the texture object's image data using the information SDL_Surface gives us
 	glTexImage2D( GL_TEXTURE_2D, 0, nOfColors, surface->w, surface->h, 0,
@@ -99,6 +99,7 @@ void Texture::render() const
 	glBindTexture(*this);
 	glBegin(GL_QUADS);
 	{
+		glColor4f(1,1,1,1);
 		glTexCoord2f(0, 0);
 		glVertex2f(-offsetX, offsetY);
 		glTexCoord2f(0, 1);
