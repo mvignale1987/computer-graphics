@@ -14,8 +14,8 @@ class MainMenu: public Scene
 private:
 	OptionsMenu		*optionsMenu;
 	MainMenuLogo	*logo;
-	TextHover		*playText, *optionsText, *quitText;
-	Text			*versionText, *copyrightText;
+	TextHover		*playText, *optionsText, *quitText,*copyrightText ;
+	Text			*versionText;
 	Cursor			*cursor;
 	bool			quitClicked;
 	Mix_Music		*music;
@@ -27,7 +27,7 @@ public:
 	void render();
 
 	Text *getVersionText() const;
-	Text *getCopyrightText() const;
+//	Text *getCopyrightText() const;
 private:
 	void initFonts();
 	void initMusic();

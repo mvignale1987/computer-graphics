@@ -61,6 +61,10 @@ void MainMenu::render()
 	{
 		optionsMenu->init();
 		app().setScene(optionsMenu);
+	} 
+	if(copyrightText->isClicked){
+		optionsMenu->init();
+		app().setScene(optionsMenu);
 	}
 }
 
@@ -86,7 +90,9 @@ void MainMenu::initFonts()
 	options.text = "Salir";
 	options.offsetY = 100;
 	Text quitTextNormal = Text(options);
+	
 
+	options.placement = CENTER;
 	// jugar -- hover
 	options.fontSize = 46;
 	options.color =  Vector3::fromRGB(236, 218, 19);
@@ -102,6 +108,8 @@ void MainMenu::initFonts()
 	options.offsetY = 100;
 	Text quitTextHover = Text(options);
 
+	
+
 	Mix_Chunk *menuTick = Mix_LoadWAV("MenuTick.wav");
 	if(!menuTick) {
 		Logger::logSDLError("Mix_LoadWAV");
@@ -110,6 +118,7 @@ void MainMenu::initFonts()
 	playText = new TextHover(playTextNormal, playTextHover, menuTick);
 	optionsText = new TextHover(optionsTextNormal, optionsTextHover, menuTick);
 	quitText = new TextHover(quitTextNormal, quitTextHover, menuTick);
+	
 
 	addObject(playText);
 	addObject(optionsText);
@@ -127,7 +136,15 @@ void MainMenu::initFonts()
 	// copyright text
 	options.placement = BOTTOM_RIGHT;
 	options.text = "2014 CompGraf";
-	copyrightText = new Text(options);
+	Text copyrightTextNormal =  Text(options);
+
+	// copyright text -- hover
+	options.fontSize = 22;
+	options.color =  Vector3::fromRGB(236, 218, 19);
+	options.text = "2014 CompGraf";
+	Text copyrightTextHover = Text(options);
+
+	copyrightText = new TextHover(copyrightTextNormal, copyrightTextHover, menuTick);
 
 	addObject(versionText);
 	addObject(copyrightText);
@@ -163,10 +180,10 @@ void MainMenu::initCursor()
 	addObject(cursor);
 }
 
-Text *MainMenu::getCopyrightText() const
-{
-	return copyrightText;
-}
+//Text *MainMenu::getCopyrightText() const
+//{
+//	return copyrightText;
+//}
 
 Text *MainMenu::getVersionText() const
 {
