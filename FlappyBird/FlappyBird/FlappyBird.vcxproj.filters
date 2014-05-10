@@ -75,6 +75,9 @@
     <ClCompile Include="Floor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Clouds.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Model.h">
@@ -137,6 +140,9 @@
     <ClInclude Include="Floor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Clouds.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="icon.png">
@@ -155,6 +161,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="green-pattern.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="clouds.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

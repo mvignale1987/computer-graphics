@@ -131,6 +131,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="Clouds.cpp" />
     <ClCompile Include="Cursor.cpp" />
     <ClCompile Include="Floor.cpp" />
     <ClCompile Include="Logger.cpp" />
@@ -153,6 +154,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
+    <ClInclude Include="Clouds.h" />
     <ClInclude Include="Cursor.h" />
     <ClInclude Include="Floor.h" />
     <ClInclude Include="Logger.h" />
@@ -174,6 +176,7 @@
     <ClInclude Include="Vector3.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="clouds.png" />
     <Image Include="cursor.png" />
     <Image Include="FlappyBird.ico" />
     <Image Include="green-pattern.jpg" />

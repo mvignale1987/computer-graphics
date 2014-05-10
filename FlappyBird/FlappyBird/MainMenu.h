@@ -4,6 +4,7 @@
 #include "TextHover.h"
 #include "Cursor.h"
 #include "Floor.h"
+#include "Clouds.h"
 #include "MainMenuLogo.h"
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
@@ -18,6 +19,7 @@ private:
 	TextHover		*playText, *optionsText, *quitText;
 	Text			*versionText, *copyrightText;
 	Floor			*floor;
+	Clouds			*clouds;
 	Cursor			*cursor;
 	bool			quitClicked;
 	Mix_Music		*music;
@@ -28,7 +30,8 @@ public:
 	bool handleEvent(const SDL_Event& ev);
 	void render();
 
-	Floor * getFloor() const;
+	Clouds *getClouds() const;
+	Floor *getFloor() const;
 	MainMenuLogo *getLogo() const;
 	Text *getVersionText() const;
 	Text *getCopyrightText() const;

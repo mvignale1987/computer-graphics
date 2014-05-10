@@ -17,7 +17,7 @@ void MainMenuLogo::render(Scene &parent)
 	float angle = sinf(animTime * 2 * (GLfloat) M_PI) * 6.0f;
 	float offsetDistance = sinf(animTime * 3 * (GLfloat) M_PI) * 0.15f;
 
-	GLboolean texturesEnabled = glIsEnabled(GL_TEXTURE_2D);
+	glPushAttrib(GL_ENABLE_BIT);
 
 	glPushMatrix();
 	{
@@ -29,7 +29,7 @@ void MainMenuLogo::render(Scene &parent)
 	}
 	glPopMatrix();
 
-	glToggle(GL_TEXTURE_2D, texturesEnabled);
+	glPopAttrib();
 
 	animTime += parent.app().getFrameTime() * 0.05f;
 	if(animTime > 6)

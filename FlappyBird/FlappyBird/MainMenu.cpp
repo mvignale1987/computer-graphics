@@ -12,7 +12,7 @@ MainMenu::MainMenu(App& parent):
 	quitClicked(false),
 	playText(NULL), optionsText(NULL), quitText(NULL),
 	versionText(NULL), copyrightText(NULL),
-	floor(NULL)
+	floor(NULL), clouds(NULL)
 {
 	optionsMenu = new OptionsMenu(*this);
 }
@@ -25,6 +25,8 @@ void MainMenu::init()
 	glClearColor(Vector3::fromRGB(1, 134, 149));
 	glEnable(GL_TEXTURE_2D);
 
+	clouds = new Clouds();
+	addObject(clouds);
 	floor = new Floor();
 	addObject(floor);
 	logo = new MainMenuLogo("logo.png");
@@ -171,6 +173,11 @@ void MainMenu::initCursor()
 	SDL_ShowCursor(0);
 	cursor = new Cursor("cursor.png", -4, -2);
 	addObject(cursor);
+}
+
+Clouds *MainMenu::getClouds() const
+{
+	return clouds;
 }
 
 Floor *MainMenu::getFloor() const
