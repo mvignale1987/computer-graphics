@@ -10,7 +10,9 @@ GameScene::GameScene(MainMenu& mainMenu):
 	NB(NULL),
 	IA(NULL),
 	MV(NULL),
-	pajarito(NULL)
+	pajarito(NULL),
+	tubo1(NULL),
+	tubo2(NULL)
 {
 }
 void GameScene::init()
@@ -21,8 +23,12 @@ void GameScene::init()
 	glClearColor(Vector3::fromRGB(1, 134, 149));
 	glEnable(GL_TEXTURE_2D);
 	pajarito = new Flappy();
+	tubo1 =	new Pipe(false);
+	tubo2 = new Pipe(true);
 	if(!inited)
 	{
+		addObject(tubo1);
+		addObject(tubo2);
 		addObject(pajarito);
 		addObject(mainMenu.getClouds());
 		addObject(mainMenu.getFloor());

@@ -87,6 +87,9 @@
     <ClCompile Include="Flappy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Pipe.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Model.h">
@@ -161,6 +164,12 @@
     <ClInclude Include="Flappy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Pipe.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="icon.png">
@@ -182,6 +191,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="clouds.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="pipe.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

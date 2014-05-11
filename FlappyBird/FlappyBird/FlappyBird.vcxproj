@@ -143,6 +143,7 @@
     <ClCompile Include="MainMenuLogo.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="OptionsMenu.cpp" />
+    <ClCompile Include="Pipe.cpp" />
     <ClCompile Include="Rect.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneError.cpp" />
@@ -169,8 +170,10 @@
     <ClInclude Include="Model.h" />
     <ClInclude Include="Options.h" />
     <ClInclude Include="OptionsMenu.h" />
+    <ClInclude Include="Pipe.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="resource1.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneError.h" />
     <ClInclude Include="SceneObject.h" />
@@ -188,6 +191,7 @@
     <Image Include="green-pattern.jpg" />
     <Image Include="icon.png" />
     <Image Include="logo.png" />
+    <Image Include="pipe.png" />
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
