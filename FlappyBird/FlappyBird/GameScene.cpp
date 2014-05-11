@@ -9,7 +9,8 @@ GameScene::GameScene(MainMenu& mainMenu):
 	integrantes(NULL),
 	NB(NULL),
 	IA(NULL),
-	MV(NULL)
+	MV(NULL),
+	pajarito(NULL)
 {
 }
 void GameScene::init()
@@ -19,9 +20,10 @@ void GameScene::init()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glClearColor(Vector3::fromRGB(1, 134, 149));
 	glEnable(GL_TEXTURE_2D);
-	
+	pajarito = new Flappy();
 	if(!inited)
 	{
+		addObject(pajarito);
 		addObject(mainMenu.getClouds());
 		addObject(mainMenu.getFloor());
 		initFonts();

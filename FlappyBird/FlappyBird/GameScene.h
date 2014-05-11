@@ -1,12 +1,14 @@
 #pragma once
 
 #include "Scene.h"
+#include "Flappy.h"
 #include "MainMenu.h"
 class GameScene: public Scene
 {
 private:
 	MainMenu		&mainMenu;
 	Text			*integrantes,*MV,*IA,*NB;
+	Flappy			*pajarito;
 	bool			inited;
 public:
 	GameScene(MainMenu& mainMenu);
