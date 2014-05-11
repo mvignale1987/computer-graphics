@@ -12,12 +12,14 @@
 
 class OptionsMenu;
 class CreditsMenu;
+class GameScene;
 
 class MainMenu: public Scene
 {
 private:
 	OptionsMenu		*optionsMenu;
 	CreditsMenu		*creditsMenu;
+	GameScene		*gameScene;
 	MainMenuLogo	*logo;
 	TextHover		*playText, *optionsText, *quitText,*copyrightText ;
 	Text			*versionText;

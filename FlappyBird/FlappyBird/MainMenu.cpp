@@ -4,6 +4,7 @@
 #include "SceneObject.h"
 #include "Logger.h"
 #include "OptionsMenu.h"
+#include "GameScene.h"
 #include "CreditsMenu.h"
 #include <GL/GLU.h>
 
@@ -17,6 +18,7 @@ MainMenu::MainMenu(App& parent):
 {
 	optionsMenu = new OptionsMenu(*this);
 	creditsMenu = new CreditsMenu(*this);
+	gameScene	= new GameScene(*this);
 }
 
 void MainMenu::init()
@@ -71,6 +73,12 @@ bool MainMenu::handleEvent(const SDL_Event& ev)
 		creditsMenu->init();
 		app().setScene(creditsMenu);
 	}
+	else if(ev.type == SDL_MOUSEBUTTONDOWN && copyrightText->isClicked(*this)){
+		gameScene->init();
+		app().setScene(gameScene);
+	
+	}
+
 
 	return !quitClicked;
 }
@@ -92,7 +100,10 @@ void MainMenu::render()
 		creditsMenu->init();
 		app().setScene(creditsMenu);
 	} 
-
+	else if(playText->isClicked(*this)){
+		gameScene->init();
+		app().setScene(gameScene);
+	}
 
 }
 
