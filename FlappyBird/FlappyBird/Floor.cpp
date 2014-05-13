@@ -14,12 +14,11 @@ void Floor::render(Scene &parent)
 	glMatrixMode(GL_TEXTURE);
 	glPushMatrix();
 	glLoadIdentity();
-	glTranslatef(animTime, 0, 0);
+	glTranslatef(-animTime, 0, 0);
 	glMatrixMode(GL_MODELVIEW);
 	
 	// Reset and transform the matrix.
 	glLoadIdentity();
-	glTranslate(camera->getPosition());
 	gluLookAt(
 		camera->x(), camera->y(), camera->z(),
 		0,0,0,
@@ -32,15 +31,15 @@ void Floor::render(Scene &parent)
 		glToggle(GL_TEXTURE_2D, parent.app().getOptions()->getTexturesEnabled());
 		glBindTexture(texture);
 
-		const float floorSize = 200;
+		const float floorSize = 1000;
 
 		glBegin(GL_QUADS);
 		{
 			glColor3f    (1, 1, 1);
-			glTexCoord2f (0, floorSize); glVertex3f   (-floorSize/2, -10,  floorSize/2);
+			glTexCoord2f (0, floorSize/10); glVertex3f   (-floorSize/2, -10,  floorSize/2);
 			glTexCoord2f (0, 0);  glVertex3f   (-floorSize/2, -10, -floorSize/2);
-			glTexCoord2f (floorSize, 0); glVertex3f   ( floorSize/2, -10, -floorSize/2);
-			glTexCoord2f (floorSize, floorSize); glVertex3f   ( floorSize/2, -10,  floorSize/2);
+			glTexCoord2f (floorSize/10, 0); glVertex3f   ( floorSize/2, -10, -floorSize/2);
+			glTexCoord2f (floorSize/10, floorSize/10); glVertex3f   ( floorSize/2, -10,  floorSize/2);
 		}
 		glEnd();
 		glPopAttrib();

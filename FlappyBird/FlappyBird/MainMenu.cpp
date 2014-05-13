@@ -29,7 +29,7 @@ void MainMenu::init()
 	glClearColor(Vector3::fromRGB(1, 134, 149));
 	glEnable(GL_TEXTURE_2D);
 
-	camera = new Camera(Vector3(0,10,-4));
+	camera = new Camera(Vector3(0,20,100));
 	addObject(camera);
 	skybox = new Skybox(camera);
 	addObject(skybox);
@@ -51,7 +51,7 @@ void MainMenu::reshape(int width, int height)
 	glViewport(0, 0, width, height);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(45.0f,(GLfloat)width/(GLfloat)height, 0.1f, 100.0f);
+	gluPerspective(45.0f,(GLfloat)width/(GLfloat)height, 0.1f, 500.0f);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 }

@@ -1,5 +1,8 @@
 #include "Camera.h"
 
+const float Camera::minLatitude = M_PI / 2 * 0.1;
+const float Camera::maxLatitude = M_PI / 2;
+
 Camera::Camera(const Vector3& startingPosition):
 	position(startingPosition)
 {
@@ -10,25 +13,31 @@ Camera::Camera(const Vector3& startingPosition):
 	float pi = (float)M_PI;
 
 	// converts from cartesian coordinates to polar coordinates
-	if(z == 0)
+	// TODO fix this transformation :p
+	if(y == 0)
 		latitude = pi / 2;
-	else if(z > 0)
-		latitude = atanf(sqrtf(x*x + y*y)/z);
+	else if(y > 0)
+		latitude = pi / 2 + atanf(sqrtf(x*x + y*y)/-z);
 	else
-		latitude = pi +  atanf(sqrtf(x*x + y*y)/z);
+		latitude = pi +  atanf(sqrtf(x*x + y*y)/-z);
 
-	if(x > 0 && y > 0)
-		azimut = atanf(y/x);
-	else if(x > 0 && y < 0)
-		azimut = 2 * pi + atanf(y/x);
-	else if(x == 0 && y > 0)
+	if(latitude > maxLatitude)
+		latitude = maxLatitude;
+	if(latitude < minLatitude)
+		latitude = minLatitude;
+
+	if(z > 0 && x > 0)
+		azimut = atanf(x/z);
+	else if(z > 0 && x < 0)
+		azimut = 2 * pi + atanf(x/z);
+	else if(z == 0 && x > 0)
 		azimut = pi / 2;
-	else if(x == 0 && y < 0)
+	else if(z == 0 && x < 0)
 		azimut = - pi / 2;
-	else if(x == 0 && y == 0)
+	else if(z == 0 && x == 0)
 		azimut = 0;
 	else
-		azimut = pi + atanf(y/x);
+		azimut = pi + atanf(x/z);
 }
 
 const Vector3& Camera::getPosition() const
@@ -48,10 +57,15 @@ void Camera::handleEvent(Scene &, const SDL_Event& ev)
 	azimut += deltaX;
 	latitude += deltaY;
 
+	if(latitude > maxLatitude)
+		latitude = maxLatitude;
+	if(latitude < minLatitude)
+		latitude = minLatitude;
+	
 	position = Vector3(
-		distance * sinf(azimut) * cosf(latitude),
-		distance * sinf(azimut) * sinf(latitude),
-		distance * cosf(azimut)
+		distance * sinf(latitude) * sinf(azimut), // x
+		distance * cosf(latitude),
+		distance * sinf(latitude) * cosf(azimut) // z
 		);
 }
 

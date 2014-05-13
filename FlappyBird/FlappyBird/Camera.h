@@ -6,6 +6,7 @@
 class Camera: public SceneObject
 {
 private:
+	static const float minLatitude, maxLatitude;
 	float	distance, latitude, azimut;
 	Vector3 position;
 public:
