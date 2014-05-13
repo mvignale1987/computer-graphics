@@ -1,7 +1,7 @@
 #include "Camera.h"
 
-const float Camera::minLatitude = M_PI / 2 * 0.1;
-const float Camera::maxLatitude = M_PI / 2;
+const float Camera::minLatitude = (float) M_PI / 2 * 0.1f;
+const float Camera::maxLatitude = (float) M_PI / 2;
 
 Camera::Camera(const Vector3& startingPosition):
 	position(startingPosition)
