@@ -14,7 +14,7 @@ MainMenu::MainMenu(App& parent):
 	quitClicked(false),
 	playText(NULL), optionsText(NULL), quitText(NULL),
 	versionText(NULL), copyrightText(NULL),
-	floor(NULL), clouds(NULL)
+	floor(NULL), skybox(NULL)
 {
 	optionsMenu = new OptionsMenu(*this);
 	creditsMenu = new CreditsMenu(*this);
@@ -29,9 +29,11 @@ void MainMenu::init()
 	glClearColor(Vector3::fromRGB(1, 134, 149));
 	glEnable(GL_TEXTURE_2D);
 
-	clouds = new Clouds();
-	addObject(clouds);
-	floor = new Floor();
+	camera = new Camera(Vector3(0,10,-4));
+	addObject(camera);
+	skybox = new Skybox(camera);
+	addObject(skybox);
+	floor = new Floor(camera);
 	addObject(floor);
 	logo = new MainMenuLogo("logo.png");
 	addObject(logo);
@@ -219,12 +221,6 @@ void MainMenu::initCursor()
 	addObject(cursor);
 }
 
-
-
-Clouds *MainMenu::getClouds() const
-{
-	return clouds;
-}
 
 Floor *MainMenu::getFloor() const
 {

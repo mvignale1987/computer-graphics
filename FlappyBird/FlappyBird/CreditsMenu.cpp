@@ -24,7 +24,6 @@ void CreditsMenu::init()
 
 	if(!inited)
 	{
-		addObject(mainMenu.getClouds());
 		addObject(mainMenu.getFloor());
 		addObject(mainMenu.getLogo());
 		initFonts();

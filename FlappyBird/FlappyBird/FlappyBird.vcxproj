@@ -131,7 +131,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
-    <ClCompile Include="Clouds.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CreditsMenu.cpp" />
     <ClCompile Include="Cursor.cpp" />
     <ClCompile Include="Flappy.cpp" />
@@ -149,6 +149,7 @@
     <ClCompile Include="SceneError.cpp" />
     <ClCompile Include="SceneObject.cpp" />
     <ClCompile Include="Options.cpp" />
+    <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="TextHover.cpp" />
@@ -158,7 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
-    <ClInclude Include="Clouds.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="CreditsMenu.h" />
     <ClInclude Include="Cursor.h" />
     <ClInclude Include="Flappy.h" />
@@ -177,6 +178,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneError.h" />
     <ClInclude Include="SceneObject.h" />
+    <ClInclude Include="Skybox.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="TextHover.h" />
@@ -185,13 +187,14 @@
     <ClInclude Include="Vector3.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="clouds.png" />
+    <Image Include="..\..\..\..\..\Pictures\skymap2.png" />
     <Image Include="cursor.png" />
     <Image Include="FlappyBird.ico" />
     <Image Include="green-pattern.jpg" />
     <Image Include="icon.png" />
     <Image Include="logo.png" />
     <Image Include="pipe.png" />
+    <Image Include="skybox.png" />
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>

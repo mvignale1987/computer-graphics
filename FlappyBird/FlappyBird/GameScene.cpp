@@ -30,7 +30,6 @@ void GameScene::init()
 		addObject(tubo1);
 		addObject(tubo2);
 		addObject(pajarito);
-		addObject(mainMenu.getClouds());
 		addObject(mainMenu.getFloor());
 		initFonts();
 	}

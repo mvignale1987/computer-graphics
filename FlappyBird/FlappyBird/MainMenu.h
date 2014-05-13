@@ -5,7 +5,9 @@
 #include "Cursor.h"
 #include "Floor.h"
 #include "Clouds.h"
+#include "Skybox.h"
 #include "MainMenuLogo.h"
+#include "Camera.h"
 
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
@@ -21,10 +23,11 @@ private:
 	CreditsMenu		*creditsMenu;
 	GameScene		*gameScene;
 	MainMenuLogo	*logo;
-	TextHover		*playText, *optionsText, *quitText,*copyrightText ;
+	TextHover		*playText, *optionsText, *quitText,*copyrightText;
 	Text			*versionText;
 	Floor			*floor;
-	Clouds			*clouds;
+	Skybox			*skybox;
+	Camera			*camera;
 	Cursor			*cursor;
 	bool			quitClicked;
 	Mix_Music		*music;
@@ -35,7 +38,6 @@ public:
 	bool handleEvent(const SDL_Event& ev);
 	void render();
 
-	Clouds *getClouds() const;
 	Floor *getFloor() const;
 	MainMenuLogo *getLogo() const;
 	Text *getVersionText() const;
