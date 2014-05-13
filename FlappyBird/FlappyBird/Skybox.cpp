@@ -3,7 +3,7 @@
 #include <GL/GLU.h>
 
 Skybox::Skybox(Camera *camera):
-	texture("skybox.png", false, true),
+	texture(),
 	camera(camera)
 {
 }
