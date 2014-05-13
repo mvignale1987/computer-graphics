@@ -21,6 +21,7 @@ void MainMenuLogo::render(Scene &parent)
 
 	glPushMatrix();
 	{
+		glLoadIdentity();
 		glTranslate(Vector3::up);
 		glTranslate(Vector3::backward * (4 + offsetDistance));
 		glRotate(angle, Vector3::forward);
