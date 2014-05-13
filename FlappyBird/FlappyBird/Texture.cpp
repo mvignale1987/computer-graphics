@@ -1,6 +1,6 @@
 #include "Texture.h"
 #include <SDL_image.h>
-
+#include <GL/GLU.h>
 
 Texture::Texture():
 	textureId(0), w(0), h(0)
@@ -12,23 +12,24 @@ Texture::Texture(int id, GLuint width, GLuint height):
 {
 }
 
-Texture::Texture(string path, bool lineal, bool repeat)
+Texture::Texture(string path, bool lineal, bool repeat, int mipmaps)
 {
 	SDL_Surface *surface = IMG_Load(path.c_str());
 	if(surface == NULL)
 	{
 		throw exception(("Couldn't load texture " + path).c_str());
 	}
-	initFromSurface(surface, lineal, repeat);
+	initFromSurface(surface, lineal, repeat, mipmaps);
 	SDL_FreeSurface(surface);
 }
 
-Texture::Texture(SDL_Surface *surface, bool lineal, bool repeat)
+
+Texture::Texture(SDL_Surface *surface, bool lineal, bool repeat, int mipmaps)
 {
-	initFromSurface(surface, lineal, repeat);
+	initFromSurface(surface, lineal, repeat, mipmaps);
 }
 
-void Texture::initFromSurface(SDL_Surface *surface, bool lineal, bool repeat)
+void Texture::initFromSurface(SDL_Surface *surface, bool lineal, bool repeat, int mipmaps)
 {
 	GLenum texture_format;
 	
@@ -58,16 +59,23 @@ void Texture::initFromSurface(SDL_Surface *surface, bool lineal, bool repeat)
  
 	// Bind the texture object
 	glBindTexture( GL_TEXTURE_2D, textureId );
+	glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE ); //set texture environment parameters
  
 	// Set the texture's stretching properties
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, lineal ? GL_LINEAR : GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, lineal ? GL_LINEAR : GL_NEAREST);
+	if(mipmaps == 0){
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, lineal ? GL_LINEAR : GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, lineal ? GL_LINEAR : GL_NEAREST);
+		glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, surface->w, surface->h, 0, texture_format, GL_UNSIGNED_BYTE, surface->pixels);
+	} else {
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,  lineal ?  GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR_MIPMAP_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,  lineal ?  GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR_MIPMAP_NEAREST);
+		gluBuild2DMipmaps(GL_TEXTURE_2D, mipmaps, surface->w, surface->h, texture_format, GL_UNSIGNED_BYTE, surface->pixels); 
+	}
+
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, repeat ? GL_REPEAT : GL_CLAMP); 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, repeat ? GL_REPEAT : GL_CLAMP);
  
-	// Edit the texture object's image data using the information SDL_Surface gives us
-	glTexImage2D( GL_TEXTURE_2D, 0, nOfColors, surface->w, surface->h, 0,
-						texture_format, GL_UNSIGNED_BYTE, surface->pixels );
+	
 }
 
 GLuint Texture::id() const
