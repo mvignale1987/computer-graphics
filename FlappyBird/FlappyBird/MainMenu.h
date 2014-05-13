@@ -4,7 +4,6 @@
 #include "TextHover.h"
 #include "Cursor.h"
 #include "Floor.h"
-#include "Clouds.h"
 #include "Skybox.h"
 #include "MainMenuLogo.h"
 #include "Camera.h"

@@ -194,7 +194,6 @@
     <Image Include="icon.png" />
     <Image Include="logo.png" />
     <Image Include="pipe.png" />
-    <Image Include="skybox.png" />
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
