@@ -1,9 +1,11 @@
 #include "Floor.h"
 #include "Vector3.h"
+#include <GL/GLU.h>
 
-Floor::Floor():
-	texture("green-pattern.jpg", false, true),
-	animTime(0)
+Floor::Floor(Camera *c):
+	texture("green-pattern.jpg", false, true, 3),
+	animTime(0),
+	camera(c)
 {
 }
 
@@ -15,27 +17,30 @@ void Floor::render(Scene &parent)
 	glTranslatef(animTime, 0, 0);
 	glMatrixMode(GL_MODELVIEW);
 	
+	// Reset and transform the matrix.
+	glLoadIdentity();
+	glTranslate(camera->getPosition());
+	gluLookAt(
+		camera->x(), camera->y(), camera->z(),
+		0,0,0,
+		0,1,0
+		);
 
 	glPushMatrix();
 	{
-		glTranslate(Vector3::backward * 4);
-		glTranslate(Vector3::up);
-
 		glPushAttrib(GL_ENABLE_BIT);
 		glToggle(GL_TEXTURE_2D, parent.app().getOptions()->getTexturesEnabled());
 		glBindTexture(texture);
 
+		const float floorSize = 200;
+
 		glBegin(GL_QUADS);
 		{
 			glColor3f    (1, 1, 1);
-			glTexCoord2f (0, 3);
-			glVertex3f   (-10, -3,  0);
-			glTexCoord2f (0, 0);
-			glVertex3f   (-10, -3, -2);
-			glTexCoord2f (30, 0);
-			glVertex3f   ( 10, -3, -2);
-			glTexCoord2f (30, 3);
-			glVertex3f   ( 10, -3,  0);
+			glTexCoord2f (0, floorSize); glVertex3f   (-floorSize/2, -10,  floorSize/2);
+			glTexCoord2f (0, 0);  glVertex3f   (-floorSize/2, -10, -floorSize/2);
+			glTexCoord2f (floorSize, 0); glVertex3f   ( floorSize/2, -10, -floorSize/2);
+			glTexCoord2f (floorSize, floorSize); glVertex3f   ( floorSize/2, -10,  floorSize/2);
 		}
 		glEnd();
 		glPopAttrib();
