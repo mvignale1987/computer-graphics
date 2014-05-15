@@ -199,7 +199,10 @@
     <Image Include="pipe.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\..\..\..\..\Pictures\skymap2.png">
+    <Image Include="skybox.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="water.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

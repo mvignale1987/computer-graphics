@@ -35,7 +35,8 @@ void Floor::render(Scene &parent)
 
 		glBegin(GL_QUADS);
 		{
-			glColor3f    (1, 1, 1);
+			//glColor(Vector3::fromRGB(86, 157, 223));
+			glColor(Vector3::one);
 			glTexCoord2f (0, floorSize/10); glVertex3f   (-floorSize/2, -10,  floorSize/2);
 			glTexCoord2f (0, 0);  glVertex3f   (-floorSize/2, -10, -floorSize/2);
 			glTexCoord2f (floorSize/10, 0); glVertex3f   ( floorSize/2, -10, -floorSize/2);

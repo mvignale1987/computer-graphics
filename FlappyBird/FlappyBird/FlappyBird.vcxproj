@@ -187,14 +187,15 @@
     <ClInclude Include="Vector3.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\..\..\..\Pictures\skymap2.png" />
     <Image Include="cursor.png" />
     <Image Include="FlappyBird.ico" />
     <Image Include="green-pattern.jpg" />
     <Image Include="icon.png" />
     <Image Include="logo.png" />
     <Image Include="pipe.png" />
+    <Image Include="skybox.png" />
     <Image Include="small.ico" />
+    <Image Include="water.png" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="FlappyBird.rc" />

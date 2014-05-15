@@ -3,14 +3,14 @@
 #include <GL/GLU.h>
 
 Skybox::Skybox(Camera *camera):
-	texture(),
+	texture("skybox.png", true, true),
 	camera(camera)
 {
 }
 
 void Skybox::render(Scene &parent)
 {
-   /*// Store the current matrix
+   // Store the current matrix
    glPushMatrix();
 
    // Reset and transform the matrix.
@@ -18,7 +18,7 @@ void Skybox::render(Scene &parent)
    gluLookAt(
        0,0,0,
        camera->x(),camera->y(),camera->z(),
-       0,1,0);
+       0,-1,0);
 
    // Enable/Disable features
    glPushAttrib(GL_ENABLE_BIT);
@@ -29,63 +29,52 @@ void Skybox::render(Scene &parent)
 
    // Just in case we set all vertices to white.
    glColor4f(1,1,1,1);
-
-   const float deltaY = 0.5f;
-   const float deltaX = 0.25f;
+   const double deltaX = 0.25;
 
    // Render the front quad
    glBindTexture(texture);
    glBegin(GL_QUADS);
    {
-       glTexCoord2f(deltaX*3, deltaY*2); glVertex3f(  0.5f, -0.5f, -0.5f );
-       glTexCoord2f(1,		  deltaY*2); glVertex3f( -0.5f, -0.5f, -0.5f );
-       glTexCoord2f(1,		  deltaY); glVertex3f( -0.5f,  0.5f, -0.5f );
-       glTexCoord2f(deltaX*3, deltaY); glVertex3f(  0.5f,  0.5f, -0.5f );
+       glTexCoord2d(deltaX*3, 0); glVertex3f(  0.5f, -0.5f, -0.5f );
+       glTexCoord2d(1,		  0); glVertex3f( -0.5f, -0.5f, -0.5f );
+       glTexCoord2d(1,		  1); glVertex3f( -0.5f,  0.5f, -0.5f );
+       glTexCoord2d(deltaX*3, 1); glVertex3f(  0.5f,  0.5f, -0.5f );
    }
    glEnd();
 
    // Render the left quad
    glBegin(GL_QUADS);
    {
-       glTexCoord2f(deltaX*2, deltaY*2); glVertex3f(  0.5f, -0.5f,  0.5f );
-       glTexCoord2f(deltaX*3, deltaY*2); glVertex3f(  0.5f, -0.5f, -0.5f );
-       glTexCoord2f(deltaX*3, deltaY); glVertex3f(  0.5f,  0.5f, -0.5f );
-       glTexCoord2f(deltaX*2, deltaY); glVertex3f(  0.5f,  0.5f,  0.5f );
+       glTexCoord2d(deltaX*2, 0); glVertex3f(  0.5f, -0.5f,  0.5f );
+       glTexCoord2d(deltaX*3, 0); glVertex3f(  0.5f, -0.5f, -0.5f );
+       glTexCoord2d(deltaX*3, 1); glVertex3f(  0.5f,  0.5f, -0.5f );
+       glTexCoord2d(deltaX*2, 1); glVertex3f(  0.5f,  0.5f,  0.5f );
    }
    glEnd();
 
    // Render the back quad
    glBegin(GL_QUADS);
    {
-       glTexCoord2f(deltaX, deltaY*2); glVertex3f( -0.5f, -0.5f,  0.5f );
-       glTexCoord2f(deltaX*2, deltaY*2); glVertex3f(  0.5f, -0.5f,  0.5f );
-       glTexCoord2f(deltaX*2, deltaY); glVertex3f(  0.5f,  0.5f,  0.5f );
-       glTexCoord2f(deltaX, deltaY); glVertex3f( -0.5f,  0.5f,  0.5f );
+       glTexCoord2d(deltaX, 0); glVertex3f( -0.5f, -0.5f,  0.5f );
+       glTexCoord2d(deltaX*2, 0); glVertex3f(  0.5f, -0.5f,  0.5f );
+       glTexCoord2d(deltaX*2, 1); glVertex3f(  0.5f,  0.5f,  0.5f );
+       glTexCoord2d(deltaX, 1); glVertex3f( -0.5f,  0.5f,  0.5f );
    }
    glEnd();
 
    // Render the right quad
    glBegin(GL_QUADS);
    {
-       glTexCoord2f(0,		deltaY*2);		glVertex3f( -0.5f, -0.5f, -0.5f );
-       glTexCoord2f(deltaX, deltaY*2); glVertex3f( -0.5f, -0.5f,  0.5f );
-       glTexCoord2f(deltaX, deltaY); glVertex3f( -0.5f,  0.5f,  0.5f );
-       glTexCoord2f(0,		deltaY); glVertex3f( -0.5f,  0.5f, -0.5f );
+       glTexCoord2d(0,		0);		glVertex3f( -0.5f, -0.5f, -0.5f );
+       glTexCoord2d(deltaX, 0); glVertex3f( -0.5f, -0.5f,  0.5f );
+       glTexCoord2d(deltaX, 1); glVertex3f( -0.5f,  0.5f,  0.5f );
+       glTexCoord2d(0,		1); glVertex3f( -0.5f,  0.5f, -0.5f );
    }
    glEnd();
 
-   // Render the top quad
-   glBegin(GL_QUADS);
-   {
-		glTexCoord2f(deltaX*3, deltaY); glVertex3f( -0.5f,  0.5f, -0.5f );
-		glTexCoord2f(deltaX*3, 0); glVertex3f( -0.5f,  0.5f,  0.5f );
-		glTexCoord2f(1,		   0); glVertex3f(  0.5f,  0.5f,  0.5f );
-		glTexCoord2f(1,        deltaY); glVertex3f(  0.5f,  0.5f, -0.5f );
-   }
-   glEnd();
 
    // Restore enable bits and matrix
    glPopAttrib();
-   glPopMatrix();*/
+   glPopMatrix();
 
 }
