@@ -150,9 +150,12 @@ void Model::applyMaterial(const aiMaterial *mtl)
 	ret1 = aiGetMaterialFloatArray(mtl, AI_MATKEY_SHININESS, &shininess, &max);
 	max = 1;
 	ret2 = aiGetMaterialFloatArray(mtl, AI_MATKEY_SHININESS_STRENGTH, &strength, &max);
-	if((ret1 == AI_SUCCESS) && (ret2 == AI_SUCCESS))
-		glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shininess * strength);
-	else {
+	if((ret1 == AI_SUCCESS) && (ret2 == AI_SUCCESS)){
+		float shininessVal =  shininess * strength;
+		if(shininessVal > 128)
+			shininessVal = 128;
+		glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shininessVal);
+	}else {
 		glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 0.0f);
 		set_float4(c, 0.0f, 0.0f, 0.0f, 0.0f);
 		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, c);
