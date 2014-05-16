@@ -49,6 +49,11 @@ GLfloat Vector3::z() const
 	return coords[2];
 }
 
+const GLfloat *Vector3::getCoords() const
+{
+	return coords;
+}
+
 const GLfloat *Vector3::vector() const
 {
 	return coords;
@@ -245,3 +250,9 @@ void gluLookAt(const Vector3& eye, const Vector3& center, const Vector3& up)
 {
 	gluLookAt(eye.x(), eye.y(), eye.z(), center.x(), center.y(), center.z(), up.x(), up.y(), up.z());
 }
+
+void glFog (GLenum pname, const Vector3& pvalue)
+{
+	glFogfv(pname, pvalue.getCoords());
+}
+

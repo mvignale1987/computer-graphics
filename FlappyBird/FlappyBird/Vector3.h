@@ -18,6 +18,7 @@ public:
 	GLfloat x() const; // x coordinate
 	GLfloat y() const; // y coordinate
 	GLfloat z() const; // z coordinate
+	const GLfloat *getCoords() const;
 	const GLfloat *vector() const;
 
 
@@ -68,3 +69,4 @@ void glColor(const Vector3& v);
 void glVertex(const Vector3& v);
 std::ostream& operator <<(std::ostream& stream, const Vector3& v);
 void gluLookAt(const Vector3& eye, const Vector3& center, const Vector3& up = Vector3::up);
+void glFog (GLenum pname, const Vector3& pvalue);
