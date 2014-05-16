@@ -53,6 +53,7 @@ void Text::render(SDL_Window *win) const
 	Rect rect = getBoundingRect(win);
 	
 	glMatrixMode(GL_PROJECTION);
+	glDisable(GL_LIGHTING);
 	glPushMatrix();
 	{
 		glLoadIdentity();
