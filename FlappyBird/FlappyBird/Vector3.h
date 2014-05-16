@@ -67,3 +67,4 @@ void glClearColor(const Vector3& v, GLclampf alpha = 1.0f);
 void glColor(const Vector3& v);
 void glVertex(const Vector3& v);
 std::ostream& operator <<(std::ostream& stream, const Vector3& v);
+void gluLookAt(const Vector3& eye, const Vector3& center, const Vector3& up = Vector3::up);

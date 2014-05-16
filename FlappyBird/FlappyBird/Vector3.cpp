@@ -1,4 +1,5 @@
 #include "Vector3.h"
+#include <GL\GLU.h>
 #include <sstream>
 
 const Vector3 Vector3::down     = Vector3( 0, -1,  0);
@@ -238,4 +239,9 @@ void glColor(const Vector3& v)
 void glVertex(const Vector3& v)
 {
 	glVertex3fv(v.vector());
+}
+
+void gluLookAt(const Vector3& eye, const Vector3& center, const Vector3& up)
+{
+	gluLookAt(eye.x(), eye.y(), eye.z(), center.x(), center.y(), center.z(), up.x(), up.y(), up.z());
 }
