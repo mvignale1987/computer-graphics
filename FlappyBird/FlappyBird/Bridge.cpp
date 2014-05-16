@@ -1,14 +1,18 @@
 #include "Bridge.h"
 #include <GL\GLU.h>
 
+const float Bridge::modelLength = 1245;
+const int Bridge::nBridges = 3;
+
 
 Bridge::Bridge(Camera *c):
 	model("bridge.dae"),
-	camera(c)
+	camera(c),
+	animTime(0)
 {
 }
 
-void Bridge::render(Scene &)
+void Bridge::render(Scene &parent)
 {
 	glMatrixMode(GL_MODELVIEW);
 	
@@ -20,18 +24,21 @@ void Bridge::render(Scene &)
 	glTranslate(9 * Vector3::down);
 	glRotate(180, Vector3::up);
 
-	const float modelLength = 1245;
-	const float visibleLength = 1000;
-	const int nBridges = (float) ceilf(visibleLength / modelLength);
-
 	glPushAttrib(GL_ENABLE_BIT);
 	glDisable(GL_TEXTURE_2D);
 
-	for(int i = 0; i < 2; ++ i)
+	glTranslate((animTime + modelLength) * Vector3::left);
+
+	for(int i = 0; i < nBridges; ++ i)
 	{
 		model.render(6);
 		glTranslate(modelLength * Vector3::right);
 	}
+
+	float multiplier = parent.app().getOptions()->speedMultiplier();
+	animTime +=  parent.app().getFrameTime() * 15 * multiplier;
+	if(animTime > modelLength)
+		animTime -= modelLength;
 
 	glPopAttrib();
 }

@@ -7,8 +7,12 @@
 class Bridge: public SceneObject
 {
 private: 
+	static const int nBridges;
+	static const float modelLength;
+
 	Model model;
 	Camera *camera;
+	float animTime;
 public:
 	Bridge(Camera *);
 	void render(Scene &parent);
