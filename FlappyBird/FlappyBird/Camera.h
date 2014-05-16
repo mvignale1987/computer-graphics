@@ -7,14 +7,16 @@ class Camera: public SceneObject
 {
 private:
 	static const float minLatitude, maxLatitude;
+	static const float minDistance, maxDistance;
 	float	distance, latitude, azimut;
+	Vector3 center;
 	Vector3 position;
 public:
-	Camera(const Vector3& startingPosition = Vector3::backward * 4);
+	Camera(float azimut, float latitude, float distance, const Vector3& center);
 	const Vector3& getPosition() const;
-	float x();
-	float y();
-	float z();
+	const Vector3& getCenter() const;
 	void handleEvent(Scene &parent, const SDL_Event& ev);
 	void render(Scene &parent);
+private:
+	void recalculatePosition();
 };
