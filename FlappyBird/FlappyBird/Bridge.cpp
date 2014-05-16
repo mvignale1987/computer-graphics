@@ -10,6 +10,18 @@ Bridge::Bridge(Camera *c):
 	camera(c),
 	animTime(0)
 {
+	texturedDisplayList = glGenLists(1);
+	glNewList (texturedDisplayList, GL_COMPILE);
+	{
+		render(TEXTURED_RENDER);
+	}
+	glEndList ();
+	solidDisplayList = glGenLists(1);
+	glNewList (solidDisplayList, GL_COMPILE);
+	{
+		render(SOLID_RENDER);
+	}
+	glEndList ();
 }
 
 void Bridge::render(Scene &parent)
@@ -29,10 +41,11 @@ void Bridge::render(Scene &parent)
 
 	glTranslate((animTime + modelLength) * Vector3::left);
 
-	for(int i = 0; i < nBridges; ++ i)
+	if(parent.app().getOptions()->renderMode() == TEXTURED_RENDER)
 	{
-		model.render(6);
-		glTranslate(modelLength * Vector3::right);
+		glCallList(texturedDisplayList);
+	} else {
+		glCallList(solidDisplayList);
 	}
 
 	float multiplier = parent.app().getOptions()->speedMultiplier();
@@ -41,4 +54,13 @@ void Bridge::render(Scene &parent)
 		animTime -= modelLength;
 
 	glPopAttrib();
+}
+
+void Bridge::render(RenderMode mode)
+{
+	for(int i = 0; i < nBridges; ++ i)
+	{
+		model.render(6, mode);
+		glTranslate(modelLength * Vector3::right);
+	}
 }

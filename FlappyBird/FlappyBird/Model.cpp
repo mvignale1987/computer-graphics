@@ -176,7 +176,7 @@ void Model::applyMaterial(const aiMaterial *mtl)
 }
 
 
-void Model::recursiveRender (const struct aiScene *sc, const struct aiNode* nd, float scale)
+void Model::recursiveRender (const struct aiScene *sc, const struct aiNode* nd, float scale, RenderMode mode)
 {
 	unsigned int i;
 	unsigned int n=0, t;
@@ -194,7 +194,10 @@ void Model::recursiveRender (const struct aiScene *sc, const struct aiNode* nd, 
 	{
 		const struct aiMesh* mesh = scene->mMeshes[nd->mMeshes[n]];
 
-		applyMaterial(sc->mMaterials[mesh->mMaterialIndex]);
+		if(mode == TEXTURED_RENDER)
+		{
+			applyMaterial(sc->mMaterials[mesh->mMaterialIndex]);
+		}
 
 
 		if(mesh->mNormals == NULL)
@@ -239,7 +242,7 @@ void Model::recursiveRender (const struct aiScene *sc, const struct aiNode* nd, 
 					glColor4f(color->r, color->g, color->b, color->a);
 				}if(mesh->mNormals != NULL)
 
-					if(mesh->HasTextureCoords(0))		//HasTextureCoords(texture_coordinates_set)
+					if(mode == TEXTURED_RENDER && mesh->HasTextureCoords(0))		//HasTextureCoords(texture_coordinates_set)
 					{
 						glTexCoord2f(mesh->mTextureCoords[0][vertexIndex].x, 1 - mesh->mTextureCoords[0][vertexIndex].y); //mTextureCoords[channel][vertex]
 					}
@@ -258,14 +261,14 @@ void Model::recursiveRender (const struct aiScene *sc, const struct aiNode* nd, 
 	// draw all children
 	for (n = 0; n < nd->mNumChildren; ++n)
 	{
-		recursiveRender(sc, nd->mChildren[n], scale);
+		recursiveRender(sc, nd->mChildren[n], scale, mode);
 	}
 
 	glPopMatrix();
 }
 
 
-void Model::render(float scale)
+void Model::render(float scale, RenderMode mode)
 {
-	recursiveRender(scene, scene->mRootNode, scale);
+	recursiveRender(scene, scene->mRootNode, scale, mode);
 }

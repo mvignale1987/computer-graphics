@@ -13,7 +13,9 @@ private:
 	Model model;
 	Camera *camera;
 	float animTime;
+	GLuint texturedDisplayList, solidDisplayList;
 public:
 	Bridge(Camera *);
 	void render(Scene &parent);
+	void render(RenderMode mode);
 };
