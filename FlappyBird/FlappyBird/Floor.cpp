@@ -26,7 +26,7 @@ void Floor::render(Scene &parent)
 		glToggle(GL_TEXTURE_2D, parent.app().getOptions()->getTexturesEnabled());
 		glBindTexture(texture);
 
-		const float floorSize = 1000;
+		const float floorSize = 4000;
 
 		glBegin(GL_QUADS);
 		{
