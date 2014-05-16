@@ -67,3 +67,13 @@ void glToggle(GLenum cap, GLboolean val)
 {
 	(val ? glEnable : glDisable)(cap);
 }
+
+RenderMode Options::renderMode()
+{
+	if(wireframe)
+		return WIREFRAME_RENDER;
+	else if(!textures)
+		return SOLID_RENDER;
+	else
+		return TEXTURED_RENDER;
+}

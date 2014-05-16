@@ -3,6 +3,7 @@
 #include <SDL_opengl.h>
 
 enum GameSpeed { SLOW = 2, MEDIUM = 0, FAST = 1 };
+enum RenderMode { TEXTURED_RENDER, WIREFRAME_RENDER, SOLID_RENDER };
 
 class Options
 {
@@ -19,6 +20,7 @@ public:
 	bool		getSmoothShading() const;
 	void		setSmoothShading(bool val);
 	bool		getWireframeEnabled() const;
+	RenderMode	renderMode();
 	void		setWireframeEnabled(bool val);
 	GameSpeed	getGameSpeed() const;
 	float		speedMultiplier() const;
