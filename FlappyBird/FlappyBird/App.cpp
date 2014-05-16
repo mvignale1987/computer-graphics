@@ -252,7 +252,7 @@ void App::setVSync(bool enabled)
 	}
 }
 
-void App::checkOpenGLError(const string message) const
+void App::checkOpenGLError(const string message)
 {
 	GLenum error = glGetError();
 	if(error != GL_NO_ERROR)

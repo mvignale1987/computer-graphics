@@ -41,6 +41,10 @@ public:
 
 	/* manejo de vsync */
 	void setVSync(bool enabled);
+
+	/* error checking/handling */
+	static void checkOpenGLError(std::string messageIfError);
+
 private:
 	int initWindow();
 	void initAssimpLog();
@@ -48,7 +52,4 @@ private:
 	bool pollEvent();
 	void renderSceneAndChild();
 	void cleanSceneAndChild();
-
-	/* error checking/handling */
-	void checkOpenGLError(std::string messageIfError) const;
 };
