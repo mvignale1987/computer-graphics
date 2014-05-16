@@ -7,6 +7,7 @@
 #include "Skybox.h"
 #include "MainMenuLogo.h"
 #include "Camera.h"
+#include "Bridge.h"
 
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
@@ -27,6 +28,7 @@ private:
 	Floor			*floor;
 	Skybox			*skybox;
 	Camera			*camera;
+	Bridge			*bridge;
 	Cursor			*cursor;
 	bool			quitClicked;
 	Mix_Music		*music;

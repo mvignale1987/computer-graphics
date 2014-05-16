@@ -131,6 +131,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="Bridge.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CreditsMenu.cpp" />
     <ClCompile Include="Cursor.cpp" />
@@ -159,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
+    <ClInclude Include="Bridge.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CreditsMenu.h" />
     <ClInclude Include="Cursor.h" />
@@ -187,20 +189,52 @@
     <ClInclude Include="Vector3.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="asphalt.jpg" />
     <Image Include="cursor.png" />
+    <Image Include="Dry_gras.jpg" />
+    <Image Include="Dry_grass.jpg" />
     <Image Include="FlappyBird.ico" />
+    <Image Include="Flat_gra.jpg" />
+    <Image Include="Flat_gray.jpg" />
+    <Image Include="Flat_wh0.jpg" />
+    <Image Include="Flat_wh1.jpg" />
+    <Image Include="Flat_white0.jpg" />
+    <Image Include="Flat_white1.jpg" />
     <Image Include="green-pattern.jpg" />
+    <Image Include="Grey_Roc.jpg" />
+    <Image Include="Grey_Rock.jpg" />
     <Image Include="icon.png" />
     <Image Include="logo.png" />
+    <Image Include="Metal0.jpg" />
+    <Image Include="Metal1.jpg" />
+    <Image Include="Metal2.jpg" />
+    <Image Include="Metal3.jpg" />
+    <Image Include="Metal4.jpg" />
+    <Image Include="Metal5.jpg" />
+    <Image Include="Metallic.jpg" />
+    <Image Include="Metallic_Varnish.jpg" />
+    <Image Include="Pewter.jpg" />
     <Image Include="pipe.png" />
     <Image Include="skybox.png" />
     <Image Include="small.ico" />
-    <Image Include="water.png" />
+    <Image Include="Techno_4.jpg" />
+    <Image Include="Techno_4___Dirty.jpg" />
+    <Image Include="White_po.jpg" />
+    <Image Include="White_porcelaine.jpg" />
+    <Image Include="Yellow_0.jpg" />
+    <Image Include="Yellow_1.jpg" />
+    <Image Include="Yellow_2.jpg" />
+    <Image Include="Yellow_marble0.jpg" />
+    <Image Include="Yellow_marble1.jpg" />
+    <Image Include="Yellow_marble2.jpg" />
+    <Image Include="_V9_Gene.jpg" />
+    <Image Include="_V9_GenericRock.jpg" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="FlappyBird.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="bridge.dae" />
     <None Include="Libraries.targets" />
   </ItemGroup>
   <ItemGroup>

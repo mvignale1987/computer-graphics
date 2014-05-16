@@ -28,11 +28,30 @@ void MainMenu::init()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glClearColor(Vector3::fromRGB(1, 134, 149));
 	glEnable(GL_TEXTURE_2D);
+	glShadeModel(GL_SMOOTH);		 // Enables Smooth Shading
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculation
 
-	camera = new Camera(Vector3(0,20,100));
+	GLfloat LightAmbient[4] = { 0.5f, 0.5f, 0.5f, 1.0f };
+	GLfloat LightDiffuse[4] = { 1, 1, 1, 1};
+	GLfloat LightPosition[4] = { 0, 0, 15, 1 };
+
+
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);    // Uses default lighting parameters
+	glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
+	glEnable(GL_NORMALIZE);
+
+	glLightfv(GL_LIGHT1, GL_AMBIENT, LightAmbient);
+	glLightfv(GL_LIGHT1, GL_DIFFUSE, LightDiffuse);
+	glLightfv(GL_LIGHT1, GL_POSITION, LightPosition);
+	glEnable(GL_LIGHT1);
+
+	camera = new Camera(0, (float) M_PI / 2, 400.0f, Vector3::up * 200.0f);
 	addObject(camera);
 	skybox = new Skybox(camera);
 	addObject(skybox);
+	bridge = new Bridge(camera);
+	addObject(bridge);
 	floor = new Floor(camera);
 	addObject(floor);
 	logo = new MainMenuLogo("logo.png");
@@ -51,7 +70,7 @@ void MainMenu::reshape(int width, int height)
 	glViewport(0, 0, width, height);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(45.0f,(GLfloat)width/(GLfloat)height, 0.1f, 500.0f);
+	gluPerspective(45.0f,(GLfloat)width/(GLfloat)height, 0.1f, 2000.0f);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 }
@@ -89,6 +108,7 @@ void MainMenu::render()
 {
 	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
+	glDisable(GL_CULL_FACE);
 	glLoadIdentity();
 	quitClicked = quitClicked || quitText->isClicked(*this);
 

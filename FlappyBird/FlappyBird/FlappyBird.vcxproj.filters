@@ -93,6 +93,9 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Bridge.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Model.h">
@@ -176,6 +179,9 @@
     <ClInclude Include="Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Bridge.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="icon.png">
@@ -202,7 +208,100 @@
     <Image Include="skybox.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="water.png">
+    <Image Include="Yellow_0.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Metallic.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Yellow_1.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Dry_gras.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="_V9_Gene.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Flat_gra.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Grey_Roc.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Flat_wh0.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="White_po.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Techno_4.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Flat_wh1.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Yellow_2.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Yellow_marble0.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Metallic_Varnish.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Metal0.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Yellow_marble1.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Metal1.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Metal2.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Metal3.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Metal4.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Pewter.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Dry_grass.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="_V9_GenericRock.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Flat_gray.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Grey_Rock.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="asphalt.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Metal5.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Flat_white0.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="White_porcelaine.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Techno_4___Dirty.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Yellow_marble2.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Flat_white1.jpg">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
@@ -213,6 +312,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Libraries.targets" />
+    <None Include="bridge.dae">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Flappy.TTF">
