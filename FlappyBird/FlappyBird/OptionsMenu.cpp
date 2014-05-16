@@ -15,14 +15,11 @@ OptionsMenu::OptionsMenu(MainMenu& mainMenu):
 
 void OptionsMenu::init()
 {
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glClearColor(Vector3::fromRGB(1, 134, 149));
-	glEnable(GL_TEXTURE_2D);
-
 	if(!inited)
 	{
+		addObject(mainMenu.getCamera());
+		addObject(mainMenu.getSkybox());
+		addObject(mainMenu.getBridge());
 		addObject(mainMenu.getFloor());
 		addObject(mainMenu.getLogo());
 		initFonts();
@@ -40,7 +37,7 @@ void OptionsMenu::reshape(int width, int height)
 	glViewport(0, 0, width, height);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(45.0f,(GLfloat)width/(GLfloat)height, 0.1f, 100.0f);
+	gluPerspective(45.0f,(GLfloat)width/(GLfloat)height, 0.1f, 2000.0f);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 }

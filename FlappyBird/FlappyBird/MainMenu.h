@@ -39,9 +39,12 @@ public:
 	bool handleEvent(const SDL_Event& ev);
 	void render();
 
+	Skybox *getSkybox() const;
 	Floor *getFloor() const;
 	MainMenuLogo *getLogo() const;
 	Text *getVersionText() const;
+	Camera *getCamera() const;
+	Bridge *getBridge() const;
 //	Text *getCopyrightText() const;
 private:
 	void initFonts();

@@ -1,7 +1,7 @@
 #include "Camera.h"
 #include <iostream>
 
-const float Camera::minLatitude = 1.1;
+const float Camera::minLatitude = 1.1f;
 const float Camera::maxLatitude = 1.9f;
 const float Camera::minDistance = 10.0f;
 const float Camera::maxDistance = 500.0f;

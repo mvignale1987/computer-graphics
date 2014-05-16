@@ -258,10 +258,20 @@ MainMenuLogo *MainMenu::getLogo() const
 	return logo;
 }
 
-//Text *MainMenu::getCopyrightText() const
-//{
-//	return copyrightText;
-//}
+Camera *MainMenu::getCamera() const
+{
+	return camera;
+}
+
+Bridge *MainMenu::getBridge() const 
+{
+	return bridge;
+}
+
+Skybox *MainMenu::getSkybox() const
+{
+	return skybox;
+}
 
 Text *MainMenu::getVersionText() const
 {
