@@ -8,6 +8,7 @@ class Camera: public SceneObject
 private:
 	static const float minLatitude, maxLatitude;
 	static const float minDistance, maxDistance;
+	static const float minAzimut, maxAzimut;
 	float	distance, latitude, azimut;
 	Vector3 center;
 	Vector3 position;

@@ -1,10 +1,12 @@
 #include "Camera.h"
 #include <iostream>
 
-const float Camera::minLatitude = (float) M_PI * 0.05f;
-const float Camera::maxLatitude = (float) M_PI * 0.75;
+const float Camera::minLatitude = 1.1;
+const float Camera::maxLatitude = 1.9f;
 const float Camera::minDistance = 10.0f;
 const float Camera::maxDistance = 500.0f;
+const float Camera::minAzimut = (float) -M_PI * 0.25f;
+const float Camera::maxAzimut = (float) M_PI * 0.25f;
 
 Camera::Camera(float azimut, float latitude, float distance, const Vector3& center):
 	azimut(azimut),
@@ -80,6 +82,10 @@ void Camera::recalculatePosition()
 		distance = minDistance;
 	if(distance > maxDistance)
 		distance = maxDistance;
+	if(azimut < minAzimut)
+		azimut = minAzimut;
+	if(azimut > maxAzimut)
+		azimut = maxAzimut;
 
 	position = center + Vector3(
 			distance * sinf(latitude) * sinf(azimut), // x
@@ -87,5 +93,5 @@ void Camera::recalculatePosition()
 			distance * sinf(latitude) * cosf(azimut) // z
 			);
 
-	//std::cout << "Azimut: " << azimut << ", Latitude: " << latitude << ", Position: " << center << std::endl;
+	//std::cout << "Azimut: " << azimut << ", Latitude: " << latitude << ", distance: " << distance << ", Position: " << center << std::endl;
 }
