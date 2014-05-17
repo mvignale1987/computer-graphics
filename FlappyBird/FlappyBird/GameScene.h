@@ -8,9 +8,8 @@ class GameScene: public Scene
 {
 private:
 	MainMenu		&mainMenu;
-	Text			*integrantes,*MV,*IA,*NB;
-	Flappy			*pajarito;
-	Pipe			*tubo1,*tubo2;
+	Text			*score;
+	Flappy			*flappy;
 	bool			inited;
 public:
 	GameScene(MainMenu& mainMenu);
