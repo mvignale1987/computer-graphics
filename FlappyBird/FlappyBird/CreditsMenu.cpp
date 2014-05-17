@@ -1,6 +1,5 @@
 #include "CreditsMenu.h"
 #include "Logger.h"
-#include <GL/GLU.h>
 
 CreditsMenu::CreditsMenu(MainMenu& mainMenu):
 	Scene(mainMenu.app()),
@@ -31,16 +30,7 @@ void CreditsMenu::init()
 
 void CreditsMenu::reshape(int width, int height)
 {
-	if (height==0)
-	{
-		height=1;
-	}
-	glViewport(0, 0, width, height);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective(45.0f,(GLfloat)width/(GLfloat)height, 0.1f, 100.0f);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
+	mainMenu.getCamera()->reshape(width, height);
 }
 void CreditsMenu::initFonts()
 {
