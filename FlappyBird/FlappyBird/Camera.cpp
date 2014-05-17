@@ -51,13 +51,13 @@ void Camera::handleEvent(Scene &, const SDL_Event& ev)
 	case SDL_KEYDOWN:
 	{
 		if(ev.key.keysym.scancode == SDL_SCANCODE_W)
-			center += Vector3::up * 10;
+			center += Vector3::up * 1;
 		else if(ev.key.keysym.scancode == SDL_SCANCODE_S)
-			center -= Vector3::up * 10;
+			center -= Vector3::up * 1;
 		else if(ev.key.keysym.scancode == SDL_SCANCODE_A)
-			center -= Vector3::right * 10;
+			center -= Vector3::right * 1;
 		else if(ev.key.keysym.scancode == SDL_SCANCODE_D)
-			center += Vector3::right * 10;
+			center += Vector3::right * 1;
 		else
 			break;
 		recalculatePosition();
