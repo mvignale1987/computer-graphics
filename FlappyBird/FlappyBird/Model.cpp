@@ -166,6 +166,7 @@ void Model::applyMaterial(const aiMaterial *mtl)
 		fill_mode = wireframe ? GL_LINE : GL_FILL;
 	else
 		fill_mode = GL_FILL;
+
 	glPolygonMode(GL_FRONT_AND_BACK, fill_mode);
 
 	max = 1;
@@ -197,6 +198,10 @@ void Model::recursiveRender (const struct aiScene *sc, const struct aiNode* nd, 
 		if(mode == TEXTURED_RENDER)
 		{
 			applyMaterial(sc->mMaterials[mesh->mMaterialIndex]);
+		}
+		if(mode == WIREFRAME_RENDER)
+		{
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		}
 
 
@@ -271,4 +276,5 @@ void Model::recursiveRender (const struct aiScene *sc, const struct aiNode* nd, 
 void Model::render(float scale, RenderMode mode)
 {
 	recursiveRender(scene, scene->mRootNode, scale, mode);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
