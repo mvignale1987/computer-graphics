@@ -9,13 +9,14 @@ class Bridge: public SceneObject
 private: 
 	static const int nBridges;
 	static const float modelLength;
+	static const float bridgeVelocity;
 
 	Model model;
-	Camera *camera;
 	float animTime;
 	GLuint texturedDisplayList, solidDisplayList, wireframeDisplayList;
 public:
-	Bridge(Camera *);
+	Bridge();
 	void render(Scene &parent);
 	void render(RenderMode mode);
+	float getStreetHeight(); // retorna la altura de la calle en el momento actual
 };

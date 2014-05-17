@@ -1,13 +1,14 @@
 #include "Bridge.h"
 #include <GL\GLU.h>
+#include <iostream>
 
 const float Bridge::modelLength = 1245;
 const int Bridge::nBridges = 3;
+const float Bridge::bridgeVelocity = 30;
 
 
-Bridge::Bridge(Camera *c):
+Bridge::Bridge():
 	model("bridge.dae"),
-	camera(c),
 	animTime(0)
 {
 	texturedDisplayList = glGenLists(3);
@@ -32,40 +33,45 @@ Bridge::Bridge(Camera *c):
 
 void Bridge::render(Scene &parent)
 {
-	glMatrixMode(GL_MODELVIEW);
-	
-	// Reset and transform the matrix.
-	glLoadIdentity();
-	gluLookAt(camera->getPosition(), camera->getCenter());
-	
-	glTranslate(600 * Vector3::backward);
-	glTranslate(9 * Vector3::down);
-	glRotate(180, Vector3::up);
-
-	glPushAttrib(GL_ENABLE_BIT);
-	glDisable(GL_TEXTURE_2D);
-
-	glTranslate((animTime - modelLength) * Vector3::right);
-
-	switch(parent.app().getOptions()->renderMode())
+	glPushMatrix();
 	{
-	case TEXTURED_RENDER:
-		glCallList(texturedDisplayList);
-		break;
-	case SOLID_RENDER:
-		glCallList(solidDisplayList);
-		break;
-	case WIREFRAME_RENDER:
-		glCallList(wireframeDisplayList);
-		break;
+		glTranslate(600 * Vector3::backward);
+		glTranslate(9 * Vector3::down);
+		glRotate(180, Vector3::up);
+
+		glPushAttrib(GL_ENABLE_BIT);
+		{
+			glDisable(GL_TEXTURE_2D);
+
+			glTranslate((animTime - modelLength) * Vector3::right);
+
+			switch(parent.app().getOptions()->renderMode())
+			{
+			case TEXTURED_RENDER:
+				glCallList(texturedDisplayList);
+				break;
+			case SOLID_RENDER:
+				glCallList(solidDisplayList);
+				break;
+			case WIREFRAME_RENDER:
+				glCallList(wireframeDisplayList);
+				break;
+			}
+		}
+		glPopAttrib();
 	}
+	glPopMatrix();
 
 	float multiplier = parent.app().getOptions()->speedMultiplier();
-	animTime +=  parent.app().getFrameTime() * 15 * multiplier;
+	animTime +=  parent.app().getFrameTime() * bridgeVelocity * multiplier;
 	if(animTime > modelLength)
 		animTime -= modelLength;
+}
 
-	glPopAttrib();
+float Bridge::getStreetHeight()
+{
+	// aproximation to the bridge street curve
+	return 93 - sinf((animTime-40) / modelLength * M_PI) * 11;
 }
 
 void Bridge::render(RenderMode mode)
