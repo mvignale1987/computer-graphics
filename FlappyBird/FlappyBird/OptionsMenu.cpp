@@ -166,6 +166,10 @@ bool OptionsMenu::handleEvent(const SDL_Event& ev)
 		GameSpeed speed = (GameSpeed) gameSpeedText->getCurrentIndex();
 		app().getOptions()->setGameSpeed(speed);
 	}
+	if(wireframeText->wasIndexChanged())
+	{
+		app().getOptions()->setWireframeEnabled(wireframeText->getCurrentIndex() == 1);
+	}
 
 	return true;
 }
