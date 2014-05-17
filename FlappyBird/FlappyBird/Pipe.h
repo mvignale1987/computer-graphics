@@ -5,11 +5,10 @@
 class Pipe: public SceneObject
 {
 private:
-	Texture texture;
 	GLfloat animTime;
 	bool backside;
 public:
-	Pipe(bool b);
+	Pipe();
 
 	void render(Scene &parent);
 };
