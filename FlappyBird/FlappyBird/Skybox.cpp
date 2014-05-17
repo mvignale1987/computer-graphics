@@ -6,16 +6,23 @@ Skybox::Skybox(Camera *camera):
 	texture("skybox.png", true, true),
 	camera(camera)
 {
-	texturedDisplayList = glGenLists(1);
+	texturedDisplayList = glGenLists(3);
 	glNewList (texturedDisplayList, GL_COMPILE);
 	{
 		render(TEXTURED_RENDER);
 	}
 	glEndList ();
-	solidDisplayList = glGenLists(1);
+	solidDisplayList = texturedDisplayList+1;
 	glNewList (solidDisplayList, GL_COMPILE);
 	{
 		render(SOLID_RENDER);
+	}
+	glEndList ();
+
+	wireframeDisplayList = texturedDisplayList+2;
+	glNewList (wireframeDisplayList, GL_COMPILE);
+	{
+		render(WIREFRAME_RENDER);
 	}
 	glEndList ();
 }
@@ -25,11 +32,17 @@ void Skybox::render(Scene &parent)
    glPushMatrix();
    glLoadIdentity();
    gluLookAt(Vector3::zero, camera->getPosition() - camera->getCenter(), Vector3::down);
-   if(parent.app().getOptions()->renderMode() == TEXTURED_RENDER)
+   switch(parent.app().getOptions()->renderMode())
    {
+   case TEXTURED_RENDER:
 	   glCallList(texturedDisplayList);
-   } else {
+	   break;
+   case SOLID_RENDER:
 	   glCallList(solidDisplayList);
+	   break;
+   case WIREFRAME_RENDER:
+	   glCallList(wireframeDisplayList);
+	   break;
    }
 }
 
@@ -38,6 +51,10 @@ void Skybox::render(RenderMode mode)
 	// Enable/Disable features
 	glPushAttrib(GL_ENABLE_BIT);
 	glToggle(GL_TEXTURE_2D, mode == TEXTURED_RENDER);
+	if(mode == WIREFRAME_RENDER)
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_LIGHTING);
 	glDisable(GL_BLEND);
@@ -93,6 +110,7 @@ void Skybox::render(RenderMode mode)
 	}
 	glEnd();
 
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	// Restore enable bits and matrix
 	glPopAttrib();
