@@ -1,6 +1,5 @@
 #include "OptionsMenu.h"
 #include "Logger.h"
-#include <GL/GLU.h>
 
 OptionsMenu::OptionsMenu(MainMenu& mainMenu):
 	Scene(mainMenu.app()),
@@ -30,16 +29,7 @@ void OptionsMenu::init()
 
 void OptionsMenu::reshape(int width, int height)
 {
-	if (height==0)
-	{
-		height=1;
-	}
-	glViewport(0, 0, width, height);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective(45.0f,(GLfloat)width/(GLfloat)height, 0.1f, 2000.0f);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
+	mainMenu.getCamera()->reshape(width, height);
 }
 
 void OptionsMenu::initFonts()
@@ -132,9 +122,6 @@ void OptionsMenu::initFonts()
 
 void OptionsMenu::render()
 {
-	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();	
 }
 
 bool OptionsMenu::handleEvent(const SDL_Event& ev)

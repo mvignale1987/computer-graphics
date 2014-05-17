@@ -52,13 +52,13 @@ void MainMenu::init()
 	glLightfv(GL_LIGHT1, GL_POSITION, LightPosition);
 	glEnable(GL_LIGHT1);
 
-	camera = new Camera(0, 1.5f, 270.0f, Vector3::up * 120.0f);
+	camera = new Camera(0, 1.51f, 180.0f, Vector3::up * 130.0f);
 	addObject(camera);
 	skybox = new Skybox(camera);
 	addObject(skybox);
-	bridge = new Bridge(camera);
+	bridge = new Bridge();
 	addObject(bridge);
-	floor = new Floor(camera);
+	floor = new Floor();
 	addObject(floor);
 	logo = new MainMenuLogo("logo.png");
 	addObject(logo);
@@ -69,20 +69,27 @@ void MainMenu::init()
 
 void MainMenu::reshape(int width, int height)
 {
-	if (height==0)
-	{
-		height=1;
-	}
-	glViewport(0, 0, width, height);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective(45.0f,(GLfloat)width/(GLfloat)height, 0.1f, 2000.0f);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
+	camera->reshape(width, height);
 }
 
 bool MainMenu::handleEvent(const SDL_Event& ev)
 {
+	// ver si el init se inicia muchas veces! (antes esto estaba en render)
+	quitClicked = quitClicked || quitText->isClicked(*this);
+	if(optionsText->isClicked(*this))
+	{
+		optionsMenu->init();
+		app().setScene(optionsMenu);
+	}else if(copyrightText->isClicked(*this)){
+		
+		creditsMenu->init();
+		app().setScene(creditsMenu);
+	} 
+	else if(playText->isClicked(*this)){
+		gameScene->init();
+		app().setScene(gameScene);
+	}
+
 	if(ev.type == SDL_KEYDOWN &&
 			(ev.key.keysym.scancode == SDL_SCANCODE_Q  || ev.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
 	)
@@ -103,36 +110,13 @@ bool MainMenu::handleEvent(const SDL_Event& ev)
 	else if(ev.type == SDL_MOUSEBUTTONDOWN && copyrightText->isClicked(*this)){
 		gameScene->init();
 		app().setScene(gameScene);
-	
 	}
-
 
 	return !quitClicked;
 }
 
 void MainMenu::render()
 {
-	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glMatrixMode(GL_MODELVIEW);
-	glDisable(GL_CULL_FACE);
-	glLoadIdentity();
-	quitClicked = quitClicked || quitText->isClicked(*this);
-
-
-	if(optionsText->isClicked(*this))
-	{
-		optionsMenu->init();
-		app().setScene(optionsMenu);
-	}else if(copyrightText->isClicked(*this)){
-		
-		creditsMenu->init();
-		app().setScene(creditsMenu);
-	} 
-	else if(playText->isClicked(*this)){
-		gameScene->init();
-		app().setScene(gameScene);
-	}
-
 }
 
 void MainMenu::initFonts()
