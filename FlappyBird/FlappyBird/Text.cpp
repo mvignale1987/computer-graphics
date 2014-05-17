@@ -63,6 +63,7 @@ void Text::render(SDL_Window *win) const
 		{
 			glLoadIdentity();
 			glBindTexture(textTexture);
+			glColor(Vector3::one);
 			glBegin(GL_QUADS);
 			{
 				glTexCoord2f(0, 0);
@@ -125,12 +126,19 @@ Rect Text::getBoundingRect(SDL_Window *win) const
 		int offsetCenterY = height / 2 - textTexture.height() / 2;
 		top += offsetCenterY;
 		bottom += offsetCenterY;
+	} else if(placement == TOP_CENTER) {
+		int offsetCenterX = width / 2 - textTexture.width() / 2;
+		left += offsetCenterX;
+		right += offsetCenterX;
 	} else if(placement == BOTTOM_LEFT) {
 		bottom = height - offsetY;
 		top = bottom - textTexture.height();
 	} else if(placement == BOTTOM_RIGHT) {
 		bottom = height - offsetY;
 		top = bottom - textTexture.height();
+		right = width - offsetY;
+		left = right - textTexture.width();
+	} else if(placement == TOP_RIGHT) {
 		right = width - offsetY;
 		left = right - textTexture.width();
 	}
