@@ -6,13 +6,19 @@ Floor::Floor(Camera *c):
 	animTime(0),
 	camera(c)
 {
-	texturedDisplayList = glGenLists(1);
+	texturedDisplayList = glGenLists(3);
 	glNewList (texturedDisplayList, GL_COMPILE);
 	{
 		render(TEXTURED_RENDER);
 	}
 	glEndList();
-	solidDisplayList = glGenLists(1);
+	solidDisplayList = texturedDisplayList+1;
+	glNewList (solidDisplayList, GL_COMPILE);
+	{
+		render(SOLID_RENDER);
+	}
+	glEndList();
+	wireframeDisplayList = texturedDisplayList+2;
 	glNewList (solidDisplayList, GL_COMPILE);
 	{
 		render(SOLID_RENDER);
@@ -32,6 +38,10 @@ void Floor::render(RenderMode mode)
 			glBindTexture(texture);
 		} else {
 			glDisable(GL_TEXTURE_2D);
+		}
+		if(mode == WIREFRAME_RENDER)
+		{
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		}
 
 		const float floorSize = 4000;
@@ -54,6 +64,8 @@ void Floor::render(RenderMode mode)
 		glPopAttrib();
 	}
 	glPopMatrix();
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
 void Floor::render(Scene &parent)
@@ -69,7 +81,7 @@ void Floor::render(Scene &parent)
 			glMatrixMode(GL_TEXTURE);
 			glPushMatrix();
 			glLoadIdentity();
-			glTranslatef(-animTime, 0, 0);
+			glTranslatef(animTime, 0, 0);
 			glMatrixMode(GL_MODELVIEW);
 			glCallList(texturedDisplayList);
 			glMatrixMode(GL_TEXTURE);
@@ -78,6 +90,9 @@ void Floor::render(Scene &parent)
 			break;
 		case SOLID_RENDER:
 			glCallList(solidDisplayList);
+			break;
+		case WIREFRAME_RENDER:
+			glCallList(wireframeDisplayList);
 			break;
 		default:
 			break;

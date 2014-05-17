@@ -12,7 +12,7 @@ private:
 	Texture texture;
 	GLfloat animTime;
 	Camera  *camera;
-	GLuint	texturedDisplayList, solidDisplayList;
+	GLuint	texturedDisplayList, solidDisplayList, wireframeDisplayList;
 public:
 	Floor(Camera *c);
 
