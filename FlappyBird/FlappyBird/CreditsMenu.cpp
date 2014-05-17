@@ -16,14 +16,11 @@ CreditsMenu::CreditsMenu(MainMenu& mainMenu):
 }
 void CreditsMenu::init()
 {
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glClearColor(Vector3::fromRGB(1, 134, 149));
-	glEnable(GL_TEXTURE_2D);
-
 	if(!inited)
 	{
+		addObject(mainMenu.getCamera());
+		addObject(mainMenu.getSkybox());
+		addObject(mainMenu.getBridge());
 		addObject(mainMenu.getFloor());
 		addObject(mainMenu.getLogo());
 		initFonts();
