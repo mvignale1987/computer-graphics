@@ -1,5 +1,6 @@
 #include "Camera.h"
 #include <iostream>
+#include <GL\GLU.h>
 
 const float Camera::minLatitude = 1.1f;
 const float Camera::maxLatitude = 1.9f;
@@ -25,6 +26,20 @@ const Vector3& Camera::getPosition() const
 const Vector3& Camera::getCenter() const
 {
 	return center;
+}
+
+void Camera::reshape(int width, int height)
+{
+	if (height==0)
+	{
+		height=1;
+	}
+	glViewport(0, 0, width, height);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(45.0f,(GLfloat)width/(GLfloat)height, 0.1f, 2000.0f);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 }
 
 void Camera::handleEvent(Scene &, const SDL_Event& ev)
@@ -70,11 +85,15 @@ void Camera::handleEvent(Scene &, const SDL_Event& ev)
 
 void Camera::render(Scene &)
 {
+	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	gluLookAt(position, center);
 }
 
 void Camera::recalculatePosition()
 {
-	if(latitude > maxLatitude)
+	/*if(latitude > maxLatitude)
 		latitude = maxLatitude;
 	if(latitude < minLatitude)
 		latitude = minLatitude;
@@ -85,7 +104,7 @@ void Camera::recalculatePosition()
 	if(azimut < minAzimut)
 		azimut = minAzimut;
 	if(azimut > maxAzimut)
-		azimut = maxAzimut;
+		azimut = maxAzimut;*/
 
 	position = center + Vector3(
 			distance * sinf(latitude) * sinf(azimut), // x

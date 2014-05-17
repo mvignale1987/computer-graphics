@@ -16,6 +16,7 @@ public:
 	Camera(float azimut, float latitude, float distance, const Vector3& center);
 	const Vector3& getPosition() const;
 	const Vector3& getCenter() const;
+	void reshape(int width, int height);
 	void handleEvent(Scene &parent, const SDL_Event& ev);
 	void render(Scene &parent);
 private:
