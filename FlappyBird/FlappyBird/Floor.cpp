@@ -1,10 +1,9 @@
 #include "Floor.h"
 #include "Vector3.h"
 
-Floor::Floor(Camera *c):
+Floor::Floor():
 	texture("green-pattern.jpg", false, true, 3),
-	animTime(0),
-	camera(c)
+	animTime(0)
 {
 	texturedDisplayList = glGenLists(3);
 	glNewList (texturedDisplayList, GL_COMPILE);
@@ -28,9 +27,8 @@ Floor::Floor(Camera *c):
 
 void Floor::render(RenderMode mode)
 {
-	glPushMatrix();
+	glPushAttrib(GL_ENABLE_BIT);
 	{
-		glPushAttrib(GL_ENABLE_BIT);
 
 		if(mode == TEXTURED_RENDER)
 		{
@@ -61,10 +59,8 @@ void Floor::render(RenderMode mode)
 			glTexCoord2f (floorSize/10, floorSize/10); glVertex3f   ( floorSize/2, 0,  floorSize/2);
 		}
 		glEnd();
-		glPopAttrib();
 	}
-	glPopMatrix();
-
+	glPopAttrib();
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
@@ -72,9 +68,6 @@ void Floor::render(Scene &parent)
 {	
 	if(parent.app().getOptions()->renderMode() != WIREFRAME_RENDER)
 	{
-		glLoadIdentity();
-		gluLookAt(camera->getPosition(), camera->getCenter());
-
 		switch(parent.app().getOptions()->renderMode())
 		{
 		case TEXTURED_RENDER:

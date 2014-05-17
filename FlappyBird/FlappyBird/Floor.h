@@ -11,10 +11,9 @@ class Floor: public SceneObject
 private:
 	Texture texture;
 	GLfloat animTime;
-	Camera  *camera;
 	GLuint	texturedDisplayList, solidDisplayList, wireframeDisplayList;
 public:
-	Floor(Camera *c);
+	Floor();
 
 	void render(Scene &parent);
 	void render(RenderMode mode);
