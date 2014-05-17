@@ -10,16 +10,22 @@ Bridge::Bridge(Camera *c):
 	camera(c),
 	animTime(0)
 {
-	texturedDisplayList = glGenLists(1);
+	texturedDisplayList = glGenLists(3);
 	glNewList (texturedDisplayList, GL_COMPILE);
 	{
 		render(TEXTURED_RENDER);
 	}
 	glEndList ();
-	solidDisplayList = glGenLists(1);
+	solidDisplayList = texturedDisplayList+1;
 	glNewList (solidDisplayList, GL_COMPILE);
 	{
 		render(SOLID_RENDER);
+	}
+	glEndList ();
+	wireframeDisplayList = texturedDisplayList+2;
+	glNewList (wireframeDisplayList, GL_COMPILE);
+	{
+		render(WIREFRAME_RENDER);
 	}
 	glEndList ();
 }
@@ -32,20 +38,26 @@ void Bridge::render(Scene &parent)
 	glLoadIdentity();
 	gluLookAt(camera->getPosition(), camera->getCenter());
 	
-	glTranslate(500 * Vector3::backward);
+	glTranslate(600 * Vector3::backward);
 	glTranslate(9 * Vector3::down);
 	glRotate(180, Vector3::up);
 
 	glPushAttrib(GL_ENABLE_BIT);
 	glDisable(GL_TEXTURE_2D);
 
-	glTranslate((animTime + modelLength) * Vector3::left);
+	glTranslate((animTime - modelLength) * Vector3::right);
 
-	if(parent.app().getOptions()->renderMode() == TEXTURED_RENDER)
+	switch(parent.app().getOptions()->renderMode())
 	{
+	case TEXTURED_RENDER:
 		glCallList(texturedDisplayList);
-	} else {
+		break;
+	case SOLID_RENDER:
 		glCallList(solidDisplayList);
+		break;
+	case WIREFRAME_RENDER:
+		glCallList(wireframeDisplayList);
+		break;
 	}
 
 	float multiplier = parent.app().getOptions()->speedMultiplier();

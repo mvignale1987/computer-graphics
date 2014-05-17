@@ -13,7 +13,7 @@ private:
 	Model model;
 	Camera *camera;
 	float animTime;
-	GLuint texturedDisplayList, solidDisplayList;
+	GLuint texturedDisplayList, solidDisplayList, wireframeDisplayList;
 public:
 	Bridge(Camera *);
 	void render(Scene &parent);
