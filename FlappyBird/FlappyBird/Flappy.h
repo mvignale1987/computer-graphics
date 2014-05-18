@@ -8,6 +8,7 @@
 class Flappy: public SceneObject
 {
 private:
+	static const float initialHeight;
 	static const float maxHeight;
 	static const Vector3 displacement; // bird displacement from the center
 	static const float gravity; 
@@ -19,6 +20,7 @@ private:
 	GLfloat velocity;
 	GLfloat acceleration;
 	GLfloat acceleration2;
+	GLfloat angle;
 	Mix_Chunk *flappingSound;
 	Mix_Chunk *dieSound;
 
@@ -28,7 +30,9 @@ public:
 	Flappy(Bridge *colliderBridge);
 
 	void kill();
-	bool isDead();
+	void respawn();
+	bool isDead() const;
+	bool heJumpedFirstTime() const;
 	void render(Scene &parent);
 	void handleEvent(Scene &parent, const SDL_Event& ev);
 };

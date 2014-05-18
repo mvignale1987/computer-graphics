@@ -2,6 +2,7 @@
 #include "Vector3.h" 
 #include <GL/freeglut.h>
 
+const float Flappy::initialHeight = 120;
 const float Flappy::maxHeight = 210;
 const float Flappy::gravity = -1000;
 const float Flappy::gravity2 = -2;
@@ -11,11 +12,12 @@ const float Flappy::velocityJump = 60;
 #define max(x,y) ((x)>(y)?x:y)
 
 Flappy::Flappy(Bridge *colliderBridge):
-	height(120),
+	height(initialHeight),
 	colliderBridge(colliderBridge),
 	velocity(0),
 	acceleration(0),
 	acceleration2(0),
+	angle(0),
 	flappingSound(Mix_LoadWAV("jump.wav")),
 	dieSound(Mix_LoadWAV("die.wav")),
 	alive(true),
@@ -49,9 +51,22 @@ void Flappy::kill()
 	Mix_PlayChannel(-1, dieSound, 0);
 }
 
-bool Flappy::isDead()
+void Flappy::respawn()
+{
+	alive = true;
+	velocity = acceleration = acceleration2 = angle = 0;
+	height = initialHeight;
+	jumpedFirstTime = false;
+}
+
+bool Flappy::isDead() const
 {
 	return !alive;
+}
+
+bool Flappy::heJumpedFirstTime() const
+{
+	return jumpedFirstTime;
 }
 
 void Flappy::render(Scene &parent)
@@ -64,6 +79,7 @@ void Flappy::render(Scene &parent)
 		acceleration += acceleration2 * (-gravity) * frameTime;
 		velocity += acceleration * frameTime;
 		height += velocity  * frameTime;
+		angle = atanf(velocity/ (2 * velocityJump)) * 180 / (GLfloat)M_PI;
 	}
 
 	float minHeight = colliderBridge->getStreetHeight();
@@ -82,7 +98,7 @@ void Flappy::render(Scene &parent)
 	glPushMatrix();
 	{
 		glTranslate(height * Vector3::up +  displacement);
-		glRotate(atanf(velocity/ (2 * velocityJump)) * 180 / (GLfloat)M_PI, Vector3::forward);
+		glRotate(angle, Vector3::forward);
 		glutSolidCube(7);
 	}
 	glPopMatrix();
