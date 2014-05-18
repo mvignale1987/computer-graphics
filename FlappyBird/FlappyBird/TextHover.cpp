@@ -31,8 +31,7 @@ void TextHover::handleEvent(Scene &parent, const SDL_Event& ev)
 
 void TextHover::render(Scene& parent)
 {
-	SDL_Window *win = parent.app().getWindow();
-	(isHover ? hover : normal).render(win);
+	(isHover ? hover : normal).render(parent);
 }
 
 bool TextHover::isClicked(Scene &parent) const
