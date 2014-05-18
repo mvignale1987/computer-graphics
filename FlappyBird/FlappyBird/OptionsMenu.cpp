@@ -158,6 +158,10 @@ bool OptionsMenu::handleEvent(const SDL_Event& ev)
 	{
 		app().getOptions()->setWireframeEnabled(wireframeText->getCurrentIndex() == 1);
 	}
+	if(interpolatedText->wasIndexChanged())
+	{
+		app().getOptions()->setShadingModel(interpolatedText->getCurrentIndex() == 0);
+	}
 
 	return true;
 }

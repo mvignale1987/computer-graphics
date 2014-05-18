@@ -2,7 +2,6 @@
 
 Options::Options():
 	textures(true),
-	smoothShading(true),
 	wireframe(false),
 	gameSpeed(MEDIUM)
 {
@@ -18,14 +17,9 @@ void Options::setTexturesEnabled(bool val)
 	textures = val;
 }
 
-bool Options::getSmoothShading() const
+void Options::setShadingModel(bool smooth)
 {
-	return smoothShading;
-}
-
-void Options::setSmoothShading(bool val)
-{
-	smoothShading = val;
+	glShadeModel(smooth ? GL_SMOOTH : GL_FLAT);
 }
 
 bool Options::getWireframeEnabled() const

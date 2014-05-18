@@ -9,7 +9,6 @@ class Options
 {
 private:
 	bool		textures;
-	bool		smoothShading;
 	bool		wireframe;
     GameSpeed	gameSpeed;
 public:
@@ -17,14 +16,13 @@ public:
 
 	bool		getTexturesEnabled() const;
 	void		setTexturesEnabled(bool val);
-	bool		getSmoothShading() const;
-	void		setSmoothShading(bool val);
 	bool		getWireframeEnabled() const;
 	RenderMode	renderMode();
 	void		setWireframeEnabled(bool val);
 	GameSpeed	getGameSpeed() const;
 	float		speedMultiplier() const;
 	void		setGameSpeed(GameSpeed val);
+	void		setShadingModel(bool smooth);
 };
 
 void glToggle(GLenum capability, GLboolean val);
