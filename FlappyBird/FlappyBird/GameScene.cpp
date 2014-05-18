@@ -20,6 +20,9 @@ void GameScene::init()
 		addObject(mainMenu.getFloor());
 		flappy = new Flappy(mainMenu.getBridge());
 		addObject(flappy);
+		dieParticleSystem = new FlappyFeatherParticleSystem(*flappy);
+		addObject(dieParticleSystem);
+		dieParticleSystem->disable();
 		initFonts();
 		addObject(mainMenu.getFadeInOut());
 		dieEffect = new FadeInOut(0.25f, 0.70f, Vector3::one);
@@ -64,14 +67,20 @@ void GameScene::initFonts()
 bool GameScene::handleEvent(const SDL_Event& ev)
 {
 
-	if(state != GAME_SCENE_FADING_OUT && ev.type == SDL_KEYDOWN &&
-		(ev.key.keysym.scancode == SDL_SCANCODE_Q  || ev.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
-	)
+	if(state != GAME_SCENE_FADING_OUT && ev.type == SDL_KEYDOWN)
 	{
-		app().setScene(&mainMenu);
-		mainMenu.getBridge()->stop();
-		mainMenu.getCamera()->disableMove();
-		return true;
+		switch(ev.key.keysym.scancode){
+		case SDL_SCANCODE_P:
+		case SDL_SCANCODE_ESCAPE:
+			app().setScene(&mainMenu);
+			mainMenu.getBridge()->stop();
+			mainMenu.getCamera()->disableMove();
+			return true;
+		case SDL_SCANCODE_Q:
+			return false;
+		default:
+			return true;
+		}
 	}
 
 	if(state == GAME_SCENE_GAME_OVER &&
@@ -95,11 +104,13 @@ void GameScene::render()
 		}
 
 		if(flappy->isDead()){
+			state = GAME_SCENE_GAME_OVER;
 			mainMenu.getBridge()->stop();
 			dieEffect->enable();
+			dieParticleSystem->enable();
+			dieParticleSystem->reset();
 			gameOverText->enable();
 			gameOverText->fadeIn();
-			state = GAME_SCENE_GAME_OVER;
 		} 
 		break;
 	case GAME_SCENE_FADING_OUT:
@@ -107,6 +118,7 @@ void GameScene::render()
 		{
 			state = GAME_SCENE_PLAYING;
 			gameOverText->disable();
+			dieParticleSystem->disable();
 			getReadyText->enable();
 			getReadyText->fadeIn();
 			mainMenu.getBridge()->reset();

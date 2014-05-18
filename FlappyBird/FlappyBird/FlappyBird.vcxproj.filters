@@ -102,6 +102,9 @@
     <ClCompile Include="FadeConstant.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FlappyFeatherParticleSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Model.h">
@@ -192,6 +195,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FadeConstant.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FlappyFeatherParticleSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -314,6 +320,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="rainbow.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="feather.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

@@ -51,6 +51,9 @@ public:
 	void respawn();
 	bool isDead() const;
 	bool heJumpedFirstTime() const;
+	Vector3 getPosition() const;
+	Bridge *getColliderBridge() const;
+
 	void render(Scene &parent);
 	void handleEvent(Scene &parent, const SDL_Event& ev);
 private:

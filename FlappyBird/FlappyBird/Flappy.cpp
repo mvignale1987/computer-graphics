@@ -73,6 +73,17 @@ bool Flappy::heJumpedFirstTime() const
 	return jumpedFirstTime;
 }
 
+Vector3 Flappy::getPosition() const 
+{
+	return height * Vector3::up + displacement;
+}
+
+Bridge *Flappy::getColliderBridge() const 
+{
+	return colliderBridge;
+}
+
+
 void Flappy::render(Scene &parent)
 {
 	// recalculate height, accel velocity
@@ -101,7 +112,7 @@ void Flappy::render(Scene &parent)
 	// trail
 	drawTrail(parent);
 
-	Vector3 position = height * Vector3::up +  displacement;
+	Vector3 position = getPosition();
 	glPushMatrix();
 	{
 		// bird

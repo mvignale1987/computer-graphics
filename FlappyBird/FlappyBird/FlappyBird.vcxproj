@@ -138,6 +138,7 @@
     <ClCompile Include="FadeConstant.cpp" />
     <ClCompile Include="FadeInOut.cpp" />
     <ClCompile Include="Flappy.cpp" />
+    <ClCompile Include="FlappyFeatherParticleSystem.cpp" />
     <ClCompile Include="Floor.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Logger.cpp" />
@@ -169,6 +170,7 @@
     <ClInclude Include="FadeConstant.h" />
     <ClInclude Include="FadeInOut.h" />
     <ClInclude Include="Flappy.h" />
+    <ClInclude Include="FlappyFeatherParticleSystem.h" />
     <ClInclude Include="Floor.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="Logger.h" />
@@ -197,6 +199,7 @@
     <Image Include="cursor.png" />
     <Image Include="Dry_gras.jpg" />
     <Image Include="Dry_grass.jpg" />
+    <Image Include="feather.png" />
     <Image Include="FlappyBird.ico" />
     <Image Include="Flat_gra.jpg" />
     <Image Include="Flat_gray.jpg" />
