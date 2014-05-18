@@ -125,7 +125,8 @@ bool App::pollEvent()
 		std::vector<SceneObject *> objects = currentScene->getObjects();
 		for(std::vector<SceneObject *>::iterator it = objects.begin(); it != objects.end(); ++it)
 		{
-			(*it)->handleEvent(*currentScene, e);
+			if((*it)->isEnabled())
+				(*it)->handleEvent(*currentScene, e);
 		}
 
 		switch (e.type)  {
@@ -168,8 +169,11 @@ void App::renderSceneAndChild()
 	checkOpenGLError("Scene render");
 	for(std::vector<SceneObject *>::iterator it = objects.begin(); it != objects.end(); ++it)
 	{
-		(*it)->render(*currentScene);
-		checkOpenGLError("Scene child render");
+		if((*it)->isEnabled())
+		{
+			(*it)->render(*currentScene);
+			checkOpenGLError("Scene child render");
+		}
 	}
 	SDL_GL_SwapWindow(win);
 	frameTime = (SDL_GetTicks() - start) / 1000.0f;
