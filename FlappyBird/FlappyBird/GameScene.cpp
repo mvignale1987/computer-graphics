@@ -11,18 +11,20 @@ GameScene::GameScene(MainMenu& mainMenu):
 }
 void GameScene::init()
 {
-	flappy = new Flappy(mainMenu.getBridge());
 	if(!inited)
 	{
 		addObject(mainMenu.getCamera());
 		addObject(mainMenu.getSkybox());
 		addObject(mainMenu.getBridge());
 		addObject(mainMenu.getFloor());
+		flappy = new Flappy(mainMenu.getBridge());
 		addObject(flappy);
 		initFonts();
+		addObject(mainMenu.getFadeInOut());
 	}
 	inited = true;
 }
+
 
 void GameScene::reshape(int width, int height)
 {
@@ -52,9 +54,13 @@ bool GameScene::handleEvent(const SDL_Event& ev)
 	)
 	{
 		app().setScene(&mainMenu);
+		mainMenu.getBridge()->stop();
 	}
 	return true;
 }
 void GameScene::render()
 {
+	if(flappy->isDead()){
+		mainMenu.getBridge()->stop();
+	}
 }

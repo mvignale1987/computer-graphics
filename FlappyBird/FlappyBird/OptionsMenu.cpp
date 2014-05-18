@@ -20,6 +20,7 @@ void OptionsMenu::init()
 		addObject(mainMenu.getSkybox());
 		addObject(mainMenu.getBridge());
 		addObject(mainMenu.getFloor());
+		addObject(mainMenu.getFadeConstant());
 		addObject(mainMenu.getLogo());
 		initFonts();
 		initCursor();
