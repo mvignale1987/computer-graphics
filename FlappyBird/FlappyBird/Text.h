@@ -9,24 +9,31 @@
 #include "Rect.h"
 
 enum Placement { CENTER, TOP_LEFT, TOP_CENTER, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT }; // Text placement in screen
+enum TextStatus  { TEXT_SOLID, TEXT_FADING_OUT, TEXT_FADING_IN };
 
 class TextOptions;
 
 class Text: public SceneObject
 {
 private:
+	static const float fadeTime;
+
 	Texture textTexture;
 	int offsetX, offsetY;
 	Placement placement;
+	float animTime;
+	TextStatus status;
 public:
 	Text();
-
 	Text(const TextOptions& options);
+	Text(const Text& other);
 
 	bool mouseHover(SDL_Window *win) const; // true if the mouse is in the font bounding rect
 	bool mouseClick(SDL_Window *win) const; // true if the mouse if clicked  in the font bounding rect
-	void render(SDL_Window *win) const; // renders the text within window coordinates
 	void render(Scene &parent);
+
+	void fadeOut();
+	void fadeIn();
 private:
 	Rect getBoundingRect(SDL_Window *win) const;
 };

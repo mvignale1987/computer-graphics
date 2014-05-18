@@ -2,17 +2,33 @@
 #include "SceneError.h"
 #include <GL/GLU.h>
 
+const float Text::fadeTime = 0.75f;
+
 Text::Text():
 	offsetX(0),
 	offsetY(0),
-	placement(TOP_LEFT)
+	placement(TOP_LEFT),
+	animTime(0),
+	status(TEXT_SOLID)
+{
+}
+
+Text::Text(const Text& other):
+	textTexture(other.textTexture),
+	offsetX(other.offsetX),
+	offsetY(other.offsetY),
+	placement(other.placement),
+	animTime(0),
+	status(TEXT_SOLID)
 {
 }
 
 Text::Text(const TextOptions& options):
 	offsetX(options.offsetX),
 	offsetY(options.offsetY),
-	placement(options.placement)
+	placement(options.placement),
+	animTime(0),
+	status(TEXT_SOLID)
 {
 	TTF_Font *font = TTF_OpenFont(options.fontPath.c_str(), options.fontSize);
 	if (font == NULL){
@@ -42,11 +58,7 @@ Text::Text(const TextOptions& options):
 
 void Text::render(Scene &parent)
 {
-	render(parent.app().getWindow());
-}
-
-void Text::render(SDL_Window *win) const
-{
+	SDL_Window * win = parent.app().getWindow();
 	int width, height;
 	SDL_GetWindowSize(win, &width, &height);
 
@@ -63,7 +75,22 @@ void Text::render(SDL_Window *win) const
 		{
 			glLoadIdentity();
 			glBindTexture(textTexture);
-			glColor(Vector3::one);
+
+			float alpha;
+			switch(status)
+			{
+			case TEXT_FADING_OUT:
+				alpha = 1 - animTime / fadeTime;
+				break;
+			case TEXT_FADING_IN:
+				alpha = animTime / fadeTime;
+				break;
+			default:
+				alpha = 1;
+			}
+			
+
+			glColor(Vector3::one, alpha);
 			glBegin(GL_QUADS);
 			{
 				glTexCoord2f(0, 0);
@@ -82,7 +109,22 @@ void Text::render(SDL_Window *win) const
 	glMatrixMode(GL_PROJECTION);
 	glPopMatrix();
 	glMatrixMode(GL_MODELVIEW);
+
+	if(status != TEXT_SOLID)
+	{
+		animTime += parent.app().getFrameTime();
+	}
+	if(animTime > 1)
+	{
+		if(status == TEXT_FADING_OUT)
+		{
+			disable();
+		}
+		status = TEXT_SOLID;
+		animTime = 0;
+	}
 }
+
 
 bool Text::mouseHover(SDL_Window *win) const 
 {
@@ -106,6 +148,16 @@ bool Text::mouseClick(SDL_Window *win) const
 	if((mouseState & (SDL_BUTTON(1) | SDL_BUTTON(2))) == 0)
 		return false;
 	return getBoundingRect(win).contains(mouseX, mouseY);
+}
+
+void Text::fadeOut()
+{
+	status = TEXT_FADING_OUT;
+}
+
+void Text::fadeIn()
+{
+	status = TEXT_FADING_IN;
 }
 
 Rect Text::getBoundingRect(SDL_Window *win) const
