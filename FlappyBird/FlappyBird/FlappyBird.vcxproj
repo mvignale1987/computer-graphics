@@ -241,7 +241,9 @@
     <ResourceCompile Include="FlappyBird.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="bridge.dae" />
+    <Media Include="bridge.dae">
+      <FileType>Document</FileType>
+    </Media>
     <None Include="Libraries.targets" />
   </ItemGroup>
   <ItemGroup>

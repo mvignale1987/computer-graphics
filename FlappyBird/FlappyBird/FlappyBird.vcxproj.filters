@@ -333,9 +333,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Libraries.targets" />
-    <None Include="bridge.dae">
-      <Filter>Resource Files</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Flappy.TTF">
@@ -350,6 +347,9 @@
       <Filter>Resource Files</Filter>
     </Media>
     <Media Include="jump.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="bridge.dae">
       <Filter>Resource Files</Filter>
     </Media>
   </ItemGroup>
