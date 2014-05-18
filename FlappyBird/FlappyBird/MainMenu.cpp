@@ -10,11 +10,13 @@
 
 MainMenu::MainMenu(App& parent):
 	Scene(parent),
+	state(MAIN_MENU_INITIAL),
 	music(NULL),
 	quitClicked(false),
 	playText(NULL), optionsText(NULL), quitText(NULL),
 	versionText(NULL), copyrightText(NULL),
-	floor(NULL), skybox(NULL)
+	floor(NULL), skybox(NULL),
+	fadeConstant(NULL), fadeInOut(NULL)
 {
 	optionsMenu = new OptionsMenu(*this);
 	creditsMenu = new CreditsMenu(*this);
@@ -60,11 +62,17 @@ void MainMenu::init()
 	addObject(bridge);
 	floor = new Floor();
 	addObject(floor);
+	fadeConstant = new FadeConstant();
+	addObject(fadeConstant);
+	fadeConstant->disable();
 	logo = new MainMenuLogo("logo.png");
 	addObject(logo);
 	initMusic();
 	initFonts();
 	initCursor();
+	fadeInOut = new FadeInOut();
+	fadeInOut->disable();
+	addObject(fadeInOut);
 }
 
 void MainMenu::reshape(int width, int height)
@@ -81,13 +89,11 @@ bool MainMenu::handleEvent(const SDL_Event& ev)
 		optionsMenu->init();
 		app().setScene(optionsMenu);
 	}else if(copyrightText->isClicked(*this)){
-		
 		creditsMenu->init();
 		app().setScene(creditsMenu);
 	} 
 	else if(playText->isClicked(*this)){
-		gameScene->init();
-		app().setScene(gameScene);
+		gameStart();
 	}
 
 	if(ev.type == SDL_KEYDOWN &&
@@ -117,6 +123,15 @@ bool MainMenu::handleEvent(const SDL_Event& ev)
 
 void MainMenu::render()
 {
+	if(state == MAIN_MENU_FADING_OUT && fadeInOut->fadedOut())
+	{
+		playText->disable();
+		resumeText->enable();
+		fadeConstant->enable();
+		bridge->resume();
+		app().setScene(gameScene);
+		state = MAIN_MENU_GAMEINPROGRESS;
+	}
 }
 
 void MainMenu::initFonts()
@@ -133,6 +148,9 @@ void MainMenu::initFonts()
 	options.text = "Jugar";
 	options.offsetX = options.offsetY = 0;
 	Text playTextNormal = Text(options);
+	// reanudar
+	options.text = "Reanudar";
+	Text resumeTextNormal = Text(options);
 	// opciones
 	options.text = "Opciones";
 	options.offsetY = 50;
@@ -150,6 +168,8 @@ void MainMenu::initFonts()
 	options.offsetY = 0;
 	options.text = "Jugar";
 	Text playTextHover = Text(options);
+	options.text = "Reanudar";
+	Text resumeTextHover = Text(options);
 	// opciones -- hover
 	options.text = "Opciones";
 	options.offsetY = 50;
@@ -167,11 +187,14 @@ void MainMenu::initFonts()
 	}
 
 	playText = new TextHover(playTextNormal, playTextHover, menuTick);
+	resumeText = new TextHover(resumeTextNormal, resumeTextHover, menuTick);
 	optionsText = new TextHover(optionsTextNormal, optionsTextHover, menuTick);
 	quitText = new TextHover(quitTextNormal, quitTextHover, menuTick);
 	
 
 	addObject(playText);
+	addObject(resumeText);
+	resumeText->disable();
 	addObject(optionsText);
 	addObject(quitText);
 
@@ -231,7 +254,6 @@ void MainMenu::initCursor()
 	addObject(cursor);
 }
 
-
 Floor *MainMenu::getFloor() const
 {
 	return floor;
@@ -252,6 +274,16 @@ Bridge *MainMenu::getBridge() const
 	return bridge;
 }
 
+FadeConstant *MainMenu::getFadeConstant() const 
+{
+	return fadeConstant;
+}
+
+FadeInOut *MainMenu::getFadeInOut() const 
+{
+	return fadeInOut;
+}
+
 Skybox *MainMenu::getSkybox() const
 {
 	return skybox;
@@ -260,4 +292,18 @@ Skybox *MainMenu::getSkybox() const
 Text *MainMenu::getVersionText() const
 {
 	return versionText;
+}
+
+void MainMenu::gameStart()
+{
+	if(state == MAIN_MENU_INITIAL)
+	{
+		gameScene->init();
+		state = MAIN_MENU_FADING_OUT;
+		fadeInOut->enable();
+	} else if(state == MAIN_MENU_GAMEINPROGRESS) {
+		gameScene->init();
+		bridge->resume();
+		app().setScene(gameScene);
+	}
 }

@@ -8,6 +8,8 @@
 #include "MainMenuLogo.h"
 #include "Camera.h"
 #include "Bridge.h"
+#include "FadeConstant.h"
+#include "FadeInOut.h"
 
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
@@ -16,20 +18,26 @@ class OptionsMenu;
 class CreditsMenu;
 class GameScene;
 
+enum MainMenuState { MAIN_MENU_INITIAL, MAIN_MENU_FADING_OUT, MAIN_MENU_GAMEINPROGRESS };
+
 class MainMenu: public Scene
 {
 private:
+	MainMenuState	state;
+
 	OptionsMenu		*optionsMenu;
 	CreditsMenu		*creditsMenu;
 	GameScene		*gameScene;
 	MainMenuLogo	*logo;
-	TextHover		*playText, *optionsText, *quitText,*copyrightText;
+	TextHover		*playText, *resumeText, *optionsText, *quitText,*copyrightText;
 	Text			*versionText;
 	Floor			*floor;
 	Skybox			*skybox;
 	Camera			*camera;
 	Bridge			*bridge;
 	Cursor			*cursor;
+	FadeConstant	*fadeConstant;
+	FadeInOut		*fadeInOut;
 	bool			quitClicked;
 	Mix_Music		*music;
 public:
@@ -45,9 +53,12 @@ public:
 	Text *getVersionText() const;
 	Camera *getCamera() const;
 	Bridge *getBridge() const;
-//	Text *getCopyrightText() const;
+	FadeConstant *getFadeConstant() const;
+	FadeInOut *getFadeInOut() const;
 private:
 	void initFonts();
 	void initMusic();
 	void initCursor();
+
+	void gameStart();
 };
