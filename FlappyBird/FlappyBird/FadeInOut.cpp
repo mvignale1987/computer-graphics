@@ -1,10 +1,10 @@
 #include "FadeInOut.h"
-#include "Vector3.h"
 
-const float FadeInOut::length = 0.75f;
-
-FadeInOut::FadeInOut():
-	animTime(0)
+FadeInOut::FadeInOut(float length, float maxAlpha, const Vector3& color):
+	animTime(0),
+	color(color),
+	maxAlpha(maxAlpha),
+	length(length)
 {
 }
 
@@ -25,7 +25,8 @@ void FadeInOut::render(Scene &parent)
 			glPushMatrix();
 			{
 				glLoadIdentity();
-				glColor(Vector3::zero, ((-4.5f/(length*length)) * animTime * (animTime-length))); // 4.5 gets a higher max alpha value
+				float alpha = maxAlpha * (-4/(length*length)) * animTime * (animTime-length);
+				glColor(color, alpha); // 4.5 gets a higher max alpha value
 				glBegin(GL_QUADS);
 				{
 					glVertex2f(0, 0);
