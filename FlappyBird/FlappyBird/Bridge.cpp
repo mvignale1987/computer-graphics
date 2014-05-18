@@ -9,7 +9,8 @@ const float Bridge::bridgeVelocity = 30;
 
 Bridge::Bridge():
 	model("bridge.dae"),
-	animTime(0)
+	animTime(0),
+	stopped(false)
 {
 	texturedDisplayList = glGenLists(3);
 	glNewList (texturedDisplayList, GL_COMPILE);
@@ -62,16 +63,34 @@ void Bridge::render(Scene &parent)
 	}
 	glPopMatrix();
 
-	float multiplier = parent.app().getOptions()->speedMultiplier();
-	animTime +=  parent.app().getFrameTime() * bridgeVelocity * multiplier;
-	if(animTime > modelLength)
-		animTime -= modelLength;
+	if(!stopped)
+	{
+		float multiplier = parent.app().getOptions()->speedMultiplier();
+		animTime +=  parent.app().getFrameTime() * bridgeVelocity * multiplier;
+		if(animTime > modelLength)
+			animTime -= modelLength;
+	}
+}
+
+void Bridge::reset()
+{
+	animTime = 0;
+}
+
+void Bridge::stop()
+{
+	stopped = true;
+}
+
+void Bridge::resume()
+{
+	stopped = false;
 }
 
 float Bridge::getStreetHeight()
 {
 	// aproximation to the bridge street curve
-	return 93 - sinf((animTime-40) / modelLength * M_PI) * 11;
+	return 93.0f - sinf((animTime-40) / modelLength * (float)M_PI) * 11.0f;
 }
 
 void Bridge::render(RenderMode mode)

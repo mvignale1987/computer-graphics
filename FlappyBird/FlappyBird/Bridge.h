@@ -14,9 +14,14 @@ private:
 	Model model;
 	float animTime;
 	GLuint texturedDisplayList, solidDisplayList, wireframeDisplayList;
+	bool stopped;
 public:
 	Bridge();
 	void render(Scene &parent);
 	void render(RenderMode mode);
+
+	void reset();
+	void stop();
+	void resume();
 	float getStreetHeight(); // retorna la altura de la calle en el momento actual
 };
