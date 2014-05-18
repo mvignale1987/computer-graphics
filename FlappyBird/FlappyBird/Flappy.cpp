@@ -110,23 +110,37 @@ void Flappy::render(Scene &parent)
 	}
 	
 	// trail
-	drawTrail(parent);
-
-	Vector3 position = getPosition();
-	glPushMatrix();
+	glPushAttrib(GL_ENABLE_BIT);
 	{
+		glDisable(GL_LIGHTING);
 		// bird
-		glPushAttrib(GL_ENABLE_BIT);
+		switch(parent.app().getOptions()->renderMode())
+		{
+		case SOLID_RENDER:
+			glDisable(GL_TEXTURE_2D);
+			break;
+		case WIREFRAME_RENDER:
+			glDisable(GL_TEXTURE_2D);
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			break;
+		default:
+			break;
+		}
+		
+		drawTrail(parent);
+
+		Vector3 position = getPosition();
+		glPushMatrix();
 		{
 			glDisable(GL_TEXTURE_2D);
 			glTranslate(position);
 			glColor(Vector3::fromRGB(255, 0, 0));
 			glRotate(angle, Vector3::forward);
-			glutSolidCube(birdSize);
+			glutSolidCube(birdSize);	
 		}
-		glPopAttrib();
+		glPopMatrix();
 	}
-	glPopMatrix();
+	glPopAttrib();
 }
 
 void Flappy::drawTrail(Scene& parent)
@@ -145,6 +159,7 @@ void Flappy::drawTrail(Scene& parent)
 	float totalDisplacement = 0;
 	std::deque<FlappyTrailPoint>::iterator it;
 	int nPoints = 0;
+
 	glBegin(GL_QUAD_STRIP);
 	{
 		for(it = trailPoints.begin(); it != trailPoints.end() && totalDisplacement < maxTrailDistance; ++it)

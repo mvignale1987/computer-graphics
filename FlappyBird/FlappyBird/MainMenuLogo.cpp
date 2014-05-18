@@ -13,7 +13,12 @@ MainMenuLogo::MainMenuLogo(const std::string& texturePath):
 	displayList = glGenLists(1);
 	glNewList (displayList, GL_COMPILE);
 	{
-		texture.render();
+		glPushAttrib(GL_ENABLE_BIT);
+		{
+			glDisable(GL_LIGHTING);
+			texture.render();
+		}
+		glPopAttrib();
 	}
 	glEndList();
 }

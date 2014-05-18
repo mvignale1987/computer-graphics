@@ -64,51 +64,55 @@ void Text::render(Scene &parent)
 
 	Rect rect = getBoundingRect(win);
 	
-	glMatrixMode(GL_PROJECTION);
-	glDisable(GL_LIGHTING);
-	glPushMatrix();
+	glPushAttrib(GL_ENABLE_BIT);
 	{
-		glLoadIdentity();
-		glOrtho(0, width, 0, height, -1, 1);
-		glMatrixMode(GL_MODELVIEW);
+		glMatrixMode(GL_PROJECTION);
+		glDisable(GL_LIGHTING);
 		glPushMatrix();
 		{
 			glLoadIdentity();
-			glBindTexture(textTexture);
-
-			float alpha;
-			switch(status)
+			glOrtho(0, width, 0, height, -1, 1);
+			glMatrixMode(GL_MODELVIEW);
+			glPushMatrix();
 			{
-			case TEXT_FADING_OUT:
-				alpha = 1 - animTime / fadeTime;
-				break;
-			case TEXT_FADING_IN:
-				alpha = animTime / fadeTime;
-				break;
-			default:
-				alpha = 1;
-			}
+				glLoadIdentity();
+				glBindTexture(textTexture);
+
+				float alpha;
+				switch(status)
+				{
+				case TEXT_FADING_OUT:
+					alpha = 1 - animTime / fadeTime;
+					break;
+				case TEXT_FADING_IN:
+					alpha = animTime / fadeTime;
+					break;
+				default:
+					alpha = 1;
+				}
 			
 
-			glColor(Vector3::one, alpha);
-			glBegin(GL_QUADS);
-			{
-				glTexCoord2f(0, 0);
-				glVertex2f(rect.left(), height - rect.top());
-				glTexCoord2f(0, 1);
-				glVertex2f(rect.left(), height - rect.bottom());
-				glTexCoord2f(1, 1);
-				glVertex2f(rect.right(), height - rect.bottom());
-				glTexCoord2f(1, 0);
-				glVertex2f(rect.right(), height - rect.top());
+				glColor(Vector3::one, alpha);
+				glBegin(GL_QUADS);
+				{
+					glTexCoord2f(0, 0);
+					glVertex2f(rect.left(), height - rect.top());
+					glTexCoord2f(0, 1);
+					glVertex2f(rect.left(), height - rect.bottom());
+					glTexCoord2f(1, 1);
+					glVertex2f(rect.right(), height - rect.bottom());
+					glTexCoord2f(1, 0);
+					glVertex2f(rect.right(), height - rect.top());
+				}
+				glEnd();
 			}
-			glEnd();
+			glPopMatrix();
 		}
+		glMatrixMode(GL_PROJECTION);
 		glPopMatrix();
+		glMatrixMode(GL_MODELVIEW);
 	}
-	glMatrixMode(GL_PROJECTION);
-	glPopMatrix();
-	glMatrixMode(GL_MODELVIEW);
+	glPopAttrib();
 
 	if(status != TEXT_SOLID)
 	{

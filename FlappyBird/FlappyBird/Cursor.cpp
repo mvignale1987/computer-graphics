@@ -30,39 +30,39 @@ void Cursor::render(Scene &parent)
 	int top = height - mouseY - offsetY;
 	int bottom = top - texture.height();
 
-	GLboolean depthEnabled = glIsEnabled(GL_DEPTH_TEST);
-	glDisable(GL_DEPTH_TEST);
-
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
+	glPushAttrib(GL_ENABLE_BIT);
 	{
-		glLoadIdentity();
-		glOrtho(0, width, 0, height, -1, 1);
-		glMatrixMode(GL_MODELVIEW);
+		glDisable(GL_DEPTH_TEST);
+		glDisable(GL_LIGHTING);
+
+		glMatrixMode(GL_PROJECTION);
 		glPushMatrix();
 		{
 			glLoadIdentity();
-			glBindTexture(texture);
-			glBegin(GL_QUADS);
+			glOrtho(0, width, 0, height, -1, 1);
+			glMatrixMode(GL_MODELVIEW);
+			glPushMatrix();
 			{
-				glTexCoord2f(0, 0);
-				glVertex2i(left, top);
-				glTexCoord2f(0, 1);
-				glVertex2i(left, bottom);
-				glTexCoord2f(1, 1);
-				glVertex2i(right, bottom);
-				glTexCoord2f(1, 0);
-				glVertex2i(right, top);
+				glLoadIdentity();
+				glBindTexture(texture);
+				glBegin(GL_QUADS);
+				{
+					glTexCoord2f(0, 0);
+					glVertex2i(left, top);
+					glTexCoord2f(0, 1);
+					glVertex2i(left, bottom);
+					glTexCoord2f(1, 1);
+					glVertex2i(right, bottom);
+					glTexCoord2f(1, 0);
+					glVertex2i(right, top);
+				}
+				glEnd();
 			}
-			glEnd();
+			glPopMatrix();
 		}
+		glMatrixMode(GL_PROJECTION);
 		glPopMatrix();
+		glMatrixMode(GL_MODELVIEW);
 	}
-	glMatrixMode(GL_PROJECTION);
-	glPopMatrix();
-	glMatrixMode(GL_MODELVIEW);
-	if(depthEnabled)
-	{
-		glEnable(GL_DEPTH_TEST);
-	}
+	glPopAttrib();
 }
