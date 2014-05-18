@@ -6,7 +6,8 @@ GameScene::GameScene(MainMenu& mainMenu):
 	mainMenu(mainMenu),
 	inited(false),
 	flappy(NULL),
-	score(NULL)
+	score(NULL),
+	state(GAME_SCENE_PLAYING)
 {
 }
 void GameScene::init()
@@ -21,6 +22,9 @@ void GameScene::init()
 		addObject(flappy);
 		initFonts();
 		addObject(mainMenu.getFadeInOut());
+		dieEffect = new FadeInOut(0.25f, 0.70f, Vector3::one);
+		addObject(dieEffect);
+		dieEffect->disable();
 	}
 	inited = true;
 }
@@ -39,28 +43,85 @@ void GameScene::initFonts()
 	normalOptions.placement = TOP_CENTER;
 	normalOptions.borderSize = 3;
 	normalOptions.borderColor = Vector3::fromRGB(40, 100, 30);
-	normalOptions.offsetX = 10;
 	normalOptions.offsetY = 10;
 	normalOptions.text = "00";
 	score = new Text(normalOptions);
 	addObject(score);
+	normalOptions.color = Vector3::fromRGB(236, 218, 19);
+	normalOptions.fontSize = 70;
+	normalOptions.placement = CENTER;
+	normalOptions.offsetY = -100;
+	normalOptions.text = "Preparate";
+	getReadyText = new Text(normalOptions);
+	addObject(getReadyText);
+	normalOptions.text = "Game Over";
+	gameOverText = new Text(normalOptions);
+	addObject(gameOverText);
+	gameOverText->disable();
 }
 
 
 bool GameScene::handleEvent(const SDL_Event& ev)
 {
-	 if(ev.type == SDL_KEYDOWN &&
-			(ev.key.keysym.scancode == SDL_SCANCODE_Q  || ev.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
+
+	if(state != GAME_SCENE_FADING_OUT && ev.type == SDL_KEYDOWN &&
+		(ev.key.keysym.scancode == SDL_SCANCODE_Q  || ev.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
 	)
 	{
 		app().setScene(&mainMenu);
 		mainMenu.getBridge()->stop();
+		mainMenu.getCamera()->disableMove();
+		return true;
 	}
+
+	if(state == GAME_SCENE_GAME_OVER &&
+		 (ev.type == SDL_MOUSEBUTTONDOWN || ev.type == SDL_KEYDOWN)
+	)
+	{
+		state = GAME_SCENE_FADING_OUT;
+		mainMenu.getFadeInOut()->enable();
+	}
+
 	return true;
 }
 void GameScene::render()
 {
-	if(flappy->isDead()){
-		mainMenu.getBridge()->stop();
+	switch(state)
+	{
+	case GAME_SCENE_PLAYING:
+		if(flappy->heJumpedFirstTime())
+		{
+			getReadyText->fadeOut();
+		}
+
+		if(flappy->isDead()){
+			mainMenu.getBridge()->stop();
+			dieEffect->enable();
+			gameOverText->enable();
+			gameOverText->fadeIn();
+			state = GAME_SCENE_GAME_OVER;
+		} 
+		break;
+	case GAME_SCENE_FADING_OUT:
+		if(mainMenu.getFadeInOut()->fadedOut())
+		{
+			state = GAME_SCENE_PLAYING;
+			gameOverText->disable();
+			getReadyText->enable();
+			getReadyText->fadeIn();
+			mainMenu.getBridge()->reset();
+			mainMenu.getBridge()->resume();
+			flappy->respawn();
+		}
+		break;
+	} 
+}
+
+void GameScene::resume()
+{
+	mainMenu.getCamera()->enableMove();
+	if(state == GAME_SCENE_PLAYING)
+	{
+		mainMenu.getBridge()->resume();
 	}
 }

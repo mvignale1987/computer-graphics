@@ -82,6 +82,9 @@ void MainMenu::reshape(int width, int height)
 
 bool MainMenu::handleEvent(const SDL_Event& ev)
 {
+	if(state == MAIN_MENU_FADING_OUT)
+		return !quitClicked; // no se permiten cosas raras en la transición
+
 	// ver si el init se inicia muchas veces! (antes esto estaba en render)
 	quitClicked = quitClicked || quitText->isClicked(*this);
 	if(optionsText->isClicked(*this))
@@ -103,20 +106,6 @@ bool MainMenu::handleEvent(const SDL_Event& ev)
 		return false;
 	}
 
-	if(ev.type == SDL_MOUSEBUTTONDOWN && optionsText->isClicked(*this))
-	{
-		optionsMenu->init();
-		app().setScene(optionsMenu);
-	}
-	else if(ev.type == SDL_MOUSEBUTTONDOWN && copyrightText->isClicked(*this))
-	{
-		creditsMenu->init();
-		app().setScene(creditsMenu);
-	}
-	else if(ev.type == SDL_MOUSEBUTTONDOWN && copyrightText->isClicked(*this)){
-		gameScene->init();
-		app().setScene(gameScene);
-	}
 
 	return !quitClicked;
 }
@@ -125,12 +114,13 @@ void MainMenu::render()
 {
 	if(state == MAIN_MENU_FADING_OUT && fadeInOut->fadedOut())
 	{
+		state = MAIN_MENU_GAMEINPROGRESS;
+
 		playText->disable();
 		resumeText->enable();
 		fadeConstant->enable();
-		bridge->resume();
 		app().setScene(gameScene);
-		state = MAIN_MENU_GAMEINPROGRESS;
+		gameScene->resume();
 	}
 }
 
@@ -301,9 +291,10 @@ void MainMenu::gameStart()
 		gameScene->init();
 		state = MAIN_MENU_FADING_OUT;
 		fadeInOut->enable();
+		camera->enableMove();
 	} else if(state == MAIN_MENU_GAMEINPROGRESS) {
 		gameScene->init();
-		bridge->resume();
+		gameScene->resume();
 		app().setScene(gameScene);
 	}
 }
