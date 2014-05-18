@@ -49,11 +49,6 @@ GLfloat Vector3::z() const
 	return coords[2];
 }
 
-const GLfloat *Vector3::getCoords() const
-{
-	return coords;
-}
-
 const GLfloat *Vector3::vector() const
 {
 	return coords;
@@ -236,9 +231,9 @@ void glClearColor(const Vector3& v, GLclampf alpha)
 	glClearColor(v.x(), v.y(), v.z(), alpha);
 }
 
-void glColor(const Vector3& v)
+void glColor(const Vector3& v, float alpha)
 {
-	glColor3fv(v.vector());
+	glColor4f(v.x(), v.y(), v.z(), alpha);
 }
 
 void glVertex(const Vector3& v)
@@ -253,6 +248,6 @@ void gluLookAt(const Vector3& eye, const Vector3& center, const Vector3& up)
 
 void glFog (GLenum pname, const Vector3& pvalue)
 {
-	glFogfv(pname, pvalue.getCoords());
+	glFogfv(pname, pvalue.vector());
 }
 

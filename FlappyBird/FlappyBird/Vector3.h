@@ -18,7 +18,6 @@ public:
 	GLfloat x() const; // x coordinate
 	GLfloat y() const; // y coordinate
 	GLfloat z() const; // z coordinate
-	const GLfloat *getCoords() const;
 	const GLfloat *vector() const;
 
 
@@ -65,7 +64,7 @@ Vector3 operator * (GLfloat k, const Vector3& v);
 void glTranslate(const Vector3& v);
 void glRotate(GLfloat angle, const Vector3& v);
 void glClearColor(const Vector3& v, GLclampf alpha = 1.0f);
-void glColor(const Vector3& v);
+void glColor(const Vector3& v, GLfloat alpha = 1.0f);
 void glVertex(const Vector3& v);
 std::ostream& operator <<(std::ostream& stream, const Vector3& v);
 void gluLookAt(const Vector3& eye, const Vector3& center, const Vector3& up = Vector3::up);
