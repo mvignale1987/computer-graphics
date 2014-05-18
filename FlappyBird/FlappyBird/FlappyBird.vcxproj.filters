@@ -96,6 +96,12 @@
     <ClCompile Include="Bridge.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FadeInOut.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FadeConstant.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Model.h">
@@ -182,6 +188,12 @@
     <ClInclude Include="Bridge.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FadeInOut.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FadeConstant.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="icon.png">
@@ -200,9 +212,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="green-pattern.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="pipe.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="skybox.png">
@@ -326,6 +335,9 @@
       <Filter>Resource Files</Filter>
     </Media>
     <Media Include="MenuTick.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="jump.wav">
       <Filter>Resource Files</Filter>
     </Media>
   </ItemGroup>

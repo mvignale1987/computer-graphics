@@ -135,6 +135,8 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CreditsMenu.cpp" />
     <ClCompile Include="Cursor.cpp" />
+    <ClCompile Include="FadeConstant.cpp" />
+    <ClCompile Include="FadeInOut.cpp" />
     <ClCompile Include="Flappy.cpp" />
     <ClCompile Include="Floor.cpp" />
     <ClCompile Include="GameScene.cpp" />
@@ -164,6 +166,8 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CreditsMenu.h" />
     <ClInclude Include="Cursor.h" />
+    <ClInclude Include="FadeConstant.h" />
+    <ClInclude Include="FadeInOut.h" />
     <ClInclude Include="Flappy.h" />
     <ClInclude Include="Floor.h" />
     <ClInclude Include="GameScene.h" />
@@ -214,7 +218,6 @@
     <Image Include="Metallic.jpg" />
     <Image Include="Metallic_Varnish.jpg" />
     <Image Include="Pewter.jpg" />
-    <Image Include="pipe.png" />
     <Image Include="skybox.png" />
     <Image Include="small.ico" />
     <Image Include="Techno_4.jpg" />
@@ -241,6 +244,7 @@
     <Font Include="Flappy.TTF" />
   </ItemGroup>
   <ItemGroup>
+    <Media Include="jump.wav" />
     <Media Include="MenuMusic.mp3" />
     <Media Include="MenuTick.wav" />
   </ItemGroup>
