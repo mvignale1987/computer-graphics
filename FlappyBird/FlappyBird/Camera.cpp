@@ -67,7 +67,7 @@ void Camera::handleEvent(Scene &, const SDL_Event& ev)
 		recalculatePosition();
 		break;
 	}
-	/*case SDL_KEYDOWN:
+	case SDL_KEYDOWN:
 	{
 		if(ev.key.keysym.scancode == SDL_SCANCODE_W)
 			center += Vector3::up * 1;
@@ -80,7 +80,7 @@ void Camera::handleEvent(Scene &, const SDL_Event& ev)
 		else
 			break;
 		recalculatePosition();
-	}*/
+	}
 	default:
 		break;
 	}
