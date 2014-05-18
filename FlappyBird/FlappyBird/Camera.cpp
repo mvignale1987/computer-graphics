@@ -3,7 +3,7 @@
 #include <GL\GLU.h>
 
 const float Camera::minLatitude = 1.1f;
-const float Camera::maxLatitude = 1.9f;
+const float Camera::maxLatitude = 1.8f;
 const float Camera::minDistance = 10.0f;
 const float Camera::maxDistance = 500.0f;
 const float Camera::minAzimut = (float) -M_PI * 0.25f;
@@ -13,7 +13,8 @@ Camera::Camera(float azimut, float latitude, float distance, const Vector3& cent
 	azimut(azimut),
 	latitude(latitude),
 	distance(distance),
-	center(center)
+	center(center),
+	canMove(false)
 {
 	recalculatePosition();
 }
@@ -44,6 +45,9 @@ void Camera::reshape(int width, int height)
 
 void Camera::handleEvent(Scene &, const SDL_Event& ev)
 {
+	if(!canMove)
+		return;
+
 	switch(ev.type)
 	{
 	case SDL_MOUSEMOTION:
@@ -63,7 +67,7 @@ void Camera::handleEvent(Scene &, const SDL_Event& ev)
 		recalculatePosition();
 		break;
 	}
-	case SDL_KEYDOWN:
+	/*case SDL_KEYDOWN:
 	{
 		if(ev.key.keysym.scancode == SDL_SCANCODE_W)
 			center += Vector3::up * 1;
@@ -76,7 +80,7 @@ void Camera::handleEvent(Scene &, const SDL_Event& ev)
 		else
 			break;
 		recalculatePosition();
-	}
+	}*/
 	default:
 		break;
 	}
@@ -93,7 +97,7 @@ void Camera::render(Scene &)
 
 void Camera::recalculatePosition()
 {
-	/*if(latitude > maxLatitude)
+	if(latitude > maxLatitude)
 		latitude = maxLatitude;
 	if(latitude < minLatitude)
 		latitude = minLatitude;
@@ -104,7 +108,7 @@ void Camera::recalculatePosition()
 	if(azimut < minAzimut)
 		azimut = minAzimut;
 	if(azimut > maxAzimut)
-		azimut = maxAzimut;*/
+		azimut = maxAzimut;
 
 	position = center + Vector3(
 			distance * sinf(latitude) * sinf(azimut), // x
@@ -113,4 +117,14 @@ void Camera::recalculatePosition()
 			);
 
 	//std::cout << "Azimut: " << azimut << ", Latitude: " << latitude << ", distance: " << distance << ", Position: " << center << std::endl;
+}
+
+void Camera::enableMove()
+{
+	canMove = true;
+}
+
+void Camera::disableMove()
+{
+	canMove = false;
 }

@@ -12,6 +12,8 @@ private:
 	float	distance, latitude, azimut;
 	Vector3 center;
 	Vector3 position;
+
+	bool	canMove;
 public:
 	Camera(float azimut, float latitude, float distance, const Vector3& center);
 	const Vector3& getPosition() const;
@@ -19,6 +21,9 @@ public:
 	void reshape(int width, int height);
 	void handleEvent(Scene &parent, const SDL_Event& ev);
 	void render(Scene &parent);
+
+	void disableMove();
+	void enableMove();
 private:
 	void recalculatePosition();
 };
