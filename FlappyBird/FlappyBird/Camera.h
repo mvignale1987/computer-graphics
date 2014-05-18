@@ -12,6 +12,7 @@ private:
 	float	distance, latitude, azimut;
 	Vector3 center;
 	Vector3 position;
+	float	trembleAnimTime;
 
 	bool	canMove;
 public:
@@ -21,6 +22,7 @@ public:
 	void reshape(int width, int height);
 	void handleEvent(Scene &parent, const SDL_Event& ev);
 	void render(Scene &parent);
+	void tremble(float seconds);
 
 	void disableMove();
 	void enableMove();

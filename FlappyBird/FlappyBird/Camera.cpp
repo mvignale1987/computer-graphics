@@ -29,6 +29,8 @@ const Vector3& Camera::getCenter() const
 	return center;
 }
 
+
+
 void Camera::reshape(int width, int height)
 {
 	if (height==0)
@@ -87,12 +89,25 @@ void Camera::handleEvent(Scene &, const SDL_Event& ev)
 }
 
 
-void Camera::render(Scene &)
+void Camera::render(Scene &parent)
 {
 	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	gluLookAt(position, center);
+
+	if(trembleAnimTime > 0)
+	{
+		glTranslatef( (((float)rand()/RAND_MAX) - 0.5f * 2), (((float)rand()/RAND_MAX) - 0.5f) * 2, (((float)rand()/RAND_MAX) - 0.5f) * 2);
+		trembleAnimTime -= parent.app().getFrameTime();
+		if(trembleAnimTime < 0)
+			trembleAnimTime = 0;
+	}
+}
+
+void Camera::tremble(float time)
+{
+	trembleAnimTime = time;
 }
 
 void Camera::recalculatePosition()

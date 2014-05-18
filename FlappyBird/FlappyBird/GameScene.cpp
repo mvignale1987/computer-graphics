@@ -111,6 +111,7 @@ void GameScene::render()
 			dieParticleSystem->reset();
 			gameOverText->enable();
 			gameOverText->fadeIn();
+			mainMenu.getCamera()->tremble(0.25f);
 		} 
 		break;
 	case GAME_SCENE_FADING_OUT:
@@ -123,6 +124,7 @@ void GameScene::render()
 			getReadyText->fadeIn();
 			mainMenu.getBridge()->reset();
 			mainMenu.getBridge()->resume();
+			mainMenu.getCamera()->tremble(0);
 			flappy->respawn();
 		}
 		break;
