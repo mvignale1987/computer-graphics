@@ -8,6 +8,8 @@ const float Flappy::gravity = -1000;
 const float Flappy::gravity2 = -2;
 const Vector3 Flappy::displacement(-40, 0, 0);
 const float Flappy::velocityJump = 60;
+const float Flappy::maxTrailDistance = 100;
+const float Flappy::birdSize = 7;
 
 #define max(x,y) ((x)>(y)?x:y)
 
@@ -21,7 +23,8 @@ Flappy::Flappy(Bridge *colliderBridge):
 	flappingSound(Mix_LoadWAV("jump.wav")),
 	dieSound(Mix_LoadWAV("die.wav")),
 	alive(true),
-	jumpedFirstTime(false)
+	jumpedFirstTime(false),
+	trailTexture("rainbow.png", false, true, 0)
 {
 }
 
@@ -57,6 +60,7 @@ void Flappy::respawn()
 	velocity = acceleration = acceleration2 = angle = 0;
 	height = initialHeight;
 	jumpedFirstTime = false;
+	trailPoints.clear();
 }
 
 bool Flappy::isDead() const
@@ -93,13 +97,71 @@ void Flappy::render(Scene &parent)
 		height = minHeight;
 		kill();
 	}
+	
+	// trail
+	drawTrail(parent);
 
-	glColor(Vector3::fromRGB(255, 0, 0));
+	Vector3 position = height * Vector3::up +  displacement;
 	glPushMatrix();
 	{
-		glTranslate(height * Vector3::up +  displacement);
-		glRotate(angle, Vector3::forward);
-		glutSolidCube(7);
+		// bird
+		glPushAttrib(GL_ENABLE_BIT);
+		{
+			glDisable(GL_TEXTURE_2D);
+			glTranslate(position);
+			glColor(Vector3::fromRGB(255, 0, 0));
+			glRotate(angle, Vector3::forward);
+			glutSolidCube(birdSize);
+		}
+		glPopAttrib();
 	}
 	glPopMatrix();
+}
+
+void Flappy::drawTrail(Scene& parent)
+{
+	float multiplier = parent.app().getOptions()->speedMultiplier();
+	float frameTime = parent.app().getFrameTime();
+
+	if(alive && jumpedFirstTime)
+	{
+		float pointDisplacement = frameTime * Bridge::bridgeVelocity * multiplier;
+		trailPoints.push_front(FlappyTrailPoint(height, pointDisplacement));
+	}
+
+	glColor(Vector3::one);
+	glBindTexture(trailTexture);
+	float totalDisplacement = 0;
+	std::deque<FlappyTrailPoint>::iterator it;
+	int nPoints = 0;
+	glBegin(GL_QUAD_STRIP);
+	{
+		for(it = trailPoints.begin(); it != trailPoints.end() && totalDisplacement < maxTrailDistance; ++it)
+		{
+			totalDisplacement += it->displacement;
+			Vector3 upper = (it->height + birdSize/2) * Vector3::up + Vector3::left * totalDisplacement +  displacement;
+			Vector3 lower = (it->height - birdSize/2) * Vector3::up + Vector3::left * totalDisplacement +  displacement;
+			if(it == trailPoints.begin())
+			{
+				glTexCoord2i(nPoints, 1);
+				glVertex(upper);
+				glTexCoord2i(nPoints, 0);
+				glVertex(lower);
+			} else {
+				glTexCoord2i(nPoints, 0);
+				glVertex(lower);
+				glTexCoord2i(nPoints, 1);
+				glVertex(upper);
+			}
+			nPoints++;
+		}
+		trailPoints.erase(it, trailPoints.end());
+	}
+	glEnd();
+}
+
+
+FlappyTrailPoint::FlappyTrailPoint(float h, float d):
+	height(h), displacement(d)
+{
 }

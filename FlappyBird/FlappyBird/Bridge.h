@@ -6,10 +6,11 @@
 
 class Bridge: public SceneObject
 {
+public:
+	static const float bridgeVelocity;
 private: 
 	static const int nBridges;
 	static const float modelLength;
-	static const float bridgeVelocity;
 
 	Model model;
 	float animTime;
