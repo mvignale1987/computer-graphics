@@ -202,7 +202,7 @@
     <Image Include="Dry_gras.jpg" />
     <Image Include="Dry_grass.jpg" />
     <Image Include="feather.png" />
-    <Image Include="FlappyBird.ico" />
+    <None Include="FlappyBird.ico" />
     <Image Include="Flat_gra.jpg" />
     <Image Include="Flat_gray.jpg" />
     <Image Include="Flat_wh0.jpg" />
@@ -225,7 +225,7 @@
     <Image Include="Pewter.jpg" />
     <Image Include="rainbow.png" />
     <Image Include="skybox.png" />
-    <Image Include="small.ico" />
+    <None Include="small.ico" />
     <Image Include="Techno_4.jpg" />
     <Image Include="Techno_4___Dirty.jpg" />
     <Image Include="White_po.jpg" />
@@ -246,6 +246,7 @@
     <Media Include="bridge.dae">
       <FileType>Document</FileType>
     </Media>
+    <Media Include="die.wav" />
     <Media Include="point.wav" />
     <None Include="Libraries.targets" />
   </ItemGroup>

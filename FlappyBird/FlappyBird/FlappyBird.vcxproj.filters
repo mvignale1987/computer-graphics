@@ -214,12 +214,6 @@
     <Image Include="logo.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="small.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="FlappyBird.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="cursor.png">
       <Filter>Resource Files</Filter>
     </Image>
@@ -339,6 +333,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Libraries.targets" />
+    <None Include="small.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="FlappyBird.ico">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Flappy.TTF">
@@ -359,6 +359,9 @@
       <Filter>Resource Files</Filter>
     </Media>
     <Media Include="point.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="die.wav">
       <Filter>Resource Files</Filter>
     </Media>
   </ItemGroup>
