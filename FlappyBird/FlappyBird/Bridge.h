@@ -3,6 +3,7 @@
 #include "SceneObject.h"
 #include "Model.h"
 #include "Camera.h"
+#include "Flappy.h"
 
 class Bridge: public SceneObject
 {
@@ -24,5 +25,5 @@ public:
 	void reset();
 	void stop();
 	void resume();
-	float getStreetHeight(); // retorna la altura de la calle en el momento actual
+	float getStreetHeight(float relativePosition = Flappy::displacement.x()); // retorna la altura de la calle en el momento actual 
 };

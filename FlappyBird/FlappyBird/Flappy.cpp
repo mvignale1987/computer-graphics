@@ -1,5 +1,6 @@
 #include "Flappy.h"
 #include "Vector3.h" 
+#include "Bridge.h"
 #include <GL/freeglut.h>
 
 const float Flappy::initialHeight = 120;
@@ -7,7 +8,7 @@ const float Flappy::maxHeight = 210;
 const float Flappy::gravity = -1000;
 const float Flappy::gravity2 = -2;
 const Vector3 Flappy::displacement(-40, 0, 0);
-const float Flappy::velocityJump = 60;
+const float Flappy::velocityJump = 40;
 const float Flappy::maxTrailDistance = 100;
 const float Flappy::birdSize = 7;
 

@@ -5,8 +5,9 @@
 #include "Pipe.h"
 #include "MainMenu.h"
 #include "FlappyFeatherParticleSystem.h"
+#include "PipeLevel.h"
 
-enum GameSceneStatus { GAME_SCENE_PLAYING, GAME_SCENE_GAME_OVER, GAME_SCENE_FADING_OUT };
+enum GameSceneStatus { GAME_SCENE_GET_READY, GAME_SCENE_PLAYING, GAME_SCENE_GAME_OVER, GAME_SCENE_FADING_OUT };
 
 class GameScene: public Scene
 {
@@ -16,6 +17,7 @@ private:
 	FadeInOut					*dieEffect;
 	Flappy						*flappy;
 	FlappyFeatherParticleSystem	*dieParticleSystem;
+	PipeLevel					*level;
 
 	bool						inited;
 	GameSceneStatus				state;

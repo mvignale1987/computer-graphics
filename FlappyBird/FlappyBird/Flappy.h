@@ -2,9 +2,10 @@
 #include "SceneObject.h"
 #include "Texture.h"
 #include "Vector3.h"
-#include "Bridge.h"
 #include <SDL_mixer.h>
 #include <deque>
+
+class Bridge;
 
 class FlappyTrailPoint
 {
@@ -17,10 +18,11 @@ public:
 
 class Flappy: public SceneObject
 {
+public:
+	static const Vector3 displacement; // bird displacement from the center
 private:
 	static const float initialHeight;
 	static const float maxHeight;
-	static const Vector3 displacement; // bird displacement from the center
 	static const float gravity; 
 	static const float gravity2; 
 	static const float velocityJump;

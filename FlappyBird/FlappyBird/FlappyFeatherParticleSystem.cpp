@@ -1,4 +1,5 @@
 #include "FlappyFeatherParticleSystem.h"
+#include "Bridge.h"
 
 const int FlappyFeatherParticleSystem::maxElements = 70;
 

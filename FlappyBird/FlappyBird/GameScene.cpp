@@ -7,7 +7,7 @@ GameScene::GameScene(MainMenu& mainMenu):
 	inited(false),
 	flappy(NULL),
 	score(NULL),
-	state(GAME_SCENE_PLAYING)
+	state(GAME_SCENE_GET_READY)
 {
 }
 void GameScene::init()
@@ -23,6 +23,9 @@ void GameScene::init()
 		dieParticleSystem = new FlappyFeatherParticleSystem(*flappy);
 		addObject(dieParticleSystem);
 		dieParticleSystem->disable();
+		level = new PipeLevel(*mainMenu.getBridge());
+		addObject(level);
+		level->disable();
 		initFonts();
 		addObject(mainMenu.getFadeInOut());
 		dieEffect = new FadeInOut(0.25f, 0.70f, Vector3::one);
@@ -47,7 +50,7 @@ void GameScene::initFonts()
 	normalOptions.borderSize = 3;
 	normalOptions.borderColor = Vector3::fromRGB(40, 100, 30);
 	normalOptions.offsetY = 10;
-	normalOptions.text = "00";
+	normalOptions.text = "0";
 	score = new Text(normalOptions);
 	addObject(score);
 	normalOptions.color = Vector3::fromRGB(236, 218, 19);
@@ -97,14 +100,19 @@ void GameScene::render()
 {
 	switch(state)
 	{
-	case GAME_SCENE_PLAYING:
+	case GAME_SCENE_GET_READY:
 		if(flappy->heJumpedFirstTime())
 		{
+			state = GAME_SCENE_PLAYING;
 			getReadyText->fadeOut();
+			level->reset();
+			level->enable();
 		}
-
+		break;
+	case GAME_SCENE_PLAYING:
 		if(flappy->isDead()){
 			state = GAME_SCENE_GAME_OVER;
+			level->stop();
 			mainMenu.getBridge()->stop();
 			dieEffect->enable();
 			dieParticleSystem->enable();
@@ -117,7 +125,8 @@ void GameScene::render()
 	case GAME_SCENE_FADING_OUT:
 		if(mainMenu.getFadeInOut()->fadedOut())
 		{
-			state = GAME_SCENE_PLAYING;
+			state = GAME_SCENE_GET_READY;
+			level->disable();
 			gameOverText->disable();
 			dieParticleSystem->disable();
 			getReadyText->enable();
@@ -134,7 +143,7 @@ void GameScene::render()
 void GameScene::resume()
 {
 	mainMenu.getCamera()->enableMove();
-	if(state == GAME_SCENE_PLAYING)
+	if(state == GAME_SCENE_PLAYING || state == GAME_SCENE_GET_READY)
 	{
 		mainMenu.getBridge()->resume();
 	}

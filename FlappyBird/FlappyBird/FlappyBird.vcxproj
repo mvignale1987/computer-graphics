@@ -148,6 +148,7 @@
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="OptionsMenu.cpp" />
     <ClCompile Include="Pipe.cpp" />
+    <ClCompile Include="PipeLevel.cpp" />
     <ClCompile Include="Rect.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneError.cpp" />
@@ -180,6 +181,7 @@
     <ClInclude Include="Options.h" />
     <ClInclude Include="OptionsMenu.h" />
     <ClInclude Include="Pipe.h" />
+    <ClInclude Include="PipeLevel.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="resource1.h" />
