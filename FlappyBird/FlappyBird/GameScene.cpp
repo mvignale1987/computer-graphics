@@ -20,17 +20,18 @@ void GameScene::init()
 		addObject(mainMenu.getFloor());
 		flappy = new Flappy(mainMenu.getBridge());
 		addObject(flappy);
-		dieParticleSystem = new FlappyFeatherParticleSystem(*flappy);
-		addObject(dieParticleSystem);
-		dieParticleSystem->disable();
 		level = new PipeLevel(*mainMenu.getBridge());
 		addObject(level);
 		level->disable();
+		dieParticleSystem = new FlappyFeatherParticleSystem(*flappy);
+		addObject(dieParticleSystem);
+		dieParticleSystem->disable();
 		initFonts();
 		addObject(mainMenu.getFadeInOut());
 		dieEffect = new FadeInOut(0.25f, 0.70f, Vector3::one);
 		addObject(dieEffect);
 		dieEffect->disable();
+		pointSound = Mix_LoadWAV("point.wav");
 	}
 	inited = true;
 }
@@ -110,7 +111,8 @@ void GameScene::render()
 		}
 		break;
 	case GAME_SCENE_PLAYING:
-		if(flappy->isDead()){
+		if(flappy->isDead() || level->testCollition(*flappy)){
+			flappy->kill();
 			state = GAME_SCENE_GAME_OVER;
 			level->stop();
 			mainMenu.getBridge()->stop();
@@ -120,7 +122,9 @@ void GameScene::render()
 			gameOverText->enable();
 			gameOverText->fadeIn();
 			mainMenu.getCamera()->tremble(0.25f);
-		} 
+		} else if(level->wasPointAwarded()) {
+			Mix_PlayChannel(-1, pointSound, 0);
+		}
 		break;
 	case GAME_SCENE_FADING_OUT:
 		if(mainMenu.getFadeInOut()->fadedOut())

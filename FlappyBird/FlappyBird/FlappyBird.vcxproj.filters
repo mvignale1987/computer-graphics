@@ -358,5 +358,8 @@
     <Media Include="bridge.dae">
       <Filter>Resource Files</Filter>
     </Media>
+    <Media Include="point.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
   </ItemGroup>
 </Project>

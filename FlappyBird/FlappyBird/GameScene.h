@@ -18,6 +18,7 @@ private:
 	Flappy						*flappy;
 	FlappyFeatherParticleSystem	*dieParticleSystem;
 	PipeLevel					*level;
+	Mix_Chunk					*pointSound;
 
 	bool						inited;
 	GameSceneStatus				state;

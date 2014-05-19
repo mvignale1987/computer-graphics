@@ -34,6 +34,20 @@ void PipeLevel::reset()
 	nextPendingPipe = 0;
 	activePipes.clear();
 	addActivePipes();
+	nextCollitionPipe = nextCoinPipe = activePipes.size() -1;
+	pointAwarded = false;
+}
+
+bool PipeLevel::testCollition(Flappy &flappy)
+{
+	return activePipes.at(nextCollitionPipe).collidesWith(flappy);
+}
+
+bool PipeLevel::wasPointAwarded()
+{
+	bool res = pointAwarded;
+	pointAwarded = false;
+	return res;
 }
 
 void PipeLevel::addActivePipes()
@@ -53,6 +67,8 @@ void PipeLevel::addActivePipes()
 		}
 		activePipes.push_front(Pipe(bridge, pipePosition, pipeSizes.at(nextPendingPipe)));
 		nextPendingPipe = (nextPendingPipe + 1) % pipeSizes.size();
+		++nextCollitionPipe;
+		++nextCoinPipe;
 	}
 }
 
@@ -67,5 +83,13 @@ void PipeLevel::render(Scene &parent)
 	{
 		activePipes.pop_back();
 		addActivePipes();
+	}
+
+
+	if(activePipes.at(nextCollitionPipe).pastPipe())
+		nextCollitionPipe--;
+	if(activePipes.at(nextCoinPipe).pastMiddle()){
+		pointAwarded = true;
+		nextCoinPipe--;
 	}
 }

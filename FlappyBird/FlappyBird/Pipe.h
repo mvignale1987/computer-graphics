@@ -4,6 +4,7 @@
 #include "Bridge.h"
 #include "Flappy.h"
 
+
 class Pipe: public SceneObject
 {
 private:
@@ -23,4 +24,8 @@ public:
 	float getAbsolutePosition() const;
 	void render(Scene &parent);
 	void stop();
+	bool collidesWith(Flappy& flappy) const;
+	bool pastPipe() const;
+	bool beforePipe() const;
+	bool pastMiddle() const;
 };

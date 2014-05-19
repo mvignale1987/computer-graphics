@@ -20,6 +20,7 @@ class Flappy: public SceneObject
 {
 public:
 	static const Vector3 displacement; // bird displacement from the center
+	static const float birdSize;
 private:
 	static const float initialHeight;
 	static const float maxHeight;
@@ -27,7 +28,6 @@ private:
 	static const float gravity2; 
 	static const float velocityJump;
 	static const float maxTrailDistance;
-	static const float birdSize;
 
 	Bridge *colliderBridge;
 	// positioning
@@ -55,6 +55,7 @@ public:
 	bool heJumpedFirstTime() const;
 	Vector3 getPosition() const;
 	Bridge *getColliderBridge() const;
+	float getHeight() const;
 
 	void render(Scene &parent);
 	void handleEvent(Scene &parent, const SDL_Event& ev);

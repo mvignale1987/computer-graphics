@@ -84,6 +84,11 @@ Bridge *Flappy::getColliderBridge() const
 	return colliderBridge;
 }
 
+float Flappy::getHeight() const
+{
+	return height;
+}
+
 
 void Flappy::render(Scene &parent)
 {

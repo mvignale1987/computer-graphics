@@ -246,6 +246,7 @@
     <Media Include="bridge.dae">
       <FileType>Document</FileType>
     </Media>
+    <Media Include="point.wav" />
     <None Include="Libraries.targets" />
   </ItemGroup>
   <ItemGroup>

@@ -45,7 +45,7 @@ void Pipe::render(Scene &parent)
 			glTranslate(Vector3::up * lowerTubeOrigin);
 			glTranslate(Vector3::right * position);
 			glRotate(90, Vector3::right);
-			glutSolidCylinder(10, apertureHeight, slices, stacks);
+			glutSolidCylinder(ratio, apertureHeight, slices, stacks);
 		}
 		glPopMatrix();
 
@@ -54,7 +54,7 @@ void Pipe::render(Scene &parent)
 			glTranslate(Vector3::up * (lowerTubeOrigin + upperPipeLength + aperture) );
 			glTranslate(Vector3::right * position);
 			glRotate(90, Vector3::right);
-			glutSolidCylinder(10, upperPipeLength, slices, stacks);
+			glutSolidCylinder(ratio, upperPipeLength, slices, stacks);
 		}
 		glPopMatrix();
 	}
@@ -64,4 +64,38 @@ void Pipe::render(Scene &parent)
 	{
 		position -=  frameTime * Bridge::bridgeVelocity * multiplier;
 	}
+}
+
+bool Pipe::collidesWith(Flappy& flappy) const
+{
+	float midBirdSize = Flappy::birdSize / 2;
+
+	if(beforePipe())
+		return false;
+	else if(pastPipe())
+		return false;
+	else {
+		float lowerTubeOrigin = colliderBridge.getStreetHeight(position) + apertureHeight - 5;
+		float upperTubeOrigin = lowerTubeOrigin + aperture;
+		float height = flappy.getHeight();
+		if(height - midBirdSize < lowerTubeOrigin || height + midBirdSize > upperTubeOrigin)
+			return true;
+		else
+			return false;
+	}
+}
+
+bool Pipe::pastMiddle() const
+{
+	return position - Flappy::displacement.x()  < Flappy::birdSize / 2;
+}
+
+bool Pipe::beforePipe() const
+{
+	return position - Flappy::displacement.x() - ratio >  Flappy::birdSize / 2;
+}
+
+bool Pipe::pastPipe() const
+{
+	return position - Flappy::displacement.x()  + ratio < Flappy::birdSize / 2;
 }

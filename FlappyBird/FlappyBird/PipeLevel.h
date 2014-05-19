@@ -17,12 +17,17 @@ private:
 	std::vector<float>	pipeSizes;
 	std::deque<Pipe>	activePipes;
 	int					nextPendingPipe;
+	size_t				nextCollitionPipe;
+	size_t				nextCoinPipe;
+	bool				pointAwarded;
 public:
 	PipeLevel(Bridge& bridge);
 
 	void render(Scene &parent);
 	void stop();
 	void reset();
+	bool testCollition(Flappy& flappy);
+	bool wasPointAwarded();
 private:
 	void addActivePipes();
 };
