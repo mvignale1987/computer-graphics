@@ -28,6 +28,7 @@ public:
 	Text(const TextOptions& options);
 	Text(const Text& other);
 
+	void resetText(TTF_Font *font, const TextOptions& options, std::string text);
 	bool mouseHover(SDL_Window *win) const; // true if the mouse is in the font bounding rect
 	bool mouseClick(SDL_Window *win) const; // true if the mouse if clicked  in the font bounding rect
 	void render(Scene &parent);

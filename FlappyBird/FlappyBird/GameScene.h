@@ -13,7 +13,9 @@ class GameScene: public Scene
 {
 private:
 	MainMenu					&mainMenu;
-	Text						*score, *getReadyText, *gameOverText;
+	TTF_Font					*scoreFont;
+	TextOptions					scoreTextOptions;
+	Text						*scoreText, *getReadyText, *gameOverText;
 	FadeInOut					*dieEffect;
 	Flappy						*flappy;
 	FlappyFeatherParticleSystem	*dieParticleSystem;
@@ -21,6 +23,7 @@ private:
 	Mix_Chunk					*pointSound;
 
 	bool						inited;
+	int							score;
 	GameSceneStatus				state;
 public:
 	GameScene(MainMenu& mainMenu);

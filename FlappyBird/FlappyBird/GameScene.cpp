@@ -1,13 +1,16 @@
 #include "Logger.h"
 #include "GameScene.h"
+#include "SceneError.h"
+#include <sstream>
 
 GameScene::GameScene(MainMenu& mainMenu):
 	Scene(mainMenu.app()),
 	mainMenu(mainMenu),
 	inited(false),
 	flappy(NULL),
-	score(NULL),
-	state(GAME_SCENE_GET_READY)
+	scoreText(NULL),
+	state(GAME_SCENE_GET_READY),
+	score(0)
 {
 }
 void GameScene::init()
@@ -43,26 +46,33 @@ void GameScene::reshape(int width, int height)
 }
 void GameScene::initFonts()
 {
-	TextOptions normalOptions;
-	normalOptions.fontPath = "Flappy.ttf";
-	normalOptions.fontSize = 72;
-	normalOptions.color =  Vector3::one;
-	normalOptions.placement = TOP_CENTER;
-	normalOptions.borderSize = 3;
-	normalOptions.borderColor = Vector3::fromRGB(40, 100, 30);
-	normalOptions.offsetY = 10;
-	normalOptions.text = "0";
-	score = new Text(normalOptions);
-	addObject(score);
-	normalOptions.color = Vector3::fromRGB(236, 218, 19);
-	normalOptions.fontSize = 70;
-	normalOptions.placement = CENTER;
-	normalOptions.offsetY = -100;
-	normalOptions.text = "Preparate";
-	getReadyText = new Text(normalOptions);
+	TextOptions options;
+	options.fontPath = "Flappy.ttf";
+	options.fontSize = 72;
+	options.color =  Vector3::one;
+	options.placement = TOP_CENTER;
+	options.borderSize = 3;
+	options.borderColor = Vector3::fromRGB(40, 100, 30);
+	options.offsetY = 10;
+	options.text = "0";
+	scoreText = new Text(options);
+	addObject(scoreText);
+	scoreTextOptions = options;
+
+	scoreFont = TTF_OpenFont(options.fontPath.c_str(), options.fontSize);
+	if (scoreFont == NULL){
+			throw SceneError::fromSDLError("Couldn't load font: TTF_OpenFont");
+	}
+
+	options.color = Vector3::fromRGB(236, 218, 19);
+	options.fontSize = 70;
+	options.placement = CENTER;
+	options.offsetY = -100;
+	options.text = "Preparate";
+	getReadyText = new Text(options);
 	addObject(getReadyText);
-	normalOptions.text = "Game Over";
-	gameOverText = new Text(normalOptions);
+	options.text = "Game Over";
+	gameOverText = new Text(options);
 	addObject(gameOverText);
 	gameOverText->disable();
 }
@@ -124,6 +134,10 @@ void GameScene::render()
 			mainMenu.getCamera()->tremble(0.25f);
 		} else if(level->wasPointAwarded()) {
 			Mix_PlayChannel(-1, pointSound, 0);
+			++score;
+			std::stringstream ss;
+			ss << score;
+			scoreText->resetText(scoreFont, scoreTextOptions, ss.str());
 		}
 		break;
 	case GAME_SCENE_FADING_OUT:
@@ -139,6 +153,8 @@ void GameScene::render()
 			mainMenu.getBridge()->resume();
 			mainMenu.getCamera()->tremble(0);
 			flappy->respawn();
+			score = 0;
+			scoreText->resetText(scoreFont, scoreTextOptions, "0");
 		}
 		break;
 	} 

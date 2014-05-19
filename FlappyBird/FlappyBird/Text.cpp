@@ -34,8 +34,14 @@ Text::Text(const TextOptions& options):
 	if (font == NULL){
 		throw SceneError::fromSDLError("Couldn't load font: TTF_OpenFont");
     }
-	const char *text = options.text.c_str();
+	resetText(font, options, options.text);
 
+	TTF_CloseFont(font);
+}
+
+void Text::resetText(TTF_Font *font, const TextOptions& options, std::string textAsString)
+{
+	const char *text = textAsString.c_str();
 	SDL_Surface *textSurface = TTF_RenderText_Blended(font, text, options.color.toSDLColor());
 	if(options.borderSize == 0)
 	{
@@ -53,7 +59,6 @@ Text::Text(const TextOptions& options):
 	} 
 
 	SDL_FreeSurface(textSurface);
-	TTF_CloseFont(font);
 }
 
 void Text::render(Scene &parent)
