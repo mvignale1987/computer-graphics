@@ -105,7 +105,7 @@ void OptionsMenu::initFonts()
 	normalOptions.offsetY = hoverOptions.offsetY += 40;
 	lightColorText = new TextSwitchHover(
 		normalOptions, hoverOptions, menuTick,
-		"Luz normal", "Luz roja", "Luz psicodelica", "Luz desactivada",  NULL
+		"Luz blanca", "Luz roja", "Luz psicodelica", "Luz desactivada",  NULL
 		);
 	addObject(lightColorText);
 
@@ -113,7 +113,7 @@ void OptionsMenu::initFonts()
 	normalOptions.offsetY = hoverOptions.offsetY += 40;
 	lightDirectionText = new TextSwitchHover(
 		normalOptions, hoverOptions, menuTick,
-		"Luz de arriba", "Luz de frente", "Luz de adelante", "Luz de atras",  NULL
+		"Luz de frente", "Luz de arriba", "Luz de derecha", "Luz de atras",  NULL
 		);
 	addObject(lightDirectionText);
 
@@ -161,6 +161,16 @@ bool OptionsMenu::handleEvent(const SDL_Event& ev)
 	if(interpolatedText->wasIndexChanged())
 	{
 		app().getOptions()->setShadingModel(interpolatedText->getCurrentIndex() == 0);
+	}
+	if(lightDirectionText->wasIndexChanged())
+	{
+		PresetLightDirection dir = (PresetLightDirection) lightDirectionText->getCurrentIndex();
+		mainMenu.getLighting()->setDirection(dir);
+	}
+	if(lightColorText->wasIndexChanged())
+	{
+		PresetLightColor color = (PresetLightColor) lightColorText->getCurrentIndex();
+		mainMenu.getLighting()->setColor(color);
 	}
 
 	return true;

@@ -41,19 +41,8 @@ void MainMenu::init()
 	glFogf (GL_FOG_DENSITY, 0.001f);
 	glFog (GL_FOG_COLOR, Vector3::fromRGB(86, 157, 223));
 
-	// lighting
-	GLfloat LightAmbient[4] = { 0.5f, 0.5f, 0.5f, 1.0f };
-	GLfloat LightDiffuse[4] = { 1, 1, 1, 1};
-	GLfloat LightPosition[4] = { 0, 0, 15, 1 };
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);    // Uses default lighting parameters
-	glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
-	glEnable(GL_NORMALIZE);
-	glLightfv(GL_LIGHT1, GL_AMBIENT, LightAmbient);
-	glLightfv(GL_LIGHT1, GL_DIFFUSE, LightDiffuse);
-	glLightfv(GL_LIGHT1, GL_POSITION, LightPosition);
-	glEnable(GL_LIGHT1);
-
+	
+	lighting = new Lighting();
 	camera = new Camera(0, 1.51f, 180.0f, Vector3::up * 130.0f);
 	addObject(camera);
 	skybox = new Skybox(camera);
@@ -272,6 +261,11 @@ FadeConstant *MainMenu::getFadeConstant() const
 FadeInOut *MainMenu::getFadeInOut() const 
 {
 	return fadeInOut;
+}
+
+Lighting *MainMenu::getLighting() const 
+{
+	return lighting;
 }
 
 Skybox *MainMenu::getSkybox() const

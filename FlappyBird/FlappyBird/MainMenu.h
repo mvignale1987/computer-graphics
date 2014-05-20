@@ -10,6 +10,7 @@
 #include "Bridge.h"
 #include "FadeConstant.h"
 #include "FadeInOut.h"
+#include "Lighting.h"
 
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
@@ -28,6 +29,7 @@ private:
 	OptionsMenu		*optionsMenu;
 	CreditsMenu		*creditsMenu;
 	GameScene		*gameScene;
+	Lighting		*lighting;
 	MainMenuLogo	*logo;
 	TextHover		*playText, *resumeText, *optionsText, *quitText,*copyrightText;
 	Text			*versionText;
@@ -55,6 +57,7 @@ public:
 	Bridge *getBridge() const;
 	FadeConstant *getFadeConstant() const;
 	FadeInOut *getFadeInOut() const;
+	Lighting *getLighting() const;
 private:
 	void initFonts();
 	void initMusic();
