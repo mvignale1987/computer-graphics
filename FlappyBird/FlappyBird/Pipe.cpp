@@ -35,6 +35,8 @@ void Pipe::render(Scene &parent)
 	float multiplier = parent.app().getOptions()->speedMultiplier();
 	float frameTime = parent.app().getFrameTime();
 
+	glMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE, Vector3::fromRGB(0, 200, 0));
+
 	glPushAttrib(GL_ENABLE_BIT);
 	{
 		glDisable(GL_TEXTURE_2D);
