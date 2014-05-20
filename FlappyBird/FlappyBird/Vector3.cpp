@@ -251,3 +251,22 @@ void glFog (GLenum pname, const Vector3& pvalue)
 	glFogfv(pname, pvalue.vector());
 }
 
+void glMaterial(GLenum face, GLenum pname, const Vector3 &params, float alpha)
+{
+	float paramsFloat[4];
+	paramsFloat[0] = params.x();
+	paramsFloat[1] = params.y();
+	paramsFloat[2] = params.z();
+	paramsFloat[3] = alpha;
+	glMaterialfv(face, pname, paramsFloat);
+}
+
+void glLight(GLenum light, GLenum pname, const Vector3 &position, float w)
+{
+	float paramsFloat[4];
+	paramsFloat[0] = position.x();
+	paramsFloat[1] = position.y();
+	paramsFloat[2] = position.z();
+	paramsFloat[3] = w;
+	glLightfv(light, pname, paramsFloat);
+}
