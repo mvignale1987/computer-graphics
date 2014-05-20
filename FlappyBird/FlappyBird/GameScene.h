@@ -12,6 +12,9 @@ enum GameSceneStatus { GAME_SCENE_GET_READY, GAME_SCENE_PLAYING, GAME_SCENE_GAME
 class GameScene: public Scene
 {
 private:
+	// tiempo en el cual el usuario tiene que bancarse ver la pantalla de gameover
+	static const float			gameOverCoolDown;
+
 	MainMenu					&mainMenu;
 	TTF_Font					*scoreFont;
 	TextOptions					scoreTextOptions;
@@ -22,6 +25,7 @@ private:
 	PipeLevel					*level;
 	Mix_Chunk					*pointSound;
 
+	float						timeSinceGameOver;
 	bool						inited;
 	int							score;
 	GameSceneStatus				state;

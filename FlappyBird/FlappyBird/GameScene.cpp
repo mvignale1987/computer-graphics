@@ -3,6 +3,8 @@
 #include "SceneError.h"
 #include <sstream>
 
+const float GameScene::gameOverCoolDown = 1.0f;
+
 GameScene::GameScene(MainMenu& mainMenu):
 	Scene(mainMenu.app()),
 	mainMenu(mainMenu),
@@ -10,7 +12,8 @@ GameScene::GameScene(MainMenu& mainMenu):
 	flappy(NULL),
 	scoreText(NULL),
 	state(GAME_SCENE_GET_READY),
-	score(0)
+	score(0),
+	timeSinceGameOver(0)
 {
 }
 void GameScene::init()
@@ -98,7 +101,11 @@ bool GameScene::handleEvent(const SDL_Event& ev)
 	}
 
 	if(state == GAME_SCENE_GAME_OVER &&
-		 (ev.type == SDL_MOUSEBUTTONDOWN || ev.type == SDL_KEYDOWN)
+		timeSinceGameOver > gameOverCoolDown &&
+		(
+			ev.type == SDL_MOUSEBUTTONDOWN && ev.button.button == SDL_BUTTON_LEFT ||
+			ev.type == SDL_KEYDOWN
+		)
 	)
 	{
 		state = GAME_SCENE_FADING_OUT;
@@ -124,6 +131,7 @@ void GameScene::render()
 		if(flappy->isDead() || level->testCollition(*flappy)){
 			flappy->kill();
 			state = GAME_SCENE_GAME_OVER;
+			timeSinceGameOver = 0;
 			level->stop();
 			mainMenu.getBridge()->stop();
 			dieEffect->enable();
@@ -156,6 +164,9 @@ void GameScene::render()
 			score = 0;
 			scoreText->resetText(scoreFont, scoreTextOptions, "0");
 		}
+		break;
+	case GAME_SCENE_GAME_OVER:
+		timeSinceGameOver += app().getFrameTime();
 		break;
 	} 
 }
