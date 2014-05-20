@@ -42,6 +42,7 @@ Text::Text(const TextOptions& options):
 void Text::resetText(TTF_Font *font, const TextOptions& options, std::string textAsString)
 {
 	const char *text = textAsString.c_str();
+	TTF_SetFontOutline(font, 0);
 	SDL_Surface *textSurface = TTF_RenderText_Blended(font, text, options.color.toSDLColor());
 	if(options.borderSize == 0)
 	{
