@@ -4,9 +4,9 @@
 
 const float Pipe::aperture = 35.0f;
 const float Pipe::upperPipeLength = 400.0f;
-const float Pipe::ratio = 10.0f;
+const float Pipe::ratio = 8.0f;
 const int   Pipe::slices = 16;
-const int   Pipe::stacks = 4;
+const int   Pipe::stacks = 1;
 
 
 Pipe::Pipe(Bridge& colliderBridge, float initialPosition, float apertureHeight):
