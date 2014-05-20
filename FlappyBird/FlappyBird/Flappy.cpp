@@ -5,7 +5,7 @@
 
 const float Flappy::initialHeight = 120;
 const float Flappy::maxHeight = 210;
-const float Flappy::gravity = -1000;
+const float Flappy::gravity = -2000;
 const float Flappy::gravity2 = -2;
 const Vector3 Flappy::displacement(-40, 0, 0);
 const float Flappy::velocityJump = 45;
