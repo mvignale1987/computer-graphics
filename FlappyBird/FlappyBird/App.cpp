@@ -15,7 +15,7 @@
 using namespace std;
 
 const std::string App::windowTitle = "FlappyBird";
-const std::string App::appIconPath = "FlappyBird.ico";
+const std::string App::appIconPath = "icon.png";
 
 App::App():
 	win(nullptr),
