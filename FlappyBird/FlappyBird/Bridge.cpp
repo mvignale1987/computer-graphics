@@ -3,7 +3,7 @@
 #include <iostream>
 
 const float Bridge::modelLength = 1245;
-const int Bridge::nBridges = 3;
+const int Bridge::nBridges = 2;
 const float Bridge::bridgeVelocity = 30;
 
 

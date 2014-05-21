@@ -20,10 +20,11 @@ private:
 public:
 	Bridge();
 	void render(Scene &parent);
-	void render(RenderMode mode);
 
 	void reset();
 	void stop();
 	void resume();
 	float getStreetHeight(float relativePosition = Flappy::displacement.x()); // retorna la altura de la calle en el momento actual 
+private:
+	void render(RenderMode mode);
 };
