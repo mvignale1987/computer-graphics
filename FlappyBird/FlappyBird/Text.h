@@ -8,7 +8,7 @@
 #include "SceneObject.h"
 #include "Rect.h"
 
-enum Placement { CENTER, TOP_LEFT, TOP_CENTER, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT }; // Text placement in screen
+
 enum TextStatus  { TEXT_SOLID, TEXT_FADING_OUT, TEXT_FADING_IN };
 
 class TextOptions;

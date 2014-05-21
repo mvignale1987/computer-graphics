@@ -1,4 +1,5 @@
 #include "Rect.h"
+#include <SDL.h>
 
 Rect::Rect()
 {
@@ -49,4 +50,42 @@ bool Rect::contains(float x, float y) const
 bool Rect::contains(int x, int y) const
 {
 	return x >= left() && x <= right() && y >= top() && y <= bottom();
+}
+
+Rect Rect::createBoundingRect(SDL_Window *win, Placement placement, int offsetX, int offsetY, int objectWidth, int objectHeight)
+{
+	int width, height;
+	SDL_GetWindowSize(win, &width, &height);
+
+	int left = offsetX;
+	int right = left + objectWidth;
+	int top = offsetY;
+	int bottom = top + objectHeight;
+
+	if(placement == CENTER)
+	{
+		int offsetCenterX = width / 2 - objectWidth / 2;
+		left += offsetCenterX;
+		right += offsetCenterX;
+		int offsetCenterY = height / 2 - objectHeight / 2;
+		top += offsetCenterY;
+		bottom += offsetCenterY;
+	} else if(placement == TOP_CENTER) {
+		int offsetCenterX = width / 2 - objectWidth / 2;
+		left += offsetCenterX;
+		right += offsetCenterX;
+	} else if(placement == BOTTOM_LEFT) {
+		bottom = height - offsetY;
+		top = bottom - objectHeight;
+	} else if(placement == BOTTOM_RIGHT) {
+		bottom = height - offsetY;
+		top = bottom - objectHeight;
+		right = width - offsetY;
+		left = right - objectWidth;
+	} else if(placement == TOP_RIGHT) {
+		right = width - offsetY;
+		left = right - objectWidth;
+	}
+
+	return Rect(top, left, bottom, right);
 }

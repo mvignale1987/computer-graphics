@@ -74,6 +74,7 @@ void Text::render(Scene &parent)
 	{
 		glMatrixMode(GL_PROJECTION);
 		glDisable(GL_LIGHTING);
+		glDisable(GL_DEPTH_TEST);
 		glPushMatrix();
 		{
 			glLoadIdentity();
@@ -172,40 +173,7 @@ void Text::fadeIn()
 
 Rect Text::getBoundingRect(SDL_Window *win) const
 {
-	int width, height;
-	SDL_GetWindowSize(win, &width, &height);
-
-	int left = offsetX;
-	int right = left + textTexture.width();
-	int top = offsetY;
-	int bottom = top + textTexture.height();
-
-	if(placement == CENTER)
-	{
-		int offsetCenterX = width / 2 - textTexture.width() / 2;
-		left += offsetCenterX;
-		right += offsetCenterX;
-		int offsetCenterY = height / 2 - textTexture.height() / 2;
-		top += offsetCenterY;
-		bottom += offsetCenterY;
-	} else if(placement == TOP_CENTER) {
-		int offsetCenterX = width / 2 - textTexture.width() / 2;
-		left += offsetCenterX;
-		right += offsetCenterX;
-	} else if(placement == BOTTOM_LEFT) {
-		bottom = height - offsetY;
-		top = bottom - textTexture.height();
-	} else if(placement == BOTTOM_RIGHT) {
-		bottom = height - offsetY;
-		top = bottom - textTexture.height();
-		right = width - offsetY;
-		left = right - textTexture.width();
-	} else if(placement == TOP_RIGHT) {
-		right = width - offsetY;
-		left = right - textTexture.width();
-	}
-
-	return Rect(top, left, bottom, right);
+	return Rect::createBoundingRect(win, placement, offsetX, offsetY, textTexture.width(), textTexture.height());
 }
 
 
