@@ -370,5 +370,8 @@
     <Media Include="die.wav">
       <Filter>Resource Files</Filter>
     </Media>
+    <Media Include="bird.dae">
+      <Filter>Resource Files</Filter>
+    </Media>
   </ItemGroup>
 </Project>

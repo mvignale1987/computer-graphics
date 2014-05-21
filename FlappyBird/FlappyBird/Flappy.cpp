@@ -17,6 +17,7 @@ const float Flappy::birdSize = 7;
 Flappy::Flappy(Bridge *colliderBridge):
 	height(initialHeight),
 	colliderBridge(colliderBridge),
+	model("bird.dae"),
 	velocity(0),
 	acceleration(0),
 	acceleration2(0),
@@ -25,8 +26,27 @@ Flappy::Flappy(Bridge *colliderBridge):
 	dieSound(Mix_LoadWAV("die.wav")),
 	alive(true),
 	jumpedFirstTime(false),
-	trailTexture("rainbow.png", false, true, 0)
+	trailTexture("rainbow.png", false, true, 0),
+	animTime(0)
 {
+	texturedDisplayList = glGenLists(3);
+	glNewList (texturedDisplayList, GL_COMPILE);
+	{
+		drawBird(TEXTURED_RENDER);
+	}
+	glEndList ();
+	solidDisplayList = texturedDisplayList+1;
+	glNewList (solidDisplayList, GL_COMPILE);
+	{
+		drawBird(SOLID_RENDER);
+	}
+	glEndList ();
+	wireframeDisplayList = texturedDisplayList+2;
+	glNewList (wireframeDisplayList, GL_COMPILE);
+	{
+		drawBird(WIREFRAME_RENDER);
+	}
+	glEndList ();
 }
 
 void Flappy::handleEvent(Scene &, const SDL_Event& ev)
@@ -93,14 +113,21 @@ float Flappy::getHeight() const
 void Flappy::render(Scene &parent)
 {
 	// recalculate height, accel velocity
-	if(alive && jumpedFirstTime)
+	float frameTime = parent.app().getFrameTime();
+	if(alive)
 	{
-		float frameTime = parent.app().getFrameTime();
-		acceleration2 += gravity2 * frameTime;
-		acceleration += acceleration2 * (-gravity) * frameTime;
-		velocity += acceleration * frameTime;
-		height += velocity  * frameTime;
-		angle = atanf(velocity/ (2 * velocityJump)) * 180 / (GLfloat)M_PI;
+		animTime += frameTime * 2.0f;
+		if(animTime > 1)
+			animTime -= 1;
+
+		if(jumpedFirstTime)
+		{
+			acceleration2 += gravity2 * frameTime;
+			acceleration += acceleration2 * (-gravity) * frameTime;
+			velocity += acceleration * frameTime;
+			height += velocity  * frameTime;
+			angle = atanf(velocity/ (2 * velocityJump)) * 180 / (GLfloat)M_PI;
+		}
 	}
 
 	float minHeight = colliderBridge->getStreetHeight();
@@ -115,24 +142,11 @@ void Flappy::render(Scene &parent)
 		kill();
 	}
 	
+	RenderMode renderMode = parent.app().getOptions()->renderMode();
+
 	// trail
 	glPushAttrib(GL_ENABLE_BIT);
 	{
-		glDisable(GL_LIGHTING);
-		// bird
-		switch(parent.app().getOptions()->renderMode())
-		{
-		case SOLID_RENDER:
-			glDisable(GL_TEXTURE_2D);
-			break;
-		case WIREFRAME_RENDER:
-			glDisable(GL_TEXTURE_2D);
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-			break;
-		default:
-			break;
-		}
-		
 		drawTrail(parent);
 
 		Vector3 position = getPosition();
@@ -140,9 +154,34 @@ void Flappy::render(Scene &parent)
 		{
 			glDisable(GL_TEXTURE_2D);
 			glTranslate(position);
-			glColor(Vector3::fromRGB(255, 0, 0));
 			glRotate(angle, Vector3::forward);
-			glutSolidCube(birdSize);	
+
+			glPushMatrix();
+			{
+				// wing
+				glTranslate(Vector3::forward * birdSize / 2 + Vector3::down * 1.0f + Vector3::right * 1.0f);
+				glRotate(45 - 270 * animTime * (animTime-1), Vector3::right);
+				glScalef(0.5f, 1, 1);
+				glColor(Vector3::fromRGB(200,0,0));
+				glMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE, Vector3::fromRGB(200,0,0));
+				(renderMode == WIREFRAME_RENDER ? glutWireCylinder : glutSolidCylinder)(birdSize * 0.4, 0, 16, 1);
+			}
+			glPopMatrix();
+			
+			switch(renderMode)
+			{
+			case TEXTURED_RENDER:
+				glCallList(texturedDisplayList);
+				break;
+			case SOLID_RENDER:
+				glCallList(solidDisplayList);
+				break;
+			case WIREFRAME_RENDER:
+				glCallList(wireframeDisplayList);
+				break;
+			}
+
+			
 		}
 		glPopMatrix();
 	}
@@ -151,6 +190,21 @@ void Flappy::render(Scene &parent)
 
 void Flappy::drawTrail(Scene& parent)
 {
+	glDisable(GL_LIGHTING);
+
+	switch(parent.app().getOptions()->renderMode())
+	{
+	case SOLID_RENDER:
+		glDisable(GL_TEXTURE_2D);
+		break;
+	case WIREFRAME_RENDER:
+		glDisable(GL_TEXTURE_2D);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		break;
+	default:
+		break;
+	}
+
 	float multiplier = parent.app().getOptions()->speedMultiplier();
 	float frameTime = parent.app().getFrameTime();
 
@@ -190,8 +244,21 @@ void Flappy::drawTrail(Scene& parent)
 		trailPoints.erase(it, trailPoints.end());
 	}
 	glEnd();
+	glEnable(GL_LIGHTING);
 }
 
+
+void Flappy::drawBird(RenderMode mode)
+{
+	glPushMatrix();
+	{
+		glRotate(90, Vector3::up);
+		glTranslate(4 * Vector3::forward + 2 * Vector3::down);
+		model.render(1, mode);
+	}
+	glPopMatrix();
+	//glutWireCube(birdSize);	
+}
 
 FlappyTrailPoint::FlappyTrailPoint(float h, float d):
 	height(h), displacement(d)

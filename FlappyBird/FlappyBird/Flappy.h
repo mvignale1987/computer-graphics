@@ -2,6 +2,7 @@
 #include "SceneObject.h"
 #include "Texture.h"
 #include "Vector3.h"
+#include "Model.h"
 #include <SDL_mixer.h>
 #include <deque>
 
@@ -30,6 +31,8 @@ private:
 	static const float maxTrailDistance;
 
 	Bridge *colliderBridge;
+	Model  model;
+	GLuint texturedDisplayList, solidDisplayList, wireframeDisplayList;
 	// positioning
 	GLfloat height;
 	GLfloat velocity;
@@ -46,6 +49,8 @@ private:
 	// trail
 	std::deque<FlappyTrailPoint> trailPoints;
 	Texture trailTexture;
+	// wings
+	float animTime;
 public:
 	Flappy(Bridge *colliderBridge);
 
@@ -61,4 +66,5 @@ public:
 	void handleEvent(Scene &parent, const SDL_Event& ev);
 private:
 	void drawTrail(Scene &parent);
+	void drawBird(RenderMode mode);
 };

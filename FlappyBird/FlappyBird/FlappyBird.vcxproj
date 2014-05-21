@@ -204,6 +204,9 @@
     <Image Include="Dry_gras.jpg" />
     <Image Include="Dry_grass.jpg" />
     <Image Include="feather.png" />
+    <Media Include="bird.dae">
+      <FileType>Document</FileType>
+    </Media>
     <None Include="FlappyBird.ico" />
     <Image Include="Flat_gra.jpg" />
     <Image Include="Flat_gray.jpg" />
