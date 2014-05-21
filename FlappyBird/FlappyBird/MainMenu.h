@@ -18,6 +18,7 @@
 class OptionsMenu;
 class CreditsMenu;
 class GameScene;
+class EditorMenu;
 
 enum MainMenuState { MAIN_MENU_INITIAL, MAIN_MENU_FADING_OUT, MAIN_MENU_GAMEINPROGRESS };
 
@@ -28,10 +29,11 @@ private:
 
 	OptionsMenu		*optionsMenu;
 	CreditsMenu		*creditsMenu;
+	EditorMenu		*editorMenu;
 	GameScene		*gameScene;
 	Lighting		*lighting;
 	MainMenuLogo	*logo;
-	TextHover		*playText, *resumeText, *optionsText, *quitText,*copyrightText;
+	TextHover		*playText, *resumeText, *optionsText, *quitText,*copyrightText,*editorText;
 	Text			*versionText;
 	Floor			*floor;
 	Skybox			*skybox;

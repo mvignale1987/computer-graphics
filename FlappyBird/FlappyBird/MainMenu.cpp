@@ -4,6 +4,7 @@
 #include "SceneObject.h"
 #include "Logger.h"
 #include "OptionsMenu.h"
+#include "EditorMenu.h"
 #include "GameScene.h"
 #include "CreditsMenu.h"
 #include <GL/GLU.h>
@@ -14,13 +15,14 @@ MainMenu::MainMenu(App& parent):
 	music(NULL),
 	quitClicked(false),
 	playText(NULL), optionsText(NULL), quitText(NULL),
-	versionText(NULL), copyrightText(NULL),
+	versionText(NULL), copyrightText(NULL),editorText(NULL),
 	floor(NULL), skybox(NULL),
 	fadeConstant(NULL), fadeInOut(NULL)
 {
 	optionsMenu = new OptionsMenu(*this);
 	creditsMenu = new CreditsMenu(*this);
 	gameScene	= new GameScene(*this);
+	editorMenu  = new EditorMenu(*this);
 }
 
 void MainMenu::init()
@@ -83,6 +85,9 @@ bool MainMenu::handleEvent(const SDL_Event& ev)
 	}else if(copyrightText->isClicked(*this)){
 		creditsMenu->init();
 		app().setScene(creditsMenu);
+	}else if(editorText->isClicked(*this)){
+		editorMenu->init();
+		app().setScene(editorMenu);
 	} 
 	else if(playText->isClicked(*this)){
 		gameStart();
@@ -134,9 +139,13 @@ void MainMenu::initFonts()
 	options.text = "Opciones";
 	options.offsetY = 50;
 	Text optionsTextNormal = Text(options);
+	// editor
+	options.text = "Editor de Niveles";
+	options.offsetY = 100;
+	Text editorTextNormal = Text(options);
 	// salir
 	options.text = "Salir";
-	options.offsetY = 100;
+	options.offsetY = 150;
 	Text quitTextNormal = Text(options);
 	
 
@@ -153,9 +162,13 @@ void MainMenu::initFonts()
 	options.text = "Opciones";
 	options.offsetY = 50;
 	Text optionsTextHover = Text(options);
+	// editor -- hover
+	options.text = "Editor de Niveles";
+	options.offsetY = 100;
+	Text editorTextHover = Text(options);
 	// salir -- hover
 	options.text = "Salir";
-	options.offsetY = 100;
+	options.offsetY = 150;
 	Text quitTextHover = Text(options);
 
 	
@@ -168,6 +181,7 @@ void MainMenu::initFonts()
 	playText = new TextHover(playTextNormal, playTextHover, menuTick);
 	resumeText = new TextHover(resumeTextNormal, resumeTextHover, menuTick);
 	optionsText = new TextHover(optionsTextNormal, optionsTextHover, menuTick);
+	editorText = new TextHover(editorTextNormal, editorTextHover, menuTick);
 	quitText = new TextHover(quitTextNormal, quitTextHover, menuTick);
 	
 
@@ -175,6 +189,7 @@ void MainMenu::initFonts()
 	addObject(resumeText);
 	resumeText->disable();
 	addObject(optionsText);
+	addObject(editorText);
 	addObject(quitText);
 
 	// version text
