@@ -6,10 +6,7 @@ EditorMenu::EditorMenu(MainMenu& mainMenu):
 	inited(false),
 	cursor(NULL),
 	backText(NULL),
-	integrantes(NULL),
-	NB(NULL),
-	IA(NULL),
-	MV(NULL)
+	tubo(NULL)
 {
 }
 void EditorMenu::init()
@@ -19,9 +16,12 @@ void EditorMenu::init()
 		addObject(mainMenu.getCamera());
 		addObject(mainMenu.getSkybox());
 		addObject(mainMenu.getBridge());
+		mainMenu.getBridge()->stop();
 		addObject(mainMenu.getFloor());
 		addObject(mainMenu.getFadeConstant());
-		addObject(mainMenu.getLogo());
+		tubo =  new Pipe(*mainMenu.getBridge(),100,60);
+		tubo->stop();
+		addObject(tubo);
 		initFonts();
 		initCursor();
 	}

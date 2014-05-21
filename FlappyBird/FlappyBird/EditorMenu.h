@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Scene.h"
+#include "Pipe.h"
 #include "MainMenu.h"
 class EditorMenu: public Scene
 {
@@ -8,7 +9,7 @@ private:
 	MainMenu		&mainMenu;
 	TextHover		*backText;
 	Cursor			*cursor;
-	Text			*integrantes,*MV,*IA,*NB;
+	Pipe			*tubo;
 	bool			inited;
 public:
 	EditorMenu(MainMenu& mainMenu);
