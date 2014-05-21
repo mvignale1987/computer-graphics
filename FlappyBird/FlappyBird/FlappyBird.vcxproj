@@ -156,6 +156,7 @@
     <ClCompile Include="SceneObject.cpp" />
     <ClCompile Include="Options.cpp" />
     <ClCompile Include="Skybox.cpp" />
+    <ClCompile Include="Hint.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="TextHover.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="FlappyFeatherParticleSystem.h" />
     <ClInclude Include="Floor.h" />
     <ClInclude Include="GameScene.h" />
+    <ClInclude Include="Hint.h" />
     <ClInclude Include="Lighting.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="MainMenu.h" />
@@ -217,6 +219,7 @@
     <Image Include="green-pattern.jpg" />
     <Image Include="Grey_Roc.jpg" />
     <Image Include="Grey_Rock.jpg" />
+    <Image Include="hint.png" />
     <Image Include="icon.png" />
     <Image Include="logo.png" />
     <Image Include="Metal0.jpg" />

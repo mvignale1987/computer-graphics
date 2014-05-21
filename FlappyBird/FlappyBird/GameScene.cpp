@@ -32,6 +32,8 @@ void GameScene::init()
 		dieParticleSystem = new FlappyFeatherParticleSystem(*flappy);
 		addObject(dieParticleSystem);
 		dieParticleSystem->disable();
+		hint = new Hint();
+		addObject(hint);
 		initFonts();
 		addObject(mainMenu.getFadeInOut());
 		dieEffect = new FadeInOut(0.25f, 0.70f, Vector3::one);
@@ -70,7 +72,7 @@ void GameScene::initFonts()
 	options.color = Vector3::fromRGB(236, 218, 19);
 	options.fontSize = 70;
 	options.placement = CENTER;
-	options.offsetY = -100;
+	options.offsetY = -140;
 	options.text = "Preparate";
 	getReadyText = new Text(options);
 	addObject(getReadyText);
@@ -123,6 +125,7 @@ void GameScene::render()
 		{
 			state = GAME_SCENE_PLAYING;
 			getReadyText->fadeOut();
+			hint->fadeOut();
 			level->reset();
 			level->enable();
 		}
@@ -157,6 +160,7 @@ void GameScene::render()
 			dieParticleSystem->disable();
 			getReadyText->enable();
 			getReadyText->fadeIn();
+			hint->enable();
 			mainMenu.getBridge()->reset();
 			mainMenu.getBridge()->resume();
 			mainMenu.getCamera()->tremble(0);

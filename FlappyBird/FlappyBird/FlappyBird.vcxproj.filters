@@ -111,6 +111,9 @@
     <ClCompile Include="Lighting.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Hint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Model.h">
@@ -210,6 +213,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Lighting.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Hint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -329,6 +335,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="feather.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="hint.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

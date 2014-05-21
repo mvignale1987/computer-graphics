@@ -6,6 +6,7 @@
 #include "MainMenu.h"
 #include "FlappyFeatherParticleSystem.h"
 #include "PipeLevel.h"
+#include "Hint.h"
 
 enum GameSceneStatus { GAME_SCENE_GET_READY, GAME_SCENE_PLAYING, GAME_SCENE_GAME_OVER, GAME_SCENE_FADING_OUT };
 
@@ -24,6 +25,7 @@ private:
 	FlappyFeatherParticleSystem	*dieParticleSystem;
 	PipeLevel					*level;
 	Mix_Chunk					*pointSound;
+	Hint						*hint;
 
 	float						timeSinceGameOver;
 	bool						inited;
