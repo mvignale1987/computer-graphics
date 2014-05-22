@@ -16,14 +16,12 @@ void EditorMenu::init()
 		addObject(mainMenu.getCamera());
 		addObject(mainMenu.getSkybox());
 		addObject(mainMenu.getBridge());
-		mainMenu.getBridge()->stop();
 		addObject(mainMenu.getFloor());
-		addObject(mainMenu.getFadeConstant());
-		tubo =  new Pipe(*mainMenu.getBridge(),100,60);
-		tubo->stop();
-		addObject(tubo);
+		addObject(mainMenu.getFadeConstant());		
 		initFonts();
 		initCursor();
+		tubo =  new PipeEditor(*mainMenu.getBridge(),100,60);
+		addObject(tubo);
 	}
 	inited = true;
 }

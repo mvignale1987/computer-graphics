@@ -66,3 +66,8 @@ void Cursor::render(Scene &parent)
 	}
 	glPopAttrib();
 }
+
+int Cursor::getOffsetY(){
+	return offsetY;
+
+}
