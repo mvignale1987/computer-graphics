@@ -135,6 +135,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CreditsMenu.cpp" />
     <ClCompile Include="Cursor.cpp" />
+    <ClCompile Include="EditorMenu.cpp" />
     <ClCompile Include="FadeConstant.cpp" />
     <ClCompile Include="FadeInOut.cpp" />
     <ClCompile Include="Flappy.cpp" />
@@ -149,6 +150,7 @@
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="OptionsMenu.cpp" />
     <ClCompile Include="Pipe.cpp" />
+    <ClCompile Include="PipeEditor.cpp" />
     <ClCompile Include="PipeLevel.cpp" />
     <ClCompile Include="Rect.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -170,6 +172,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CreditsMenu.h" />
     <ClInclude Include="Cursor.h" />
+    <ClInclude Include="EditorMenu.h" />
     <ClInclude Include="FadeConstant.h" />
     <ClInclude Include="FadeInOut.h" />
     <ClInclude Include="Flappy.h" />
@@ -185,6 +188,7 @@
     <ClInclude Include="Options.h" />
     <ClInclude Include="OptionsMenu.h" />
     <ClInclude Include="Pipe.h" />
+    <ClInclude Include="PipeEditor.h" />
     <ClInclude Include="PipeLevel.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Resource.h" />
