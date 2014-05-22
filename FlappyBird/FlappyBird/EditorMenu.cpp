@@ -83,6 +83,10 @@ bool EditorMenu::handleEvent(const SDL_Event& ev)
 		app().setScene(&mainMenu);
 		return true;
 	}
+	else if(ev.type == SDL_MOUSEBUTTONDOWN && ev.button.button == SDL_BUTTON_LEFT){
+		tubo->pushCurrentApertureHeight();
+		return true;
+	}
 	return true;
 	
 }

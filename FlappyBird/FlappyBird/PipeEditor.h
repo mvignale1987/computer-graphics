@@ -15,13 +15,14 @@ private:
 	static const int stacks;
 
 	float apertureHeight; // y position of aperture
+	std::vector<float>	pipeSizes; // para manejar los tubos que se van creando
 	float position; // x position relative to flappy
 	Bridge &colliderBridge;
 	bool stopped;
 public:
 	PipeEditor(Bridge& colliderBridge, float initialPosition, float apertureHeight);
 
-	float getAbsolutePosition() const;
+	void pushCurrentApertureHeight();
 	void render(Scene &parent);
 
 };

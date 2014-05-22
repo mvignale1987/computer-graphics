@@ -18,9 +18,9 @@ PipeEditor::PipeEditor(Bridge& colliderBridge, float initialPosition, float aper
 
 }
 
-float PipeEditor::getAbsolutePosition() const
+void PipeEditor::pushCurrentApertureHeight()
 {
-	return position - Flappy::displacement.x();
+	pipeSizes.push_back(apertureHeight);
 }
 
 
@@ -63,6 +63,28 @@ void PipeEditor::render(Scene &parent)
 		{
 			glTranslate(Vector3::up * (lowerTubeOrigin + upperPipeLength + aperture) );
 			glTranslate(Vector3::right * position);
+			glRotate(90, Vector3::right);
+			glutSolidCylinder(ratio, upperPipeLength, slices, stacks);
+		}
+		glPopMatrix();
+	}
+	float positionIt = position;
+	for(std::vector<float>::iterator it = pipeSizes.begin(); it != pipeSizes.end(); ++it)
+	{
+		positionIt -= 20;
+		glPushMatrix();
+		{
+			glTranslate(Vector3::up * lowerTubeOrigin);
+			glTranslate(Vector3::right * positionIt);
+			glRotate(90, Vector3::right);
+			glutSolidCylinder(ratio, apertureHeight, slices, stacks);
+		}
+		glPopMatrix();
+
+		glPushMatrix();
+		{
+			glTranslate(Vector3::up * (lowerTubeOrigin + upperPipeLength + aperture) );
+			glTranslate(Vector3::right * positionIt);
 			glRotate(90, Vector3::right);
 			glutSolidCylinder(ratio, upperPipeLength, slices, stacks);
 		}
