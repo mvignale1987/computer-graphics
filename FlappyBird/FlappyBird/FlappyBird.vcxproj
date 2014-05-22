@@ -141,6 +141,7 @@
     <ClCompile Include="Flappy.cpp" />
     <ClCompile Include="FlappyFeatherParticleSystem.cpp" />
     <ClCompile Include="Floor.cpp" />
+    <ClCompile Include="GameOverPanel.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Lighting.cpp" />
     <ClCompile Include="Logger.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="Flappy.h" />
     <ClInclude Include="FlappyFeatherParticleSystem.h" />
     <ClInclude Include="Floor.h" />
+    <ClInclude Include="GameOverPanel.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="Hint.h" />
     <ClInclude Include="Lighting.h" />

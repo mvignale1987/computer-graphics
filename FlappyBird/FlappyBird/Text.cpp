@@ -41,25 +41,31 @@ Text::Text(const TextOptions& options):
 
 void Text::resetText(TTF_Font *font, const TextOptions& options, std::string textAsString)
 {
+	SDL_Surface *textSurface = getSurface(font, textAsString, options.color, options.borderSize, options.borderColor);
+	textTexture = Texture(textSurface, false);
+
+	SDL_FreeSurface(textSurface);
+}
+
+SDL_Surface *Text::getSurface(TTF_Font *font, std::string textAsString, const Vector3& color, int borderSize, const Vector3& borderColor)
+{
 	const char *text = textAsString.c_str();
 	TTF_SetFontOutline(font, 0);
-	SDL_Surface *textSurface = TTF_RenderText_Blended(font, text, options.color.toSDLColor());
-	if(options.borderSize == 0)
+	SDL_Surface *textSurface = TTF_RenderText_Blended(font, text, color.toSDLColor());
+	if(borderSize == 0)
 	{
-		textTexture = Texture(textSurface, false);
+		return textSurface;
 	} else {
-		TTF_SetFontOutline(font, options.borderSize);
-		SDL_Surface *borderSurface = TTF_RenderText_Blended(font, text, options.borderColor.toSDLColor());
+		TTF_SetFontOutline(font, borderSize);
+		SDL_Surface *borderSurface = TTF_RenderText_Blended(font, text, borderColor.toSDLColor());
 
-		SDL_Rect destinationRect = { options.borderSize, options.borderSize, textSurface->w, textSurface->h };
+		SDL_Rect destinationRect = { borderSize, borderSize, textSurface->w, textSurface->h };
 		if(SDL_BlitSurface(textSurface, NULL, borderSurface, &destinationRect) < 0){
 			throw SceneError::fromSDLError("Couldn't load font: SDL_BlitSurface");
 		}
-		textTexture = Texture(borderSurface, false);
-		SDL_FreeSurface(borderSurface);
+		SDL_FreeSurface(textSurface);
+		return borderSurface;
 	} 
-
-	SDL_FreeSurface(textSurface);
 }
 
 void Text::render(Scene &parent)
