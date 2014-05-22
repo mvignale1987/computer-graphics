@@ -8,7 +8,7 @@ private:
 	MainMenu		&mainMenu;
 	TextHover		*backText;
 	Cursor			*cursor;
-	Text			*integrantes,*MV,*IA,*NB;
+	Text			*integrantes,*MV,*IA;
 	bool			inited;
 public:
 	CreditsMenu(MainMenu& mainMenu);

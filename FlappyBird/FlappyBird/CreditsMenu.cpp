@@ -8,7 +8,6 @@ CreditsMenu::CreditsMenu(MainMenu& mainMenu):
 	cursor(NULL),
 	backText(NULL),
 	integrantes(NULL),
-	NB(NULL),
 	IA(NULL),
 	MV(NULL)
 {
@@ -70,9 +69,6 @@ void CreditsMenu::initFonts()
 	normalOptions.text = "Dev Team:";
 	integrantes = new Text(normalOptions);
 	normalOptions.offsetY += 50;
-	normalOptions.text = "Natalia Busiello";
-	NB = new Text(normalOptions);
-	normalOptions.offsetY += 50;
 	normalOptions.text = "Ignacio Avas";
 	IA = new Text(normalOptions);
 	normalOptions.offsetY += 50;
@@ -81,7 +77,6 @@ void CreditsMenu::initFonts()
 
 	addObject(backText);
 	addObject(integrantes);
-	addObject(NB);
 	addObject(IA);
 	addObject(MV);
 
