@@ -251,6 +251,11 @@ void glFog (GLenum pname, const Vector3& pvalue)
 	glFogfv(pname, pvalue.vector());
 }
 
+void glMaterial(GLenum pname, const Vector3 &params, float alpha)
+{
+	glMaterial(GL_FRONT_AND_BACK, pname, params, alpha);
+}
+
 void glMaterial(GLenum face, GLenum pname, const Vector3 &params, float alpha)
 {
 	float paramsFloat[4];

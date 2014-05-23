@@ -31,6 +31,11 @@ void FlappyFeatherParticleSystem::render(Scene &parent)
 	vector<FlappyFeatherParticleSystemElement>::iterator it;
 	
 	glColor(Vector3::fromRGB(200, 0, 0)); // feather color
+	glMaterial(GL_DIFFUSE, Vector3::fromRGB(200, 0, 0), 1);
+	glMaterial(GL_SPECULAR, Vector3::zero, 0);
+	glMaterial(GL_AMBIENT, Vector3::fromRGB(200, 0, 0), 0.5);
+	glMaterial(GL_EMISSION, Vector3::zero, 0);
+
 	glBindTexture(featherTexture);
 	int aliveElements = 0;
 	for(it = elements.begin(); it != elements.end(); ++it)

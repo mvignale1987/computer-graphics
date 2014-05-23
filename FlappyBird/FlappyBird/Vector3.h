@@ -70,4 +70,5 @@ std::ostream& operator <<(std::ostream& stream, const Vector3& v);
 void gluLookAt(const Vector3& eye, const Vector3& center, const Vector3& up = Vector3::up);
 void glFog (GLenum pname, const Vector3& pvalue);
 void glMaterial(GLenum face, GLenum pname, const Vector3 &params, float alpha = 1.0f);
+void glMaterial(GLenum pname, const Vector3 &params, float alpha = 1.0f);
 void glLight(GLenum light, GLenum pname, const Vector3 &position, float wOrAlpha);
