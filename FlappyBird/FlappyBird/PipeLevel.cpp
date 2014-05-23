@@ -1,5 +1,7 @@
 #include "PipeLevel.h"
+#include <pugixml.hpp>
 
+using namespace pugi;
 const float PipeLevel::firstPipeDistance = 180;
 const float PipeLevel::pipeDistance = 60;
 const int PipeLevel::maxActivePipes = 20;
@@ -7,17 +9,18 @@ const int PipeLevel::maxActivePipes = 20;
 PipeLevel::PipeLevel(Bridge& bridge):
 	bridge(bridge)
 {
-	// estos datos se deberían leer del xml
-	pipeSizes.push_back(60);
-	pipeSizes.push_back(60);
-	pipeSizes.push_back(50);
-	pipeSizes.push_back(20);
-	pipeSizes.push_back(40);
-	pipeSizes.push_back(35);
-	pipeSizes.push_back(10);
-	pipeSizes.push_back(20);
-	pipeSizes.push_back(20);
+	xml_document doc;
+	xml_parse_result result = doc.load_file("level.xml");
+	if(!result){
+		throw exception("Couldn't load file ");
+	}
+	xpath_query queryHeights("//height");
+	xpath_node_set heights = queryHeights.evaluate_node_set(doc);
+	for(xpath_node_set::const_iterator it = heights.begin(); it != heights.end(); ++it){
+		
 
+		pipeSizes.push_back(it->node().attribute("value").as_float());
+	}
 	reset();
 }
 

@@ -21,7 +21,7 @@ private:
 	bool stopped;
 public:
 	PipeEditor(Bridge& colliderBridge, float initialPosition, float apertureHeight);
-
+	void writeLevelToXml();
 	void pushCurrentApertureHeight();
 	void render(Scene &parent);
 

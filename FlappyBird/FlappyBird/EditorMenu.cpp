@@ -41,7 +41,7 @@ void EditorMenu::initFonts()
 	normalOptions.borderColor = Vector3::fromRGB(40, 100, 30);
 
 	// volver
-	normalOptions.text = "Volver";
+	normalOptions.text = "Guardar";
 	normalOptions.offsetX = 0;
 	normalOptions.offsetY = 220;
 	Text backTextNormal = Text(normalOptions);	
@@ -49,7 +49,7 @@ void EditorMenu::initFonts()
 	TextOptions hoverOptions = normalOptions;
 	hoverOptions.fontSize = 36;
 	hoverOptions.color =  Vector3::fromRGB(236, 218, 19);
-	hoverOptions.text = "Volver";
+	hoverOptions.text = "Guardar";
 	Text backTextHover = Text(hoverOptions);
 	Mix_Chunk *menuTick = Mix_LoadWAV("MenuTick.wav");
 	if(!menuTick) {
@@ -73,6 +73,7 @@ bool EditorMenu::handleEvent(const SDL_Event& ev)
 	// handle if must go back
 	if(backText->isClicked(*this))
 	{
+		tubo->writeLevelToXml();
 		app().setScene(&mainMenu);
 		return true;
 	}

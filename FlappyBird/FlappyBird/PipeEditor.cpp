@@ -1,7 +1,10 @@
 #include "PipeEditor.h"
 #include "Vector3.h"
 #include <GL/freeglut.h>
+#include <sstream>
+#include <pugixml.hpp>
 
+using namespace pugi;
 const float PipeEditor::aperture = 35.0f;
 const float PipeEditor::upperPipeLength = 400.0f;
 const float PipeEditor::ratio = 8.0f;
@@ -95,3 +98,19 @@ void PipeEditor::render(Scene &parent)
 
 }
 
+void PipeEditor::writeLevelToXml(){
+
+
+	xml_document doc;
+	for(std::vector<float>::iterator it = pipeSizes.begin(); it != pipeSizes.end(); ++it)
+	{
+		xml_node nodo = doc.append_child("height");
+		xml_attribute valor =nodo.append_attribute("valor");
+		valor.set_name("value");
+		valor.set_value(*it);
+		
+	}
+
+	doc.save_file("level.xml");
+
+}
