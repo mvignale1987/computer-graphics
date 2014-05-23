@@ -236,6 +236,8 @@
     <Image Include="Metal5.jpg" />
     <Image Include="Metallic.jpg" />
     <Image Include="Metallic_Varnish.jpg" />
+    <Image Include="new.png" />
+    <Image Include="panel.png" />
     <Image Include="Pewter.jpg" />
     <Image Include="rainbow.png" />
     <Image Include="skybox.png" />

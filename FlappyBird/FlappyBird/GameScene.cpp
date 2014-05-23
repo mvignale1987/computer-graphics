@@ -3,7 +3,7 @@
 #include "SceneError.h"
 #include <sstream>
 
-const float GameScene::gameOverCoolDown = 1.0f;
+const float GameScene::gameOverCoolDown = GameOverPanel::animTotalTime + 0.2f;
 
 GameScene::GameScene(MainMenu& mainMenu):
 	Scene(mainMenu.app()),
@@ -34,6 +34,9 @@ void GameScene::init()
 		dieParticleSystem->disable();
 		hint = new Hint();
 		addObject(hint);
+		gameOverPanel = new GameOverPanel();
+		addObject(gameOverPanel);
+		gameOverPanel->disable();
 		initFonts();
 		addObject(mainMenu.getFadeInOut());
 		dieEffect = new FadeInOut(0.25f, 0.70f, Vector3::one);
@@ -142,6 +145,7 @@ void GameScene::render()
 			dieParticleSystem->reset();
 			gameOverText->enable();
 			gameOverText->fadeIn();
+			gameOverPanel->enable(score);
 			mainMenu.getCamera()->tremble(0.25f);
 		} else if(level->wasPointAwarded()) {
 			Mix_PlayChannel(-1, pointSound, 0);
@@ -157,6 +161,7 @@ void GameScene::render()
 			state = GAME_SCENE_GET_READY;
 			level->disable();
 			gameOverText->disable();
+			gameOverPanel->disable();
 			dieParticleSystem->disable();
 			getReadyText->enable();
 			getReadyText->fadeIn();

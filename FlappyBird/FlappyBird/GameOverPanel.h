@@ -17,6 +17,7 @@ private:
 	Texture		texture;
 	float		animTime;
 	int			highScore;
+	bool		newHighScore;
 	int			score;
 	TTF_Font	*scoreFont;
 public:

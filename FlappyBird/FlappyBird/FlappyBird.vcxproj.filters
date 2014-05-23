@@ -358,6 +358,12 @@
     <Image Include="hint.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="panel.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="new.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="FlappyBird.rc">

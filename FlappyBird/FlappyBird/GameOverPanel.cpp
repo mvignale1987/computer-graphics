@@ -13,7 +13,8 @@ GameOverPanel::GameOverPanel():
 	texture(),
 	animTime(0),
 	highScore(0),
-	score(0)
+	score(0),
+	newHighScore(false)
 {
 	scoreFont = TTF_OpenFont("Flappy.ttf", 25);
 	if (scoreFont == NULL){
@@ -82,18 +83,23 @@ void GameOverPanel::render(Scene& parent)
 	}
 }
 
+static std::string intToString(int i)
+{
+	stringstream ss;
+	ss << i;
+	return ss.str();
+}
+
 void GameOverPanel::enable(int currentScore)
 {
 	SceneObject::enable();
 	animTime = 0;
 	score = currentScore;
-	if(highScore > currentScore)
+	newHighScore = currentScore > highScore;
+	if(newHighScore)
 	{
 		highScore = currentScore;
 	}
-
-	stringstream ss;
-	ss << score;
 
 	// copy texts to texture
 	SDL_Surface *panelSurface = IMG_Load("panel.png");
@@ -101,18 +107,53 @@ void GameOverPanel::enable(int currentScore)
 	{
 		throw exception("Couldn't load texture panel.png");
 	}
-	SDL_Surface *scoreSurface = Text::getSurface(scoreFont, ss.str(), Vector3::one, 2, Vector3::zero);
+	SDL_Surface *scoreSurface = Text::getSurface(scoreFont, intToString(score), Vector3::one, 2, Vector3::zero);
+	SDL_Surface *highScoreSurface = Text::getSurface(scoreFont,  intToString(highScore), Vector3::one, 2, Vector3::zero);
 
-	SDL_Rect dstRect = {
-		panelSurface->w / 2 + 170,
-		panelSurface->h / 2 + 10,
+	SDL_Rect scoreDstRect = {
+		panelSurface->w - scoreSurface->w - 25,
+		panelSurface->h / 2 - 50,
 		scoreSurface->w,
 		scoreSurface->h
 	};
-	if(SDL_BlitSurface(scoreSurface, NULL, panelSurface, &dstRect) < 0)
+	SDL_Rect highScoreDstRect = {
+		panelSurface->w - highScoreSurface->w - 25,
+		panelSurface->h / 2 + 30,
+		highScoreSurface->w,
+		highScoreSurface->h
+	};
+	
+	if(SDL_BlitSurface(scoreSurface, NULL, panelSurface, &scoreDstRect) < 0)
 	{
 		throw SceneError::fromSDLError("Couldn't copy surface");
 	}
+	if(SDL_BlitSurface(highScoreSurface, NULL, panelSurface, &highScoreDstRect) < 0)
+	{
+		throw SceneError::fromSDLError("Couldn't copy surface");
+	}
+
+	if(newHighScore)
+	{
+		SDL_Surface *newSurface = IMG_Load("new.png");
+		if(newSurface == NULL)
+		{
+			throw exception("Couldn't load texture new.png");
+		}
+		SDL_Rect newDstRect = {
+			panelSurface->w / 2 - 35,
+			panelSurface->h / 2 - 5,
+			highScoreSurface->w,
+			highScoreSurface->h
+		};
+		if(SDL_BlitSurface(newSurface, NULL, panelSurface, &newDstRect) < 0)
+		{
+			throw SceneError::fromSDLError("Couldn't copy surface");
+		}
+		SDL_FreeSurface(newSurface);
+	}
+
+	SDL_FreeSurface(scoreSurface);
+	SDL_FreeSurface(highScoreSurface);
 
 	glDeleteTextures(texture);
 	texture = Texture(panelSurface);
