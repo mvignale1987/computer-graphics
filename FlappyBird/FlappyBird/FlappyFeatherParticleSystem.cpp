@@ -31,28 +31,40 @@ void FlappyFeatherParticleSystem::render(Scene &parent)
 	vector<FlappyFeatherParticleSystemElement>::iterator it;
 	
 	glColor(Vector3::fromRGB(200, 0, 0)); // feather color
-	glMaterial(GL_DIFFUSE, Vector3::fromRGB(200, 0, 0), 1);
-	glMaterial(GL_SPECULAR, Vector3::zero, 0);
-	glMaterial(GL_AMBIENT, Vector3::fromRGB(200, 0, 0), 0.5);
-	glMaterial(GL_EMISSION, Vector3::zero, 0);
 
-	glBindTexture(featherTexture);
-	int aliveElements = 0;
-	for(it = elements.begin(); it != elements.end(); ++it)
+	glPushAttrib(GL_ENABLE_BIT);
 	{
-		Vector3 position = it->getPosition(animTime);
-		if(position.y() > flappy.getColliderBridge()->getStreetHeight())
+		glMaterial(GL_DIFFUSE, Vector3::fromRGB(200, 0, 0), 1);
+		glMaterial(GL_SPECULAR, Vector3::zero, 0);
+		glMaterial(GL_AMBIENT, Vector3::fromRGB(200, 0, 0), 0.5);
+		glMaterial(GL_EMISSION, Vector3::zero, 0);
+
+		if(parent.app().getOptions()->renderMode() == WIREFRAME_RENDER)
 		{
-			drawElement(position, it->getAngle(animTime), it->getRotatingVector());
-			++aliveElements;
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		}
+
+		glBindTexture(featherTexture);
+		int aliveElements = 0;
+		for(it = elements.begin(); it != elements.end(); ++it)
+		{
+			Vector3 position = it->getPosition(animTime);
+			if(position.y() > flappy.getColliderBridge()->getStreetHeight())
+			{
+				drawElement(position, it->getAngle(animTime), it->getRotatingVector());
+				++aliveElements;
+			}
+		}
+
+		if(aliveElements == 0)
+		{
+			disable();
+			reset();
 		}
 	}
+	glPopAttrib();
 
-	if(aliveElements == 0)
-	{
-		disable();
-		reset();
-	}
+	
 }
 
 void FlappyFeatherParticleSystem::drawElement(const Vector3& position, float angle, const Vector3& rotatingVector)
