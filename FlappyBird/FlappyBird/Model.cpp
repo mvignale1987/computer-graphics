@@ -177,7 +177,7 @@ void Model::applyMaterial(const aiMaterial *mtl)
 }
 
 
-void Model::recursiveRender (const struct aiScene *sc, const struct aiNode* nd, float scale, RenderMode mode)
+void Model::recursiveRender (const struct aiScene *sc, const struct aiNode* nd, float scale, RenderMode mode, bool useMaterials)
 {
 	unsigned int i;
 	unsigned int n=0, t;
@@ -195,7 +195,10 @@ void Model::recursiveRender (const struct aiScene *sc, const struct aiNode* nd, 
 	{
 		const struct aiMesh* mesh = scene->mMeshes[nd->mMeshes[n]];
 
-		applyMaterial(sc->mMaterials[mesh->mMaterialIndex]);
+		if(useMaterials)
+		{
+			applyMaterial(sc->mMaterials[mesh->mMaterialIndex]);
+		}
 		
 		if(mode == WIREFRAME_RENDER)
 		{
@@ -264,15 +267,15 @@ void Model::recursiveRender (const struct aiScene *sc, const struct aiNode* nd, 
 	// draw all children
 	for (n = 0; n < nd->mNumChildren; ++n)
 	{
-		recursiveRender(sc, nd->mChildren[n], scale, mode);
+		recursiveRender(sc, nd->mChildren[n], scale, mode, useMaterials);
 	}
 
 	glPopMatrix();
 }
 
 
-void Model::render(float scale, RenderMode mode)
+void Model::render(float scale, RenderMode mode, bool useMaterials)
 {
-	recursiveRender(scene, scene->mRootNode, scale, mode);
+	recursiveRender(scene, scene->mRootNode, scale, mode, useMaterials);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }

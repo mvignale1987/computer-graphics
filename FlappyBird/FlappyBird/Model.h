@@ -25,9 +25,9 @@ public:
 	Model& operator=(const Model& other);
 	void load(const std::string& path);
 	void reload(); // reload model (and textures) again from path
-	void render(float scale, RenderMode mode);
+	void render(float scale, RenderMode mode, bool useMaterials = true);
 	~Model();
 private:
 	void applyMaterial(const aiMaterial *mtl);
-	void recursiveRender(const struct aiScene *sc, const struct aiNode* nd, float scale, RenderMode mode);
+	void recursiveRender(const struct aiScene *sc, const struct aiNode* nd, float scale, RenderMode mode, bool useMaterials);
 };
