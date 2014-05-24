@@ -378,6 +378,9 @@
     <None Include="FlappyBird.ico">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="pipeEnd.dae">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Flappy.TTF">
@@ -404,6 +407,12 @@
       <Filter>Resource Files</Filter>
     </Media>
     <Media Include="bird.dae">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="pipeEnd.obj">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="pipeEnd.mtl">
       <Filter>Resource Files</Filter>
     </Media>
   </ItemGroup>

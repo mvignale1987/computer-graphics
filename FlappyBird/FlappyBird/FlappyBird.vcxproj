@@ -241,6 +241,10 @@
     <Image Include="Pewter.jpg" />
     <Image Include="rainbow.png" />
     <Image Include="skybox.png" />
+    <None Include="pipeEnd.dae" />
+    <Media Include="pipeEnd.mtl">
+      <FileType>Document</FileType>
+    </Media>
     <None Include="small.ico" />
     <Image Include="Techno_4.jpg" />
     <Image Include="Techno_4___Dirty.jpg" />
@@ -276,6 +280,11 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="level.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="pipeEnd.obj">
+      <FileType>Document</FileType>
+    </Media>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
