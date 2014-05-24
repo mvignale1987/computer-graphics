@@ -16,12 +16,15 @@ void EditorMenu::init()
 		addObject(mainMenu.getCamera());
 		addObject(mainMenu.getSkybox());
 		addObject(mainMenu.getBridge());
+		mainMenu.getBridge()->stop();
 		addObject(mainMenu.getFloor());
 		addObject(mainMenu.getFadeConstant());		
-		initFonts();
-		initCursor();
+		
 		tubo =  new PipeEditor(*mainMenu.getBridge(),100,60);
 		addObject(tubo);
+
+		initFonts();
+		initCursor();
 	}
 	inited = true;
 }
@@ -86,6 +89,7 @@ bool EditorMenu::handleEvent(const SDL_Event& ev)
 	}
 	else if(ev.type == SDL_MOUSEBUTTONDOWN && ev.button.button == SDL_BUTTON_LEFT){
 		tubo->pushCurrentApertureHeight();
+		mainMenu.getBridge()->move(35.0f);
 		return true;
 	}
 	return true;
