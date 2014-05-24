@@ -8,13 +8,17 @@
 class Pipe: public SceneObject
 {
 private:
+	// 
+	static Model pipeEnd;
+	static bool  modelsInited;
+	
 	static const float aperture;
 	static const float upperPipeLength;
 	static const float ratio;
 	static const int  slices;
 	static const int stacks;
-	static Model *pipeEnd;
-
+	
+	int innerSolidDisplayList, innerWireframeDisplayList;
 	float apertureHeight; // y position of aperture
 	float position; // x position relative to flappy
 	Bridge &colliderBridge;
@@ -29,4 +33,9 @@ public:
 	bool pastPipe() const;
 	bool beforePipe() const;
 	bool pastMiddle() const;
+
+	void clean();
+private:
+	static void initModels();
+	void drawInnerPipe(RenderMode mode);
 };

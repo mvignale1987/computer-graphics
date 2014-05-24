@@ -80,7 +80,7 @@ void PipeEditor::render(Scene &parent)
 			glTranslate(Vector3::up * lowerTubeOrigin);
 			glTranslate(Vector3::right * positionIt);
 			glRotate(90, Vector3::right);
-			glutSolidCylinder(ratio, apertureHeight, slices, stacks);
+			glutSolidCylinder(ratio, *it, slices, stacks);
 		}
 		glPopMatrix();
 

@@ -7,7 +7,8 @@ const float Pipe::upperPipeLength = 400.0f;
 const float Pipe::ratio = 8.0f;
 const int   Pipe::slices = 8;
 const int   Pipe::stacks = 1;
-Model *		Pipe::pipeEnd = NULL;
+Model		Pipe::pipeEnd;
+bool		Pipe::modelsInited = false;
 
 
 Pipe::Pipe(Bridge& colliderBridge, float initialPosition, float apertureHeight):
@@ -16,10 +17,26 @@ Pipe::Pipe(Bridge& colliderBridge, float initialPosition, float apertureHeight):
 	apertureHeight(apertureHeight),
 	stopped(false)
 {
-	if(pipeEnd == NULL)
+	initModels();
+
+	innerSolidDisplayList = glGenLists(2);
+	glNewList (innerSolidDisplayList, GL_COMPILE);
 	{
-		pipeEnd = new Model("pipeEnd.obj");
+		drawInnerPipe(SOLID_RENDER);
 	}
+	glEndList ();
+
+	innerWireframeDisplayList = innerSolidDisplayList + 1;
+	glNewList (innerWireframeDisplayList, GL_COMPILE);
+	{
+		drawInnerPipe(WIREFRAME_RENDER);
+	}
+	glEndList ();
+}
+
+void Pipe::clean()
+{
+	glDeleteLists(innerSolidDisplayList, 2);
 }
 
 float Pipe::getAbsolutePosition() const
@@ -41,40 +58,18 @@ void Pipe::render(Scene &parent)
 
 	RenderMode renderMode = parent.app().getOptions()->renderMode();
 
-	glMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE, Vector3::fromRGB(0, 200, 0));
-
 	glPushAttrib(GL_ENABLE_BIT);
 	{
 		glDisable(GL_TEXTURE_2D);
 		glEnable(GL_LIGHTING);
-		glColor(Vector3::fromRGB(82,130,33));
-		glMaterial(GL_DIFFUSE, Vector3::fromRGB(82,130,33), 1);
-		glMaterial(GL_SPECULAR, Vector3::zero, 0);
-		glMaterial(GL_AMBIENT, Vector3::fromRGB(21,34,9), 1);
-		glMaterial(GL_EMISSION, Vector3::zero, 0);
 		glPushMatrix();
 		{
-			glTranslate(Vector3::up * lowerTubeOrigin);
-			glTranslate(Vector3::right * position);
-			glRotate(90, Vector3::right);
+			glTranslate(Vector3::right * position + Vector3::up * (lowerTubeOrigin - ratio));
 
-			(renderMode == WIREFRAME_RENDER ? glutWireCylinder : glutSolidCylinder)(ratio, apertureHeight, slices, stacks);
-			/*glRotate(-90, Vector3::right);
-			glScalef(ratio*1.1f,ratio*1.1f,ratio*1.1f);
-			pipeEnd->render(1,  renderMode);*/
-		}
-		glPopMatrix();
-
-		glPushMatrix();
-		{
-			glTranslate(Vector3::up * (lowerTubeOrigin + upperPipeLength + aperture) );
-			glTranslate(Vector3::right * position);
-			glRotate(90, Vector3::right);
-
-			(renderMode == WIREFRAME_RENDER ? glutWireCylinder : glutSolidCylinder)(ratio, upperPipeLength, slices, stacks);
-			/*glRotate(90, Vector3::right);
-			glScalef(ratio*1.1f,ratio*1.1f,ratio*1.1f);
-			pipeEnd->render(1,  renderMode);*/
+			if(renderMode == WIREFRAME_RENDER)
+				glCallList(innerWireframeDisplayList);
+			else 
+				glCallList(innerSolidDisplayList);
 		}
 		glPopMatrix();
 	}
@@ -118,4 +113,46 @@ bool Pipe::beforePipe() const
 bool Pipe::pastPipe() const
 {
 	return position - Flappy::displacement.x()  + ratio < Flappy::birdSize / 2;
+}
+
+void Pipe::drawInnerPipe(RenderMode renderMode)
+{
+	void (_stdcall *cylinderFunc)(GLdouble, GLdouble, GLint, GLint) =
+		renderMode == WIREFRAME_RENDER ? glutWireCylinder : glutSolidCylinder;
+
+	glColor(Vector3::fromRGB(82,130,33));
+	glMaterial(GL_DIFFUSE, Vector3::fromRGB(82,130,33), 1);
+	glMaterial(GL_SPECULAR, Vector3::zero, 0);
+	glMaterial(GL_AMBIENT, Vector3::zero, 0);
+	glMaterial(GL_EMISSION, Vector3::zero, 0);
+
+	// inner tubes
+	glRotate(90, Vector3::right);
+	cylinderFunc(ratio, (apertureHeight - ratio), slices, stacks);
+	glTranslate(Vector3::backward * (upperPipeLength + aperture + ratio) );
+	cylinderFunc(ratio, upperPipeLength - ratio, slices, stacks);
+	
+	// lower pipe end
+	glRotate(-90, Vector3::right);
+	glTranslate(Vector3::down * (upperPipeLength - ratio));
+
+	glPushMatrix();
+	{
+		glScalef(ratio*1.1f, -ratio * 0.5f ,ratio*1.1f);
+		pipeEnd.render(1, renderMode);
+	}
+	glPopMatrix();
+
+	glTranslate(Vector3::down * (aperture + 2*ratio));
+	glScalef(ratio*1.1f, ratio * 0.5f ,ratio*1.1f);
+	pipeEnd.render(1, renderMode);
+}
+
+void Pipe::initModels()
+{
+	if(!modelsInited)
+	{
+		pipeEnd = Model("pipeEnd.obj");
+		modelsInited = true;
+	}
 }

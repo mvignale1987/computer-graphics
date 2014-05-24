@@ -57,6 +57,7 @@ void PipeLevel::addActivePipes()
 {
 	while(activePipes.size() >= maxActivePipes)
 	{
+		activePipes.back().clean();
 		activePipes.pop_back();
 	}
 	while(activePipes.size() < maxActivePipes)
@@ -84,6 +85,7 @@ void PipeLevel::render(Scene &parent)
 	
 	if(!activePipes.empty() && activePipes.back().getAbsolutePosition() < -firstPipeDistance*3)
 	{
+		activePipes.back().clean();
 		activePipes.pop_back();
 		addActivePipes();
 	}

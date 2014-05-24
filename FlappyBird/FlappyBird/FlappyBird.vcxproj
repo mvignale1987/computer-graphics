@@ -241,11 +241,7 @@
     <Image Include="Pewter.jpg" />
     <Image Include="rainbow.png" />
     <Image Include="skybox.png" />
-    <None Include="pipeEnd.dae" />
     <Media Include="pipeEnd.mtl">
-      <FileType>Document</FileType>
-    </Media>
-    <Media Include="pipeTube.mtl">
       <FileType>Document</FileType>
     </Media>
     <None Include="small.ico" />
@@ -286,11 +282,6 @@
   </ItemGroup>
   <ItemGroup>
     <Media Include="pipeEnd.obj">
-      <FileType>Document</FileType>
-    </Media>
-  </ItemGroup>
-  <ItemGroup>
-    <Media Include="pipeTube.obj">
       <FileType>Document</FileType>
     </Media>
   </ItemGroup>
