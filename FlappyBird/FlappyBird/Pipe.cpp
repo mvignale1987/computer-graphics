@@ -5,8 +5,9 @@
 const float Pipe::aperture = 35.0f;
 const float Pipe::upperPipeLength = 400.0f;
 const float Pipe::ratio = 8.0f;
-const int   Pipe::slices = 16;
+const int   Pipe::slices = 8;
 const int   Pipe::stacks = 1;
+Model *		Pipe::pipeEnd = NULL;
 
 
 Pipe::Pipe(Bridge& colliderBridge, float initialPosition, float apertureHeight):
@@ -15,7 +16,10 @@ Pipe::Pipe(Bridge& colliderBridge, float initialPosition, float apertureHeight):
 	apertureHeight(apertureHeight),
 	stopped(false)
 {
-
+	if(pipeEnd == NULL)
+	{
+		pipeEnd = new Model("pipeEnd.obj");
+	}
 }
 
 float Pipe::getAbsolutePosition() const
@@ -35,6 +39,8 @@ void Pipe::render(Scene &parent)
 	float multiplier = parent.app().getOptions()->speedMultiplier();
 	float frameTime = parent.app().getFrameTime();
 
+	RenderMode renderMode = parent.app().getOptions()->renderMode();
+
 	glMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE, Vector3::fromRGB(0, 200, 0));
 
 	glPushAttrib(GL_ENABLE_BIT);
@@ -42,12 +48,20 @@ void Pipe::render(Scene &parent)
 		glDisable(GL_TEXTURE_2D);
 		glEnable(GL_LIGHTING);
 		glColor(Vector3::fromRGB(82,130,33));
+		glMaterial(GL_DIFFUSE, Vector3::fromRGB(82,130,33), 1);
+		glMaterial(GL_SPECULAR, Vector3::zero, 0);
+		glMaterial(GL_AMBIENT, Vector3::fromRGB(21,34,9), 1);
+		glMaterial(GL_EMISSION, Vector3::zero, 0);
 		glPushMatrix();
 		{
 			glTranslate(Vector3::up * lowerTubeOrigin);
 			glTranslate(Vector3::right * position);
 			glRotate(90, Vector3::right);
-			glutSolidCylinder(ratio, apertureHeight, slices, stacks);
+
+			(renderMode == WIREFRAME_RENDER ? glutWireCylinder : glutSolidCylinder)(ratio, apertureHeight, slices, stacks);
+			/*glRotate(-90, Vector3::right);
+			glScalef(ratio*1.1f,ratio*1.1f,ratio*1.1f);
+			pipeEnd->render(1,  renderMode);*/
 		}
 		glPopMatrix();
 
@@ -56,7 +70,11 @@ void Pipe::render(Scene &parent)
 			glTranslate(Vector3::up * (lowerTubeOrigin + upperPipeLength + aperture) );
 			glTranslate(Vector3::right * position);
 			glRotate(90, Vector3::right);
-			glutSolidCylinder(ratio, upperPipeLength, slices, stacks);
+
+			(renderMode == WIREFRAME_RENDER ? glutWireCylinder : glutSolidCylinder)(ratio, upperPipeLength, slices, stacks);
+			/*glRotate(90, Vector3::right);
+			glScalef(ratio*1.1f,ratio*1.1f,ratio*1.1f);
+			pipeEnd->render(1,  renderMode);*/
 		}
 		glPopMatrix();
 	}

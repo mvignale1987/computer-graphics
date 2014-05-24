@@ -13,6 +13,7 @@ private:
 	static const float ratio;
 	static const int  slices;
 	static const int stacks;
+	static Model *pipeEnd;
 
 	float apertureHeight; // y position of aperture
 	float position; // x position relative to flappy
