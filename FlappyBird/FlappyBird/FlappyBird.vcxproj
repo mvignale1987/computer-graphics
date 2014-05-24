@@ -267,7 +267,9 @@
     </Media>
     <Media Include="die.wav" />
     <Media Include="point.wav" />
-    <None Include="Libraries.targets" />
+    <None Include="Libraries.targets">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Flappy.TTF" />
