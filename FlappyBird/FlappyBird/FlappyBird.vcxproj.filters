@@ -407,4 +407,9 @@
       <Filter>Resource Files</Filter>
     </Media>
   </ItemGroup>
+  <ItemGroup>
+    <Xml Include="level.xml">
+      <Filter>Resource Files</Filter>
+    </Xml>
+  </ItemGroup>
 </Project>
