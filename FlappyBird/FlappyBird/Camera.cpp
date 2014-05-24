@@ -8,6 +8,7 @@ const float Camera::minDistance = 10.0f;
 const float Camera::maxDistance = 500.0f;
 const float Camera::minAzimut = (float) -M_PI * 0.25f;
 const float Camera::maxAzimut = (float) M_PI * 0.25f;
+bool		Camera::freeLook = false;
 
 Camera::Camera(float azimut, float latitude, float distance, const Vector3& center):
 	azimut(azimut),
@@ -112,18 +113,21 @@ void Camera::tremble(float time)
 
 void Camera::recalculatePosition()
 {
-	if(latitude > maxLatitude)
-		latitude = maxLatitude;
-	if(latitude < minLatitude)
-		latitude = minLatitude;
-	if(distance < minDistance)
-		distance = minDistance;
-	if(distance > maxDistance)
-		distance = maxDistance;
-	if(azimut < minAzimut)
-		azimut = minAzimut;
-	if(azimut > maxAzimut)
-		azimut = maxAzimut;
+	if(!freeLook)
+	{
+		if(latitude > maxLatitude)
+			latitude = maxLatitude;
+		if(latitude < minLatitude)
+			latitude = minLatitude;
+		if(distance < minDistance)
+			distance = minDistance;
+		if(distance > maxDistance)
+			distance = maxDistance;
+		if(azimut < minAzimut)
+			azimut = minAzimut;
+		if(azimut > maxAzimut)
+			azimut = maxAzimut;
+	}
 
 	position = center + Vector3(
 			distance * sinf(latitude) * sinf(azimut), // x
