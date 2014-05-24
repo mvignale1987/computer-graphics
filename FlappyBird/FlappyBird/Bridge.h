@@ -20,7 +20,7 @@ private:
 public:
 	Bridge();
 	void render(Scene &parent);
-
+	void move(float xDisplacement);
 	void reset();
 	void stop();
 	void resume();

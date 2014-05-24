@@ -101,3 +101,9 @@ void Bridge::render(RenderMode mode)
 		glTranslate(modelLength * Vector3::right);
 	}
 }
+void Bridge::move(float xDisplacement){
+	animTime += xDisplacement;
+	if(animTime > modelLength)
+			animTime -= modelLength;
+
+}

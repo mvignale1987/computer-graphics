@@ -41,11 +41,11 @@ void PipeEditor::render(Scene &parent)
 	int mouseX, mouseY;
 	SDL_GetMouseState(&mouseX, &mouseY);
 
-	//int left = mouseX + offsetX;
-	//int right = left + texture.width();
-	//int top = height - mouseY - offsetY;
-	//int bottom = top - texture.height();
 	apertureHeight = height - mouseY*2; 
+	if (apertureHeight <10)
+		apertureHeight = 10;
+	if (apertureHeight >75)
+		apertureHeight = 75;
 	glMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE, Vector3::fromRGB(0, 200, 0));
 
 	glPushAttrib(GL_ENABLE_BIT);
@@ -70,28 +70,29 @@ void PipeEditor::render(Scene &parent)
 			glutSolidCylinder(ratio, upperPipeLength, slices, stacks);
 		}
 		glPopMatrix();
-	}
-	float positionIt = position;
-	for(std::vector<float>::iterator it = pipeSizes.begin(); it != pipeSizes.end(); ++it)
-	{
-		positionIt -= 20;
-		glPushMatrix();
+		float positionIt = position;
+		for(std::vector<float>::reverse_iterator it = pipeSizes.rbegin(); it != pipeSizes.rend(); ++it)
 		{
-			glTranslate(Vector3::up * lowerTubeOrigin);
-			glTranslate(Vector3::right * positionIt);
-			glRotate(90, Vector3::right);
-			glutSolidCylinder(ratio, *it, slices, stacks);
-		}
-		glPopMatrix();
+			lowerTubeOrigin = colliderBridge.getStreetHeight(position) + *it - 5;
+			positionIt -= 35;
+			glPushMatrix();
+			{
+				glTranslate(Vector3::up * lowerTubeOrigin);
+				glTranslate(Vector3::right * positionIt);
+				glRotate(90, Vector3::right);
+				glutSolidCylinder(ratio, *it, slices, stacks);
+			}
+			glPopMatrix();
 
-		glPushMatrix();
-		{
-			glTranslate(Vector3::up * (lowerTubeOrigin + upperPipeLength + aperture) );
-			glTranslate(Vector3::right * positionIt);
-			glRotate(90, Vector3::right);
-			glutSolidCylinder(ratio, upperPipeLength, slices, stacks);
+			glPushMatrix();
+			{
+				glTranslate(Vector3::up * (lowerTubeOrigin + upperPipeLength + aperture) );
+				glTranslate(Vector3::right * positionIt);
+				glRotate(90, Vector3::right);
+				glutSolidCylinder(ratio, upperPipeLength, slices, stacks);
+			}
+			glPopMatrix();
 		}
-		glPopMatrix();
 	}
 	glPopAttrib();
 
