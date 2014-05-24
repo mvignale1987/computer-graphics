@@ -245,6 +245,9 @@
     <Media Include="pipeEnd.mtl">
       <FileType>Document</FileType>
     </Media>
+    <Media Include="pipeTube.mtl">
+      <FileType>Document</FileType>
+    </Media>
     <None Include="small.ico" />
     <Image Include="Techno_4.jpg" />
     <Image Include="Techno_4___Dirty.jpg" />
@@ -283,6 +286,11 @@
   </ItemGroup>
   <ItemGroup>
     <Media Include="pipeEnd.obj">
+      <FileType>Document</FileType>
+    </Media>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="pipeTube.obj">
       <FileType>Document</FileType>
     </Media>
   </ItemGroup>

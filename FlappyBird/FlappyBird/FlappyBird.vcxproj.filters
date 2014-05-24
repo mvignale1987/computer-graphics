@@ -415,6 +415,12 @@
     <Media Include="pipeEnd.mtl">
       <Filter>Resource Files</Filter>
     </Media>
+    <Media Include="pipeTube.obj">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="pipeTube.mtl">
+      <Filter>Resource Files</Filter>
+    </Media>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="level.xml">
