@@ -195,10 +195,8 @@ void Model::recursiveRender (const struct aiScene *sc, const struct aiNode* nd, 
 	{
 		const struct aiMesh* mesh = scene->mMeshes[nd->mMeshes[n]];
 
-		if(mode == TEXTURED_RENDER)
-		{
-			applyMaterial(sc->mMaterials[mesh->mMaterialIndex]);
-		}
+		applyMaterial(sc->mMaterials[mesh->mMaterialIndex]);
+		
 		if(mode == WIREFRAME_RENDER)
 		{
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
