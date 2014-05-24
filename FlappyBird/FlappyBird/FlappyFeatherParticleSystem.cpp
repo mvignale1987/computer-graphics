@@ -43,8 +43,10 @@ void FlappyFeatherParticleSystem::render(Scene &parent)
 		{
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		}
-
-		glBindTexture(featherTexture);
+		if(parent.app().getOptions()->renderMode() == TEXTURED_RENDER)
+		{
+			glBindTexture(featherTexture);
+		}
 		int aliveElements = 0;
 		for(it = elements.begin(); it != elements.end(); ++it)
 		{
