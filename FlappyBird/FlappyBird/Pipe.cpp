@@ -107,12 +107,12 @@ bool Pipe::pastMiddle() const
 
 bool Pipe::beforePipe() const
 {
-	return position - Flappy::displacement.x() - ratio >  Flappy::birdSize / 2;
+	return position - Flappy::displacement.x() - ratio  * 1.1f >  Flappy::birdSize / 2;
 }
 
 bool Pipe::pastPipe() const
 {
-	return position - Flappy::displacement.x()  + ratio < Flappy::birdSize / 2;
+	return position - Flappy::displacement.x()  + ratio * 1.1f < Flappy::birdSize / 2;
 }
 
 void Pipe::drawInnerPipe(RenderMode renderMode)
@@ -132,20 +132,21 @@ void Pipe::drawInnerPipe(RenderMode renderMode)
 	glTranslate(Vector3::backward * (upperPipeLength + aperture + ratio) );
 	cylinderFunc(ratio, upperPipeLength - ratio, slices, stacks);
 	
-	// lower pipe end
+	// pipe ends
+	glMaterial(GL_AMBIENT, Vector3::fromRGB(82,130,33), 1);
 	glRotate(-90, Vector3::right);
 	glTranslate(Vector3::down * (upperPipeLength - ratio));
 
 	glPushMatrix();
 	{
 		glScalef(ratio*1.1f, -ratio * 0.5f ,ratio*1.1f);
-		pipeEnd.render(1, renderMode);
+		pipeEnd.render(1, renderMode, false);
 	}
 	glPopMatrix();
 
 	glTranslate(Vector3::down * (aperture + 2*ratio));
 	glScalef(ratio*1.1f, ratio * 0.5f ,ratio*1.1f);
-	pipeEnd.render(1, renderMode);
+	pipeEnd.render(1, renderMode, false);
 }
 
 void Pipe::initModels()
