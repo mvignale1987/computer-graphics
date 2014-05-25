@@ -198,7 +198,7 @@ void MainMenu::initFonts()
 	options.placement = BOTTOM_LEFT;
 	options.borderSize = 1;
 	options.offsetX = options.offsetY = 10;
-	options.text = "v0.0.1";
+	options.text = "v1.0.0";
 	versionText = new Text(options);
 
 	// copyright text

@@ -255,7 +255,9 @@
     <Media Include="pipeEnd.mtl">
       <FileType>Document</FileType>
     </Media>
-    <None Include="Libraries.vs2010.targets" />
+    <None Include="Libraries.vs2010.targets">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="small.ico" />
     <Image Include="Techno_4.jpg" />
     <Image Include="Techno_4___Dirty.jpg" />
