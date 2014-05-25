@@ -90,7 +90,12 @@ void Bridge::resume()
 float Bridge::getStreetHeight(float relativePosition)
 {
 	// aproximation to the bridge street curve
-	return 93.0f - sinf((animTime + relativePosition) / modelLength * (float)M_PI) * 11.0f;
+	float absolutePosition = (animTime + relativePosition);
+	if(absolutePosition > modelLength)
+			absolutePosition -= modelLength;
+	if(absolutePosition < 0)
+		absolutePosition += modelLength;
+	return 93.0f - sinf(absolutePosition / modelLength * (float)M_PI) * 11.0f;
 }
 
 void Bridge::render(RenderMode mode)
