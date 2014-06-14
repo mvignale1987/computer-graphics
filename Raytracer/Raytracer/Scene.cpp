@@ -68,7 +68,18 @@ Camera Scene::readCamera(const xml_node &scene)
 		floatFromChild(node, "fieldOfView")
 		);
 }
+Cyllinder Scene::readCyllinder(const xml_node &scene)
+{
+	xml_node node = scene.child("cyllinder");
+	if(!node)
+		throw domain_error("readCyllinder: Couldn't found <cyllinder> node");
 
+	return Cyllinder (
+		vectorFromChild(node, "position"),
+		floatFromChild(node, "height"),
+		floatFromChild(node, "radius")
+		);
+}
 
 Vector3 Scene::vectorFromChild(const pugi::xml_node &node, const std::string &child)
 {
