@@ -77,10 +77,17 @@
     <ClInclude Include="OpenGLRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="icon.png">
+    <Image Include="raytracer.ico" />
+    <Image Include="icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Raytracer.rc">
       <Filter>Resource Files</Filter>
-    </Image>
+    </ResourceCompile>
   </ItemGroup>
 </Project>
