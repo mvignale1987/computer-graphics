@@ -42,8 +42,6 @@ public:
 
 private:
 	int initWindow();
-	void initAssimpLog();
-	void cleanAssimpLog();
 	bool pollEvent();
 	void renderNextFrame();
 	void clean();

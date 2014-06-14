@@ -2,7 +2,6 @@
 #include "Logger.h"
 #include "Renderer.h"
 #include "SceneError.h"
-#include <assimp/DefaultLogger.hpp>
 #include <SDL_opengl.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
@@ -31,18 +30,6 @@ void App::setRenderer(Renderer *r)
 Renderer *App::getRenderer()
 {
 	return renderer;
-}
-
-void App::initAssimpLog()
-{
-	Assimp::Logger::LogSeverity severity = Assimp::Logger::VERBOSE;
-	Assimp::DefaultLogger::create("assimp_log.txt",severity, aiDefaultLogStream_FILE);
-}
-
-void App::cleanAssimpLog()
-{
-	// Kill it after the work is done
-	Assimp::DefaultLogger::kill();
 }
 
 int App::initWindow()
@@ -135,7 +122,6 @@ void App::clean()
 {
 	renderer->clean();
 	checkOpenGLError("Renderer clean");
-	cleanAssimpLog();
 }
 
 void App::renderNextFrame()
@@ -156,7 +142,6 @@ int App::run(int argc, char **argv)
 	retcode = initWindow();
 	if(retcode != 0)
 		return retcode;
-	initAssimpLog();
 		
 	try {
 		renderer->init();
