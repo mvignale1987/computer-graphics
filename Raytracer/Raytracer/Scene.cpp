@@ -1,9 +1,9 @@
 #include "Scene.h"
-#include <pugixml.hpp>
 #include <stdexcept>
 #include <sstream>
 
 using namespace std;
+using namespace pugi;
 
 Scene::Scene()
 {
@@ -11,8 +11,8 @@ Scene::Scene()
 
 Scene Scene::readFromPath(const string &path)
 {
-	pugi::xml_document doc;
-	pugi::xml_parse_result result = doc.load_file(path.c_str());
+	xml_document doc;
+	xml_parse_result result = doc.load_file(path.c_str());
 
 	if (!result)
     {
@@ -27,5 +27,18 @@ Scene Scene::readFromPath(const string &path)
     }
 
 	Scene res;
+
+	res.bgColor = readBackgroundColor(doc);
+
 	return res;
+}
+
+Vector3 Scene::backgroundColor()
+{
+	return bgColor;
+}
+
+Vector3 Scene::readBackgroundColor(const xml_document &doc)
+{
+	return Vector3::fromHTML(doc.child("scene").child("backgroundColor").text().as_string());
 }

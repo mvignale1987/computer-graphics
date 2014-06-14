@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scene>
+  <backgroundColor>#ff8000</backgroundColor>
+  <resolution>1920 1080</resolution>
+
   <!-- Luces de la escena -->
   <lights>
     <light id="light0">
@@ -16,8 +19,6 @@
     <near>0.1</near>
     <far>200</far>
     <fieldOfView>60</fieldOfView>
-    <backgroundColor>#000000</backgroundColor>
-    <resolution>1920 1080</resolution>
   </camera>
 
 

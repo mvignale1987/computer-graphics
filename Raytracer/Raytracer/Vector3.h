@@ -12,7 +12,8 @@ public:
 	Vector3(); // Vector3(0, 0, 0)
 	Vector3(GLfloat x, GLfloat y, GLfloat z);
 	explicit Vector3(const GLfloat*); // from 3 sized vector
-	static Vector3 fromRGB(unsigned char r, unsigned char g, unsigned char b);
+	static Vector3 fromRGB(unsigned char r, unsigned char g, unsigned char b); 
+	static Vector3 fromHTML(const std::string& str);
 	static Vector3 random(); // returns a random vector with x,y,z in [0, 1)
 
 	GLfloat x() const; // x coordinate

@@ -1,6 +1,7 @@
 #include "Vector3.h"
 #include <GL\GLU.h>
 #include <sstream>
+#include <regex>
 
 const Vector3 Vector3::down     = Vector3( 0, -1,  0);
 const Vector3 Vector3::up       = Vector3( 0,  1,  0);
@@ -26,6 +27,23 @@ Vector3::Vector3(GLfloat x, GLfloat y, GLfloat z)
 Vector3 Vector3::fromRGB(unsigned char r, unsigned char g, unsigned char b)
 {
 	return Vector3(r/256.0f, g/256.0f, b/256.0f);
+}
+	
+Vector3 Vector3::fromHTML(const std::string& str)
+{
+	std::regex regex("^\\s*#([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})\\s*$");
+	std::smatch match;
+
+	if(!std::regex_search(str, match, regex)){
+		std::stringstream ss;
+		ss << "Vector3::fromHTML: invalid string '" << str << "'";
+		throw std::invalid_argument(ss.str().c_str());
+	}
+	
+	unsigned char r = (unsigned char) std::strtol(match[1].str().c_str(), NULL, 16);
+	unsigned char g = (unsigned char) std::strtol(match[2].str().c_str(), NULL, 16);
+	unsigned char b = (unsigned char) std::strtol(match[3].str().c_str(), NULL, 16);
+	return fromRGB(r, g, b);
 }
 	
 

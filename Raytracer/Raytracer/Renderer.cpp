@@ -12,15 +12,20 @@ App& Renderer::app()
 	return parentApp;
 }
 
+Scene& Renderer::scene()
+{
+	return childScene;
+}
+
 void Renderer::init()
 {
 }
 
-void Renderer::handleReshape(int h, int w)
+void Renderer::handleReshape(int , int )
 {
 }
 
-bool Renderer::handleEvent(const SDL_Event &ev)
+bool Renderer::handleEvent(const SDL_Event &)
 {
 	return true;
 }
