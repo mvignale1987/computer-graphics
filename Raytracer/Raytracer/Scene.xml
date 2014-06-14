@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scene>
+  <!-- Luces de la escena -->
+  <lights>
+    <light id="light0">
+      <position>0 10 0</position>
+      <color>#FFFFFF</color>
+    </light>
+  </lights>
+  
+  <!-- cámara a usar en la escena -->
+  <camera>
+    <position>0 0 0</position>
+    <rotation>0 0 0</rotation>
+    <up>0 1 0</up>
+    <near>0.1</near>
+    <far>200</far>
+    <fieldOfView>60</fieldOfView>
+    <backgroundColor>#000000</backgroundColor>
+    <resolution>1920 1080</resolution>
+  </camera>
+
+
+  <!-- Materiales de los objetos -->
+  <materials>
+    <material id="diffuseMaterial" type="diffuse"></material>
+  </materials>
+
+  <!-- Definiciones de primitivas y objetos que pueden ir en la escena -->
+  <defs>
+    <sphere id="sphere">
+      <position>0 0 -5</position>
+      <radius>3</radius>
+      <material>diffuseMaterial</material>
+    </sphere>
+    <cyllinder id="cyllinder">
+      <position>0 0 -10</position>
+      <rotation>0 0 0</rotation>
+      <height>10</height>
+      <radius>3</radius>
+      <material>diffuseMaterial</material>
+    </cyllinder>
+    <quad id="plane">
+      <position>-20 0 -20</position>
+      <position>-20 0 20</position>
+      <position>20 0 20</position>
+      <position>20 0 -20</position>
+      <material>diffuseMaterial</material>
+    </quad>
+    <triangle id="triangle">
+      <position>-5 0 -15</position>
+      <position>5 0 -15</position>
+      <position>2.5 5 -15</position>
+      <material>diffuseMaterial</material>
+    </triangle>
+  </defs>
+
+  <!-- objetos a ser renderizados en la escena -->
+  <objects>
+    <object id="sphere"></object>
+  </objects>
+</scene>
