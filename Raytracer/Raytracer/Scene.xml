@@ -7,7 +7,10 @@
   <lights>
     <light id="light0">
       <position>0 10 0</position>
-      <color>#FFFFFF</color>
+      <ambientColor>#FFFFF</ambientColor>
+      <diffuseColor>#FFFFF</diffuseColor>
+      <linearAttenuation>1</linearAttenuation>
+      <quadAttenuation>1</quadAttenuation>
     </light>
   </lights>
   
@@ -24,39 +27,51 @@
 
   <!-- Materiales de los objetos -->
   <materials>
-    <material id="diffuseMaterial" type="diffuse"></material>
+    <material id="diffuseMaterial">
+      <ambientColor>#00ff00</ambientColor>
+      <ambientCoefficient>0.5</ambientCoefficient>
+      <diffuseColor>#0000ff</diffuseColor>
+      <diffuseCoefficient>1</diffuseCoefficient>
+      <specularColor>#ffffff</specularColor>
+      <specularCoefficient>0.5</specularCoefficient>
+      <specularExponent>5</specularExponent>
+    </material>
   </materials>
 
   <!-- Definiciones de primitivas y objetos que pueden ir en la escena -->
   <defs>
     <sphere id="sphere">
       <radius>3</radius>
-      <material>diffuseMaterial</material>
     </sphere>
     <cyllinder id="cyllinder">
       <height>10</height>
       <radius>3</radius>
-      <material>diffuseMaterial</material>
     </cyllinder>
     <quad id="plane">
       <position>-20 0 -20</position>
       <position>-20 0 20</position>
       <position>20 0 20</position>
       <position>20 0 -20</position>
-      <material>diffuseMaterial</material>
     </quad>
     <triangle id="triangle">
       <position>-5 0 -15</position>
       <position>5 0 -15</position>
       <position>2.5 5 -15</position>
-      <material>diffuseMaterial</material>
     </triangle>
   </defs>
 
   <!-- objetos a ser renderizados en la escena -->
   <objects>
-    <object id="sphere">
-      
+    <object id="sphere" material="diffuseMaterial">
+      <position>0 0 -5</position>
+    </object>
+    <object id="cyllinder" material="diffuseMaterial">
+      <position>0 0 -10</position>
+      <rotation>0 90 90</rotation>
+    </object>
+    <object id="plane" material="diffuseMaterial">
+    </object>
+    <object id="triangle" material="diffuseMaterial">
     </object>
   </objects>
 </scene>
