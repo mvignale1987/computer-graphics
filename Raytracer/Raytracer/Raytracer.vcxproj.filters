@@ -46,7 +46,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Cyllinder.cpp">
-	      <Filter>Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Sphere.cpp">
       <Filter>Source Files</Filter>
@@ -55,6 +55,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Triangle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ShapeDefinition.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -96,7 +99,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Cyllinder.h">
-	   <Filter>Header Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Sphere.h">
       <Filter>Header Files</Filter>
@@ -105,6 +108,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Triangle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ShapeDefinition.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

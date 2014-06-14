@@ -1,6 +1,7 @@
 #pragma once
+#include "ShapeDefinition.h"
 
-class Sphere
+class Sphere: public ShapeDefinition
 {
 private:
 	float radius;

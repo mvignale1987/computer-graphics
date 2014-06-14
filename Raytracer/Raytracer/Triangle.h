@@ -1,9 +1,10 @@
 #pragma once
 
 #include "Vector3.h"
+#include "ShapeDefinition.h"
 #include <vector>
 
-class Triangle
+class Triangle: public ShapeDefinition
 {
 private:
 	Vector3 m_points[3];

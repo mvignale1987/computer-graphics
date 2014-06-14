@@ -1,8 +1,9 @@
 #pragma once
 
 #include "Vector3.h"
+#include "ShapeDefinition.h"
 
-class Cyllinder
+class Cyllinder: public ShapeDefinition
 {
 private:
 	Vector3 pos;
