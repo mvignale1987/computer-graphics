@@ -46,6 +46,8 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Cyllinder.cpp">
+	      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Sphere.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -94,6 +96,8 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Cyllinder.h">
+	   <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Sphere.h">
       <Filter>Header Files</Filter>
     </ClInclude>
