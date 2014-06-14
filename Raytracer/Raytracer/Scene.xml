@@ -30,13 +30,10 @@
   <!-- Definiciones de primitivas y objetos que pueden ir en la escena -->
   <defs>
     <sphere id="sphere">
-      <position>0 0 -5</position>
       <radius>3</radius>
       <material>diffuseMaterial</material>
     </sphere>
     <cyllinder id="cyllinder">
-      <position>0 0 -10</position>
-      <rotation>0 0 0</rotation>
       <height>10</height>
       <radius>3</radius>
       <material>diffuseMaterial</material>
@@ -58,6 +55,8 @@
 
   <!-- objetos a ser renderizados en la escena -->
   <objects>
-    <object id="sphere"></object>
+    <object id="sphere">
+      
+    </object>
   </objects>
 </scene>
