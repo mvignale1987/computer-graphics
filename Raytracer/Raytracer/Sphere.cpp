@@ -9,3 +9,7 @@ Sphere::Sphere(float r):
 	radius(r)
 {
 }
+float Sphere::getRadius(){
+	return radius;
+
+}

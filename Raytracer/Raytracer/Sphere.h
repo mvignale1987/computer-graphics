@@ -7,5 +7,6 @@ private:
 public:
 	Sphere();
 	Sphere(float r);
+	float getRadius();
 };
 

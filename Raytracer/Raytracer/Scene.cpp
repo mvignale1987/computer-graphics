@@ -80,6 +80,43 @@ Cyllinder Scene::readCyllinder(const xml_node &scene)
 		floatFromChild(node, "radius")
 		);
 }
+Sphere Scene::readSphere(const xml_node &scene)
+{
+	xml_node node = scene.child("sphere");
+	if(!node)
+		throw domain_error("readSphere: Couldn't found <sphere> node");
+
+	return Sphere (
+		floatFromChild(node, "radius")
+		);
+}
+
+Triangle Scene::readTriangle(const xml_node &scene)
+{
+	xml_node node = scene.child("triangle");
+	if(!node)
+		throw domain_error("readTriangle: Couldn't found <triangle> node");
+
+	return Triangle (
+		vectorFromChild(node, "position"),
+		vectorFromChild(node, "position"),
+		vectorFromChild(node, "position")
+		);
+}
+
+Quad Scene::readQuad(const xml_node &scene)
+{
+	xml_node node = scene.child("quad");
+	if(!node)
+		throw domain_error("readQuad: Couldn't found <quad> node");
+
+	return Quad (
+		vectorFromChild(node, "position"),
+		vectorFromChild(node, "position"),
+		vectorFromChild(node, "position"),
+		vectorFromChild(node, "position")
+		);
+}
 
 Vector3 Scene::vectorFromChild(const pugi::xml_node &node, const std::string &child)
 {
