@@ -21,7 +21,7 @@ public:
 private:
 	static Vector3 readBackgroundColor(const pugi::xml_node &scene);
 	static Camera  readCamera(const pugi::xml_node &scene);
-	static Cyllinder readCyllinder(const xml_node &scene);
+	static Cyllinder readCyllinder(const pugi::xml_node &scene);
 	static Vector3 vectorFromChild(const pugi::xml_node &node, const std::string &child);
 	static float  floatFromChild(const pugi::xml_node &node, const std::string &child);
 };
