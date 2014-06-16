@@ -2,6 +2,7 @@
 #include <stdexcept>
 #include "Scene.h"
 #include "OpenGLRenderer.h"
+#include "RaytracerRenderer.h"
 #include "App.h"
 
 using namespace std;
@@ -29,7 +30,7 @@ int main(int argc, char **argv)
 	}
 
 	App app;
-	OpenGLRenderer renderer(app, scene);
+	RaytracerRenderer renderer(app, scene);
 	app.setRenderer(&renderer);
 
 	return app.run(argc, argv);
