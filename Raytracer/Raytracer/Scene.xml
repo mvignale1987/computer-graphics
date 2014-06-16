@@ -7,8 +7,8 @@
   <lights>
     <light id="light0">
       <position>0 10 0</position>
-      <ambientColor>#FFFFF</ambientColor>
-      <diffuseColor>#FFFFF</diffuseColor>
+      <ambientColor>#FFFFFF</ambientColor>
+      <diffuseColor>#FFFFFF</diffuseColor>
       <linearAttenuation>1</linearAttenuation>
       <quadAttenuation>1</quadAttenuation>
     </light>
