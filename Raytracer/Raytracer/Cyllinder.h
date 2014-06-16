@@ -6,16 +6,12 @@
 class Cyllinder: public ShapeDefinition
 {
 private:
-	Vector3 pos;
-	float	height;
-	float	radius;
+	float	m_height;
+	float	m_radius;
 
 public:
 	Cyllinder();
-	Cyllinder(const Vector3 &pos, float cHeight, float cRadius);
-
-	Vector3 position() const;
-
-	float getHeight() const;
-	float getRadius() const;
+	Cyllinder(const std::string &id, float cHeight, float cRadius);
+	float height() const;
+	float radius() const;
 };

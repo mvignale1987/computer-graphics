@@ -181,6 +181,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneError.h" />
     <ClInclude Include="SceneObject.h" />
+    <ClInclude Include="Shape.h" />
     <ClInclude Include="ShapeDefinition.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Triangle.h" />

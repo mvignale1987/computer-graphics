@@ -10,7 +10,9 @@ private:
 	Vector3 m_points[4];
 public:
 	Quad();
-	Quad(const Vector3 &p1,
+	Quad(
+		const std::string& id,
+		const Vector3 &p1,
 		const Vector3 &p2,
 		const Vector3 &p3,
 		const Vector3 &p4
