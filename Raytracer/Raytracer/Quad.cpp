@@ -1,16 +1,20 @@
 #include "Quad.h"
 
 
-Quad::Quad()
+Quad::Quad():
+	ShapeDefinition(Shape::QUAD, "")
 {
 	m_points[0] = m_points[1] = m_points[2] = m_points[3] = Vector3::zero;
 }
 
-Quad::Quad(const Vector3 &p1,
+Quad::Quad(
+		const std::string& id,
+		const Vector3 &p1,
 		const Vector3 &p2,
 		const Vector3 &p3,
 		const Vector3 &p4
-		)
+		):
+	ShapeDefinition(Shape::QUAD, id)
 {
 	m_points[0] = p1;
 	m_points[1] = p2;

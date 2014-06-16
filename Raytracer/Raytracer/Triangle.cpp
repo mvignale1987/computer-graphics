@@ -1,15 +1,18 @@
 #include "Triangle.h"
 
 
-Triangle::Triangle()
+Triangle::Triangle():
+	ShapeDefinition(Shape::TRIANGLE, "")
 {
 	m_points[0] = m_points[1] = m_points[2] = Vector3::zero;
 }
 
-Triangle::Triangle(const Vector3 &p1,
+Triangle::Triangle(const std::string& id,
+		const Vector3 &p1,
 		const Vector3 &p2,
 		const Vector3 &p3
-		)
+		):
+	ShapeDefinition(Shape::TRIANGLE, id)
 {
 	m_points[0] = p1;
 	m_points[1] = p2;

@@ -7,8 +7,8 @@
   <lights>
     <light id="light0">
       <position>0 10 0</position>
-      <ambientColor>#FFFFF</ambientColor>
-      <diffuseColor>#FFFFF</diffuseColor>
+      <ambientColor>#FFFFFF</ambientColor>
+      <diffuseColor>#FFFFFF</diffuseColor>
       <linearAttenuation>1</linearAttenuation>
       <quadAttenuation>1</quadAttenuation>
     </light>
@@ -62,16 +62,16 @@
 
   <!-- objetos a ser renderizados en la escena -->
   <objects>
-    <object id="sphere" material="diffuseMaterial">
+    <object def="sphere" material="diffuseMaterial">
       <position>0 0 -5</position>
     </object>
-    <object id="cyllinder" material="diffuseMaterial">
+    <object def="cyllinder" material="diffuseMaterial">
       <position>0 0 -10</position>
       <rotation>0 90 90</rotation>
     </object>
-    <object id="plane" material="diffuseMaterial">
+    <object def="plane" material="diffuseMaterial">
     </object>
-    <object id="triangle" material="diffuseMaterial">
+    <object def="triangle" material="diffuseMaterial">
     </object>
   </objects>
 </scene>

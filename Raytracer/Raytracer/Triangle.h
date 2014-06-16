@@ -10,7 +10,9 @@ private:
 	Vector3 m_points[3];
 public:
 	Triangle();
-	Triangle(const Vector3 &p1,
+	Triangle(
+		const std::string& id,
+		const Vector3 &p1,
 		const Vector3 &p2,
 		const Vector3 &p3
 		);

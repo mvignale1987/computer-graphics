@@ -4,10 +4,10 @@
 class Sphere: public ShapeDefinition
 {
 private:
-	float radius;
+	float m_radius;
 public:
 	Sphere();
-	Sphere(float r);
-	float getRadius();
+	Sphere(const std::string &id, float r);
+	float radius();
 };
 

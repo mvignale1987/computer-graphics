@@ -1,7 +1,7 @@
 #pragma once
 
-#include <string>
 #include "Vector3.h"
+#include <string>
 
 class Material
 {
@@ -13,27 +13,27 @@ private:
 	float			m_diffuseCoefficient;
 	Vector3			m_specularColor;
 	float			m_specularCoefficient;
-	unsigned int	m_specularExponent;
+	unsigned char	m_specularExponent;
 public:
 	Material();
 	Material(
-		const std::string& id,
-		const Vector3& ambientColor,
+		std::string	id,
+		Vector3	ambientColor,
 		float ambientCoefficient,
-		const Vector3& diffuseColor,
+		Vector3	diffuseColor,
 		float diffuseCoefficient,
-		const Vector3& specularColor,
+		Vector3 specularColor,
 		float specularCoefficient,
-		unsigned int specularExponent
+		int specularExponent
 		);
 
-	std::string		id() const;
-	Vector3			ambientColor() const;
-	float			ambientCoefficient() const;
-	Vector3			diffuseColor() const;
-	float			diffuseCoefficient() const;
-	Vector3			specularColor() const;
-	float			specularCoefficient() const;
-	unsigned int	specularExponent() const;
+	std::string	id() const;
+	Vector3	ambientColor() const;
+	float ambientCoefficient() const;
+	Vector3	diffuseColor() const;
+	float diffuseCoefficient() const;
+	Vector3 specularColor() const;
+	float specularCoefficient() const;
+	unsigned char specularExponent() const;
 };
 
