@@ -5,7 +5,9 @@
 using namespace std;
 using namespace pugi;
 
-Scene::Scene()
+Scene::Scene():
+	m_imageWidth(0),
+	m_imageHeight(0)
 {
 }
 
@@ -40,13 +42,24 @@ Scene Scene::readFromPath(const string &path)
 	res.materials = readMaterials(sceneNode);
 	res.shapeDefinitions = readShapeDefinitions(sceneNode);
 	res.objects = readSceneObjects(res, sceneNode); 
+	readSceneResolution(sceneNode, res.m_imageWidth, res.m_imageHeight);
 
 	return res;
 }
 
-Vector3 Scene::backgroundColor()
+Vector3 Scene::backgroundColor() const
 {
 	return bgColor;
+}
+
+int Scene::imageWidth() const
+{
+	return m_imageWidth;
+}
+
+int Scene::imageHeight() const
+{
+	return m_imageHeight;
 }
 
 Vector3 Scene::readBackgroundColor(const xml_node &scene)
@@ -68,6 +81,19 @@ Camera Scene::readCamera(const xml_node &scene)
 		floatFromChild(node, "far"),
 		floatFromChild(node, "fieldOfView")
 		);
+}
+
+void Scene::readSceneResolution(const xml_node &scene, int& outWidth, int& outHeight)
+{
+	xml_node node = scene.child("resolution");
+	if(!node)
+		throw domain_error("readSceneResolution: Couldn't found <resolution> node");
+
+	stringstream ss;
+	ss << node.text().as_string();
+	ss >> outWidth >> outHeight;
+	if(ss.fail())
+		throw domain_error("Bad resolution format. Couldn't read resolution x & y");
 }
 
 vector<Light> Scene::readLights(const xml_node &scene)

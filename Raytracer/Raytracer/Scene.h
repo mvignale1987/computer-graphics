@@ -24,11 +24,14 @@ private:
 	std::vector<SceneObject> objects;
 	Vector3 bgColor;
 	Camera cam;
+	int m_imageWidth, m_imageHeight;
 public:
 	Scene();
 	static Scene readFromPath(const std::string &path);
 	
-	Vector3 backgroundColor();
+	Vector3 backgroundColor() const;
+	int imageWidth() const;
+	int imageHeight() const;
 private:
 	// métodos para lectura de los componentes principales de la escena
 	static std::vector<Light> readLights(const pugi::xml_node &scene);
@@ -36,7 +39,8 @@ private:
 	static std::map<std::string, ShapeDefinition *> readShapeDefinitions(const pugi::xml_node &scene);
 	static std::vector<SceneObject> readSceneObjects(Scene& scene, const pugi::xml_node &sceneNode);
 	static Vector3 readBackgroundColor(const pugi::xml_node &scene);
-	static Camera  readCamera(const pugi::xml_node &scene);
+	static Camera readCamera(const pugi::xml_node &scene);
+	static void readSceneResolution(const pugi::xml_node &scene, int& outWidth, int& outHeight);
 
 	// para leer formas básicas
 	static Cyllinder *readCyllinder(const pugi::xml_node &node);
