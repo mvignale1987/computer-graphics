@@ -2,6 +2,7 @@
 <scene>
   <backgroundColor>#ff8000</backgroundColor>
   <resolution>1920 1080</resolution>
+  <outputDir>%DESKTOP%\Raytracer</outputDir>
 
   <!-- Luces de la escena -->
   <lights>
