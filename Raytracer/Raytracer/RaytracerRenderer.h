@@ -12,6 +12,14 @@ struct BufferContent
 	BufferContent(const Vector3& color, unsigned char a = UCHAR_MAX);
 };
 
+namespace RaytracerStatus {
+	enum Status {
+		INIT,			// generando imagen
+		RENDER_DONE,	// imagen generada
+		SAVED			// imagen guardada
+	};
+}
+
 class RaytracerRenderer: public Renderer
 {
 public:
@@ -21,6 +29,7 @@ private:
 	size_t bufferSize;
 	BufferContent *colorBuffer;
 	bool colorBufferChanged;
+	RaytracerStatus::Status status;
 	GLuint colorTextureId;
 public:
 	RaytracerRenderer(App &app, Scene &scene);
@@ -30,5 +39,6 @@ public:
 	void renderNextFrame();
 private:
 	void renderColorBuffer();
+	void saveImage();
 };
 

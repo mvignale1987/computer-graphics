@@ -1,8 +1,11 @@
 #include "RaytracerRenderer.h"
+#include <ctime>
 #include <SDL_opengl.h>
 #include <GL/GLU.h>
+#include <IL/devil_cpp_wrapper.hpp>
 #include "Scene.h"
 #include "App.h"
+#include "SceneError.h"
 
 const unsigned char RaytracerRenderer::superSamplingConstant = 2;
 
@@ -41,13 +44,15 @@ RaytracerRenderer::RaytracerRenderer(App &app, Scene &scene):
 	Renderer(app, scene),
 	bufferSize(scene.imageWidth() * scene.imageHeight() * superSamplingConstant * superSamplingConstant),
 	colorBuffer(new BufferContent[bufferSize]),
-	colorBufferChanged(true)
+	colorBufferChanged(true),
+	status(RaytracerStatus::INIT)
 {
 	// initialize image to sample output color
 	for(size_t i = 0; i < bufferSize; ++i)
 	{
 		colorBuffer[i] = BufferContent(scene.backgroundColor());
 	}
+	status = RaytracerStatus::RENDER_DONE;
 }
 
 void RaytracerRenderer::init()
@@ -92,6 +97,11 @@ void RaytracerRenderer::renderNextFrame()
 		renderColorBuffer();
 		colorBufferChanged = false;
 	}
+	if(status == RaytracerStatus::RENDER_DONE)
+	{
+		saveImage();
+		status = RaytracerStatus::SAVED;
+	}
 }
 
 void RaytracerRenderer::renderColorBuffer()
@@ -133,11 +143,45 @@ void RaytracerRenderer::renderColorBuffer()
 	// makes image fit in window
 	if(imageAspectRatio > windowAspectRatio)
 	{
-		glScalef(winWidth, winHeight * windowAspectRatio / imageAspectRatio, 1.0f);
+		glScalef((GLfloat)winWidth, winHeight * windowAspectRatio / imageAspectRatio, 1.0f);
 	} else {
-		glScalef(winWidth * imageAspectRatio / windowAspectRatio, winHeight, 1.0f);
+		glScalef(winWidth * imageAspectRatio / windowAspectRatio, (GLfloat)winHeight, 1.0f);
 	}
 
     // Draw data
     glDrawArrays(GL_QUADS, 0, 4);
 }
+
+void RaytracerRenderer::saveImage()
+{
+	static const int maxTimeLength = 255;
+	char timeStr[maxTimeLength];
+	time_t rawtime;
+	time (&rawtime);
+	tm timeinfo;
+	localtime_s(&timeinfo, &rawtime);
+	strftime (timeStr, maxTimeLength, "%Y-%m-%d %H.%M.%S", &timeinfo);
+
+	std::string outPath = scene().outputDir() + '\\' + timeStr + ".png";
+
+	ILuint imageID = ilGenImage();
+	ilBindImage(imageID);
+	ilTexImage(
+		scene().imageWidth() * superSamplingConstant,
+		scene().imageHeight() * superSamplingConstant,
+		1,  // OpenIL supports 3d textures!  but we don't want it to be 3d. so we just set this to be 1
+		4,  //  channels: one for R , one for G, one for B, one for A
+		IL_RGBA,  // duh, yeah use rgba
+		IL_UNSIGNED_BYTE,  // the type of data the imData array contains (next)
+		colorBuffer  // and the array of bytes represneting the actual image data
+	);
+	ilEnable(IL_FILE_OVERWRITE);
+	iluScale(scene().imageWidth(), scene().imageHeight(), 1);
+	ilSave( IL_PNG, outPath.c_str());
+
+	ILenum ilError = ilGetError();
+	if(ilError != IL_NO_ERROR)
+	{
+		throw SceneError::fromILError(ilError, "Error while saving image");
+	}
+} 

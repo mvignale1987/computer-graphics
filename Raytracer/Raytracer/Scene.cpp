@@ -1,6 +1,9 @@
 #include "Scene.h"
 #include <stdexcept>
 #include <sstream>
+#include <windows.h>
+#include <shlobj.h>
+#include <algorithm>
 
 using namespace std;
 using namespace pugi;
@@ -42,6 +45,7 @@ Scene Scene::readFromPath(const string &path)
 	res.materials = readMaterials(sceneNode);
 	res.shapeDefinitions = readShapeDefinitions(sceneNode);
 	res.objects = readSceneObjects(res, sceneNode); 
+	res.m_outputDir = readOutputDir(sceneNode);
 	readSceneResolution(sceneNode, res.m_imageWidth, res.m_imageHeight);
 
 	return res;
@@ -60,6 +64,11 @@ int Scene::imageWidth() const
 int Scene::imageHeight() const
 {
 	return m_imageHeight;
+}
+
+string Scene::outputDir() const
+{
+	return m_outputDir;
 }
 
 Vector3 Scene::readBackgroundColor(const xml_node &scene)
@@ -94,6 +103,45 @@ void Scene::readSceneResolution(const xml_node &scene, int& outWidth, int& outHe
 	ss >> outWidth >> outHeight;
 	if(ss.fail())
 		throw domain_error("Bad resolution format. Couldn't read resolution x & y");
+}
+
+
+string stringReplace( string src, string const& target, string const& repl)
+{
+	if (target.length() == 0) {
+		// searching for a match to the empty string will result in
+		// an infinite loop
+		// it might make sense to throw an exception for this case
+		return src;
+	}
+ 
+	if (src.length() == 0) {
+		return src; // nothing to match against
+	}
+ 
+	for (size_t idx = src.find( target); idx != string::npos; idx = src.find( target, idx)) {
+		src.replace( idx, target.length(), repl);
+		idx += repl.length();
+	}
+ 
+	return src;
+}
+
+string Scene::readOutputDir(const xml_node &scene)
+{
+	xml_node node = scene.child("outputDir");
+	if(!node)
+		throw domain_error("readSceneResolution: Couldn't found <outputDir> node");
+
+	string dir = node.text().as_string();
+	char desktopPathWide[MAX_PATH+1];
+	desktopPathWide[MAX_PATH] = '\0';
+	if (!SHGetSpecialFolderPath(HWND_DESKTOP, desktopPathWide, CSIDL_DESKTOP, FALSE))
+	{ 
+		throw domain_error("Couldn't get Desktop path");
+    }
+
+	return stringReplace(dir, "%DESKTOP%", desktopPathWide);
 }
 
 vector<Light> Scene::readLights(const xml_node &scene)

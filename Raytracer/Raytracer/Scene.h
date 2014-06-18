@@ -25,6 +25,7 @@ private:
 	Vector3 bgColor;
 	Camera cam;
 	int m_imageWidth, m_imageHeight;
+	std::string m_outputDir;
 public:
 	Scene();
 	static Scene readFromPath(const std::string &path);
@@ -32,6 +33,7 @@ public:
 	Vector3 backgroundColor() const;
 	int imageWidth() const;
 	int imageHeight() const;
+	std::string outputDir() const;
 private:
 	// métodos para lectura de los componentes principales de la escena
 	static std::vector<Light> readLights(const pugi::xml_node &scene);
@@ -41,6 +43,7 @@ private:
 	static Vector3 readBackgroundColor(const pugi::xml_node &scene);
 	static Camera readCamera(const pugi::xml_node &scene);
 	static void readSceneResolution(const pugi::xml_node &scene, int& outWidth, int& outHeight);
+	static std::string readOutputDir(const pugi::xml_node &scene);
 
 	// para leer formas básicas
 	static Cyllinder *readCyllinder(const pugi::xml_node &node);
