@@ -1,4 +1,5 @@
 #include "RaytracerRenderer.h"
+#include <windows.h>
 #include <ctime>
 #include <SDL_opengl.h>
 #include <GL/GLU.h>
@@ -6,6 +7,8 @@
 #include "Scene.h"
 #include "App.h"
 #include "SceneError.h"
+
+using namespace std;
 
 const unsigned char RaytracerRenderer::superSamplingConstant = 2;
 
@@ -161,8 +164,9 @@ void RaytracerRenderer::saveImage()
 	tm timeinfo;
 	localtime_s(&timeinfo, &rawtime);
 	strftime (timeStr, maxTimeLength, "%Y-%m-%d %H.%M.%S", &timeinfo);
+	string outPath = scene().outputDir() + '\\' + timeStr + ".png";
 
-	std::string outPath = scene().outputDir() + '\\' + timeStr + ".png";
+	CreateDirectory(scene().outputDir().c_str(), NULL);
 
 	ILuint imageID = ilGenImage();
 	ilBindImage(imageID);

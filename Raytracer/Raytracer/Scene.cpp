@@ -3,7 +3,6 @@
 #include <sstream>
 #include <windows.h>
 #include <shlobj.h>
-#include <algorithm>
 
 using namespace std;
 using namespace pugi;
