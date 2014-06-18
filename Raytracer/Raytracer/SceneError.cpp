@@ -62,6 +62,90 @@ SceneError SceneError::fromGLError(GLenum errorEnum, const string &prefix)
 	return fromString(ss.str());
 }
 
+SceneError SceneError::fromILError(ILenum errorEnum, const string &prefix)
+{
+	string message;
+
+	switch(errorEnum)
+	{
+		case IL_NO_ERROR:
+			message = "DevIL IL_NO_ERROR";
+			break;
+		case IL_INVALID_ENUM:
+			message = "DevIL IL_INVALID_ENUM";
+			break;
+		case IL_OUT_OF_MEMORY:
+			message = "DevIL IL_OUT_OF_MEMORY";
+			break;
+		case IL_FORMAT_NOT_SUPPORTED:
+			message = "DevIL IL_FORMAT_NOT_SUPPORTED";
+			break;
+		case IL_INTERNAL_ERROR:
+			message = "DevIL IL_INTERNAL_ERROR";
+			break;
+		case IL_INVALID_VALUE:
+			message = "DevIL IL_INVALID_VALUE";
+			break;
+		case IL_ILLEGAL_OPERATION:
+			message = "DevIL IL_ILLEGAL_OPERATION";
+			break;
+		case IL_ILLEGAL_FILE_VALUE:
+			message = "DevIL IL_ILLEGAL_FILE_VALUE";
+			break;
+		case IL_INVALID_FILE_HEADER:
+			message = "DevIL IL_INVALID_FILE_HEADER";
+			break;
+		case IL_INVALID_PARAM:
+			message = "DevIL IL_INVALID_PARAM";
+			break;
+		case IL_COULD_NOT_OPEN_FILE:
+			message = "DevIL IL_COULD_NOT_OPEN_FILE";
+			break;
+		case IL_INVALID_EXTENSION:
+			message = "DevIL IL_INVALID_EXTENSION";
+			break;
+		case IL_FILE_ALREADY_EXISTS:
+			message = "DevIL IL_FILE_ALREADY_EXISTS";
+			break;
+		case IL_OUT_FORMAT_SAME:
+			message = "DevIL IL_OUT_FORMAT_SAME";
+			break;
+		case IL_STACK_OVERFLOW:
+			message = "DevIL IL_STACK_OVERFLOW";
+			break;
+		case IL_STACK_UNDERFLOW:
+			message = "DevIL IL_STACK_UNDERFLOW";
+			break;
+		case IL_INVALID_CONVERSION:
+			message = "DevIL IL_INVALID_CONVERSION";
+			break;
+		case IL_LIB_GIF_ERROR:
+			message = "DevIL IL_LIB_GIF_ERROR";
+			break;
+		case IL_LIB_JPEG_ERROR:
+			message = "DevIL IL_LIB_JPEG_ERROR";
+			break;
+		case IL_LIB_PNG_ERROR:
+			message = "DevIL IL_LIB_PNG_ERROR";
+			break;
+		case IL_LIB_TIFF_ERROR:
+			message = "DevIL IL_LIB_TIFF_ERROR";
+			break;
+		case IL_LIB_MNG_ERROR:
+			message = "DevIL IL_LIB_MNG_ERROR";
+			break;
+		case IL_UNKNOWN_ERROR:
+			message = "DevIL IL_UNKNOWN_ERROR";
+			break;
+		default:
+			message = "IL Unknown error";
+			break;
+	}
+	std::stringstream ss;
+	ss << prefix << ": " << message;
+	return fromString(ss.str());
+}
+
 SceneError::~SceneError()
 {
 }
