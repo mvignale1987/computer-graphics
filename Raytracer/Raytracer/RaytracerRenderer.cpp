@@ -7,6 +7,7 @@
 #include "Scene.h"
 #include "App.h"
 #include "SceneError.h"
+#include "CPUInfo.h"
 
 using namespace std;
 
@@ -48,7 +49,8 @@ RaytracerRenderer::RaytracerRenderer(App &app, Scene &scene):
 	bufferSize(scene.imageWidth() * scene.imageHeight() * superSamplingConstant * superSamplingConstant),
 	colorBuffer(new BufferContent[bufferSize]),
 	colorBufferChanged(true),
-	status(RaytracerStatus::INIT)
+	status(RaytracerStatus::INIT),
+	nThreads(CPUInfo::get().logical)
 {
 	// initialize image to sample output color
 	for(size_t i = 0; i < bufferSize; ++i)

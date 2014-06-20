@@ -144,6 +144,7 @@
   <ItemGroup>
     <ClCompile Include="App.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CPUInfo.cpp" />
     <ClCompile Include="Cyllinder.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Logger.cpp" />
@@ -168,11 +169,14 @@
     <None Include="Libraries.targets" />
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="Scene.xml" />
+    <Xml Include="Scene.xml">
+      <SubType>Designer</SubType>
+    </Xml>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CPUInfo.h" />
     <ClInclude Include="Cyllinder.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Logger.h" />

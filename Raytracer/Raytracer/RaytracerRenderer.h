@@ -32,6 +32,7 @@ private:
 	bool colorBufferChanged;
 	RaytracerStatus::Status status;
 	GLuint colorTextureId;
+	int nThreads;
 public:
 	RaytracerRenderer(App &app, Scene &scene);
 
