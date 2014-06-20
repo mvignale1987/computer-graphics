@@ -34,6 +34,7 @@ public:
 	int imageWidth() const;
 	int imageHeight() const;
 	std::string outputDir() const;
+	Camera camera() const;
 private:
 	// métodos para lectura de los componentes principales de la escena
 	static std::vector<Light> readLights(const pugi::xml_node &scene);
