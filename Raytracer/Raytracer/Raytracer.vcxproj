@@ -152,7 +152,9 @@
     <ClCompile Include="OpenGLRenderer.cpp" />
     <ClCompile Include="Quad.cpp" />
     <ClCompile Include="pugixml.cpp" />
+    <ClCompile Include="Ray.cpp" />
     <ClCompile Include="RaytracerRenderer.cpp" />
+    <ClCompile Include="RaytracerThread.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneError.cpp" />
@@ -177,7 +179,9 @@
     <ClInclude Include="Material.h" />
     <ClInclude Include="OpenGLRenderer.h" />
     <ClInclude Include="Quad.h" />
+    <ClInclude Include="Ray.h" />
     <ClInclude Include="RaytracerRenderer.h" />
+    <ClInclude Include="RaytracerThread.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Scene.h" />

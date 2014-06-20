@@ -2,6 +2,7 @@
 
 #include "Renderer.h"
 #include "Vector3.h"
+#include "RaytracerThread.h"
 #include <SDL_opengl.h>
 
 struct BufferContent 
@@ -34,6 +35,7 @@ private:
 public:
 	RaytracerRenderer(App &app, Scene &scene);
 
+	// métodos base del Renderer
 	void init();
 	void handleReshape(int h, int w);
 	void renderNextFrame();
