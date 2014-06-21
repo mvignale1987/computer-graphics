@@ -314,22 +314,6 @@ Cyllinder *Scene::readCyllinder(const xml_node &node)
 		);
 }
 
-Light Scene::readLight(const xml_node &scene)
-{
-	xml_node node = scene.child("light");
-	if(!node)
-		throw domain_error("readLight: Couldn't found <light> node");
-
-	return Light (
-		node.attribute.value,
-		vectorFromChild(node, "position"),
-		vectorFromChild(node, "ambientColor"),
-		vectorFromChild(node, "diffuseColor"),
-		floatFromChild(node, "linearAttenuation"),
-		floatFromChild(node, "quadAttenuation")
-		);
-}
-Vector3 Scene::vectorFromChild(const pugi::xml_node &node, const std::string &child)
 Sphere *Scene::readSphere(const xml_node &node)
 {
 	string id = idFromNode(node);
