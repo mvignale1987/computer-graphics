@@ -1,15 +1,17 @@
 #include "Sphere.h"
 
 Sphere::Sphere():
-	radius(1)
+	ShapeDefinition(Shape::SPHERE, ""),
+	m_radius(1)
 {
 }
 
-Sphere::Sphere(float r):
-	radius(r)
+Sphere::Sphere(const std::string &id, float r):
+	ShapeDefinition(Shape::SPHERE, id),
+	m_radius(r)
 {
 }
-float Sphere::getRadius(){
-	return radius;
+float Sphere::radius(){
+	return m_radius;
 
 }

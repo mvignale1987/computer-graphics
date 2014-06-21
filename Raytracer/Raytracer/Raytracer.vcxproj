@@ -69,11 +69,11 @@
     <IncludePath>$(ProjectDir)\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)\lib\$(PlatformTarget);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(ProjectDir)\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)\lib\$(PlatformTarget);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(ProjectDir)\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)\lib\$(PlatformTarget);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
@@ -90,8 +90,8 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2_image.lib;opengl32.lib;glu32.lib;sdl2.lib;sdl2main.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;pugixml.lib;assimp.lib;SDL2_ttf.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;sdl2.lib;sdl2main.lib;SDL2_image.lib;DevIL.lib;ILU.lib;ILUT.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -103,7 +103,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2_image.lib;opengl32.lib;glu32.lib;sdl2.lib;sdl2main.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;pugixml.lib;assimp.lib;SDL2_ttf.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;sdl2.lib;sdl2main.lib;SDL2_image.lib;DevIL.lib;ILU.lib;ILUT.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -120,8 +120,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>SDL2_image.lib;opengl32.lib;glu32.lib;sdl2.lib;sdl2main.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;pugixml.lib;assimp.lib;SDL2_ttf.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;sdl2.lib;sdl2main.lib;SDL2_image.lib;DevIL.lib;ILU.lib;ILUT.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -137,23 +137,29 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>SDL2_image.lib;opengl32.lib;glu32.lib;sdl2.lib;sdl2main.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;pugixml.lib;assimp.lib;SDL2_ttf.lib;SDL2_mixer.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;sdl2.lib;sdl2main.lib;SDL2_image.lib;DevIL.lib;ILU.lib;ILUT.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="BufferContent.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Cyllinder.cpp" />
+    <ClCompile Include="ImageBlock.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Material.cpp" />
     <ClCompile Include="OpenGLRenderer.cpp" />
     <ClCompile Include="Quad.cpp" />
     <ClCompile Include="pugixml.cpp" />
+    <ClCompile Include="Ray.cpp" />
+    <ClCompile Include="RaytracerRenderer.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneError.cpp" />
+    <ClCompile Include="SceneObject.cpp" />
     <ClCompile Include="ShapeDefinition.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Triangle.cpp" />
@@ -163,20 +169,29 @@
     <None Include="Libraries.targets" />
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="Scene.xml" />
+    <Xml Include="Scene.xml">
+      <SubType>Designer</SubType>
+    </Xml>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
+    <ClInclude Include="BufferContent.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Cyllinder.h" />
+    <ClInclude Include="ImageBlock.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Logger.h" />
+    <ClInclude Include="Material.h" />
     <ClInclude Include="OpenGLRenderer.h" />
     <ClInclude Include="Quad.h" />
+    <ClInclude Include="Ray.h" />
+    <ClInclude Include="RaytracerRenderer.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneError.h" />
+    <ClInclude Include="SceneObject.h" />
+    <ClInclude Include="Shape.h" />
     <ClInclude Include="ShapeDefinition.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Triangle.h" />

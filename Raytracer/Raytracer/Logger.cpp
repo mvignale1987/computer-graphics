@@ -1,31 +1,39 @@
 #include "Logger.h"
 #include <fstream>
-#include <ctime>
-#include <SDL.h>
+#include <iostream>
 #include <Windows.h>
+#include <SDL.h>
+#include <sstream>
+#include <iomanip>
 
 using namespace std;
 
-const std::string Logger::logFileName = "log.txt";
+//const std::string Logger::logFileName = "log.txt";
+const std::string Logger::logFileName = "";
 
-void Logger::log(const string& message)
+static void logFile(const string& message)
 {
 	ofstream logStream;
-	logStream.open(logFileName, ios_base::app);
+	logStream.open(Logger::logFileName, ios_base::app);
 	if (logStream.fail())
 		return; // don't throw an exception if log couldn't be opened
 
-	// current date/time based on current system
-	time_t now = time(0);
-	// convert now to string form
-	char *buffer = new char[256];
-	ctime_s(buffer, 256, &now);
-	string dateString = string(buffer);
-	dateString.pop_back();
-	delete buffer;
-
-	logStream << dateString << ": " << message << endl;
+	logStream << message;
+	logStream.flush();
 	logStream.close();
+}
+
+static void logStdout(const string& message)
+{
+	cout << message;
+	cout.flush();
+}
+
+void Logger::log(const string& message)
+{
+	stringstream ss;
+	ss << std::fixed << setprecision(3) << SDL_GetTicks() / 1000.0 << ": " << message  << endl;
+	(logFileName.empty() ? logStdout : logFile)(ss.str());
 }
 
 

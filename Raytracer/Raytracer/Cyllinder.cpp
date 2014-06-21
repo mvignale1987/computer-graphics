@@ -1,29 +1,24 @@
 #include "Cyllinder.h"
  
 Cyllinder::Cyllinder():
-	pos(Vector3::zero),
-	height(1),
-	radius(1)
+	ShapeDefinition(Shape::CYLLINDER, ""),
+	m_height(1),
+	m_radius(1)
 {
 }
 
-Cyllinder::Cyllinder(const Vector3 &pos, float cHeight, float cRadius):
-	pos(pos),
-	height(cHeight),
-	radius(cRadius)
+Cyllinder::Cyllinder(const std::string &id, float cHeight, float cRadius):
+	ShapeDefinition(Shape::CYLLINDER, id),
+	m_height(cHeight),
+	m_radius(cRadius)
 {
 }
 
-Vector3 Cyllinder::position() const
+float Cyllinder::height() const
 {
-	return pos;
+	return m_height;
 }
-
-float Cyllinder::getHeight() const
+float Cyllinder::radius() const
 {
-	return height;
-}
-float Cyllinder::getRadius() const
-{
-	return radius;
+	return m_radius;
 }

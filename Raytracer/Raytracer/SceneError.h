@@ -3,6 +3,7 @@
 #include <exception>
 #include <string>
 #include <SDL_opengl.h>
+#include <IL/il.h>
 
 using namespace std;
 
@@ -12,5 +13,6 @@ public:
 	SceneError(const char *msg);
 	static SceneError fromSDLError(const string &msg);
 	static SceneError fromGLError(GLenum glGetErrorRes, const string &msg);
+	static SceneError fromILError(ILenum ilGetErrorRes, const string &msg);
 	virtual ~SceneError();
 };

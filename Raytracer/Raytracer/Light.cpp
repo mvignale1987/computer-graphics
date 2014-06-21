@@ -1,7 +1,9 @@
 #include "Light.h"
 
 
-Light::Light()
+Light::Light():
+	m_linearAttenuation(0),
+	m_quadAttenuation(0)
 {
 }
 
