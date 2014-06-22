@@ -211,17 +211,19 @@ Vector3 RaytracerRenderer::rayTrace(const Ray& ray, int depth)
 	if(firstHit.intersects())
 	{
 		Vector3 intersectionPoint = ray.origin() + firstHit.distance() * ray.direction();
-		return shade(*firstHit.obj(), intersectionPoint, depth);
+		return shade(firstHit.obj(), intersectionPoint, depth);
 	} else
 		return scene().backgroundColor();
 }
 
-Intersection RaytracerRenderer::findFirstHit(const Ray& ray)
+Intersection RaytracerRenderer::findFirstHit(const Ray& ray, SceneObject *caster)
 {
 	Intersection res = Intersection::noIntersection;
 	vector<SceneObject *>& objects = scene().objects();
 	for(vector<SceneObject *>::iterator it = objects.begin(); it != objects.end(); ++it)
 	{
+		if(*it == caster)
+			continue;
 		Intersection potential = (*it)->intersection(ray);
 		if(potential.intersects() && (!res.intersects() || potential.distance() < res.distance()))
 		{
@@ -231,36 +233,37 @@ Intersection RaytracerRenderer::findFirstHit(const Ray& ray)
 	return res;
 }
 
-Vector3 RaytracerRenderer::shade(SceneObject &obj, const Vector3& intersectionPoint, int depth)
+Vector3 RaytracerRenderer::shade(SceneObject *obj, const Vector3& intersectionPoint, int depth)
 {
-	Vector3 normal = obj.normalAt(intersectionPoint).normalized();
+	Vector3 normal = obj->normalAt(intersectionPoint).normalized();
 	Vector3 eyeDirection = (scene().camera().position() - intersectionPoint).normalized();
-	Material &material = *obj.material();
+	Material &material = *obj->material();
 	Vector3 color = Vector3::zero;
 	vector<Light>& lights = scene().lights();
 	for(vector<Light>::iterator it = lights.begin(); it != lights.end(); ++it)
 	{
-		/*Vector3 lightVector = it->position() - intersectionPoint;
+		Vector3 lightVector = it->position() - intersectionPoint;
 		Vector3 lightDirection = lightVector.normalized();
 		Ray shadowRay(intersectionPoint, lightDirection);
 
 		Vector3 lightColor = it->ambientColor().multiply(material.ambientColor()) * material.ambientCoefficient(); 
 
-		Intersection intersection = findFirstHit(shadowRay);
+		Intersection intersection = findFirstHit(shadowRay, obj);
 		
 		if(!intersection)
 		{
 			Vector3 reflectedRay = lightDirection - 2 * normal * (lightDirection * normal);
 
-			float invAttenuation = (1 + it->linearAttenuation() * lightVector.length() + it->quadAttenuation() * lightVector.lengthSquared() );
-			float attenuationFactor = min<float>(1.0f / invAttenuation , 1.0f);
+			float invAttenuation = (it->linearAttenuation() * lightVector.length() + it->quadAttenuation() * lightVector.lengthSquared() );
+			float attenuationFactor = 1 / invAttenuation;
 
 			Vector3 diffuseColor = material.diffuseCoefficient() * material.diffuseColor() * (normal * lightDirection);
 			Vector3 specularColor = material.specularCoefficient() * material.specularColor() * powf(reflectedRay * eyeDirection, material.specularExponent());
-			Vector3 diffuseLightColor = attenuationFactor * it->diffuseColor(). multiply(diffuseColor + specularColor);
+			Vector3 diffuseLightColor = attenuationFactor * it->diffuseColor().multiply(diffuseColor + specularColor);
+			lightColor += diffuseLightColor;
 		}
 		
-		color += lightColor; */
+		color += lightColor; 
 	}
 
 	return color.clamped();

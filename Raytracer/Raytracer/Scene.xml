@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scene>
   <backgroundColor>#ff8000</backgroundColor>
-  <resolution>800 600</resolution>
+  <resolution>320 240</resolution>
   <outputDir>%DESKTOP%\Raytracer</outputDir>
 
   <!-- Luces de la escena -->
@@ -10,8 +10,8 @@
       <position>0 10 0</position>
       <ambientColor>#FFFFFF</ambientColor>
       <diffuseColor>#FFFFFF</diffuseColor>
-      <linearAttenuation>1</linearAttenuation>
-      <quadAttenuation>1</quadAttenuation>
+      <linearAttenuation>0.01</linearAttenuation>
+      <quadAttenuation>0.01</quadAttenuation>
     </light>
   </lights>
   

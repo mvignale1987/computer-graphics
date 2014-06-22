@@ -31,7 +31,7 @@ float Intersection::distance() const
 
 bool Intersection::intersects() const
 {
-	return m_distance > minIntersectionDistance; 
+	return m_distance > 0; 
 }
 
 Intersection::operator bool() const
