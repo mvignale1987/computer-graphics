@@ -265,7 +265,6 @@ Vector3 RaytracerRenderer::shade(SceneObject *obj, const Vector3& intersectionPo
 		
 		color += lightColor; 
 	}
-
 	return color.clamped();
 }
 
