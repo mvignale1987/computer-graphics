@@ -67,7 +67,7 @@ Intersection SceneObjectSphere::intersection(const Ray& ray)
 	}
 }
 
-Vector3 SceneObjectSphere::normalAt(const Vector3& p)
+Vector3 SceneObjectSphere::normalAt(const Ray&, const Vector3& p)
 {
 	return p - center;
 }
