@@ -250,22 +250,27 @@ Vector3 RaytracerRenderer::shade(SceneObject *obj, const Vector3& intersectionPo
 		
 		if(!intersection.intersects())
 		{
-			Vector3 reflectedRay = lightDirection - 2 * normal * (lightDirection * normal);
+			Vector3 reflectedRay = 2 * normal * (normal * lightDirection) - lightDirection;
 
 			float invAttenuation = (it->linearAttenuation() * lightVector.length() + it->quadAttenuation() * lightVector.lengthSquared() );
-			float attenuationFactor = 1 / invAttenuation;
+			if(invAttenuation <= 0)
+				invAttenuation = 1;
+			float attenuationFactor = min<float>(1 / invAttenuation, 1);
 
 			Vector3 diffuseColor = material.diffuseCoefficient() * material.diffuseColor() * (normal * lightDirection);
-			Vector3 specularColor = material.specularCoefficient() * material.specularColor() * powf(reflectedRay * eyeDirection, material.specularExponent());
-			Vector3 diffuseLightColor = attenuationFactor * it->diffuseColor().multiply(diffuseColor + specularColor);
+
+			float specularExponent = powf(max<float>(reflectedRay * eyeDirection, 0), material.specularExponent());
+			Vector3 specularColor = material.specularCoefficient() * material.specularColor() * specularExponent;
+			
+			Vector3 diffuseLightColor = attenuationFactor * it->diffuseColor().multiply(specularColor+ diffuseColor);
+			
 			lightColor += diffuseLightColor;
-		} else {
-			color += Vector3::zero;
 		}
 		
 		color += lightColor; 
 	}
-	return color.clamped();
+	color = color.clamped();
+	return color;
 }
 
 void RaytracerRenderer::handleReshape(int width, int height)
@@ -314,10 +319,10 @@ void RaytracerRenderer::renderColorBuffer()
     const int SIZE_OF_VERTEX = (2 + 2)*sizeof(GLfloat);
 
     GLfloat data[] = {// 2 texture coordinates followed by 2 vertex coordinates in counterclockwise order
-        0, 0, -1, +1,// Bottomleft
-        1, 0, +1, +1,// Bottomright
-        1, 1, +1, -1,// Topright
-        0, 1, -1, -1,// Topleft
+        0, 0, -1, -1,// Bottomleft
+        1, 0, +1, -1,// Bottomright
+        1, 1, +1, +1,// Topright
+        0, 1, -1, +1,// Topleft
     };
 
     // Use this texture
@@ -368,7 +373,7 @@ void RaytracerRenderer::saveImage()
 	for(unsigned y = 0; y < FreeImage_GetHeight(dib); y++) {
 		BYTE *bits = FreeImage_GetScanLine(dib, y);
 		for(unsigned x = 0; x < FreeImage_GetWidth(dib); x++) {
-			size_t position = (bufferHeight - y - 1) * bufferWidth + x;
+			size_t position = y * bufferWidth + x;
 			BufferContent& color = colorBuffer[position];
 
 			bits[FI_RGBA_RED] = color.r;
