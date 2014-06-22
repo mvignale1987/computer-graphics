@@ -216,14 +216,12 @@ Vector3 RaytracerRenderer::rayTrace(const Ray& ray, int depth)
 		return scene().backgroundColor();
 }
 
-Intersection RaytracerRenderer::findFirstHit(const Ray& ray, SceneObject *caster)
+Intersection RaytracerRenderer::findFirstHit(const Ray& ray)
 {
 	Intersection res = Intersection::noIntersection;
 	vector<SceneObject *>& objects = scene().objects();
 	for(vector<SceneObject *>::iterator it = objects.begin(); it != objects.end(); ++it)
 	{
-		if(*it == caster)
-			continue;
 		Intersection potential = (*it)->intersection(ray);
 		if(potential.intersects() && (!res.intersects() || potential.distance() < res.distance()))
 		{
@@ -248,9 +246,9 @@ Vector3 RaytracerRenderer::shade(SceneObject *obj, const Vector3& intersectionPo
 
 		Vector3 lightColor = it->ambientColor().multiply(material.ambientColor()) * material.ambientCoefficient(); 
 
-		Intersection intersection = findFirstHit(shadowRay, obj);
+		Intersection intersection = findFirstHit(shadowRay);
 		
-		if(!intersection)
+		if(!intersection.intersects())
 		{
 			Vector3 reflectedRay = lightDirection - 2 * normal * (lightDirection * normal);
 
@@ -261,6 +259,8 @@ Vector3 RaytracerRenderer::shade(SceneObject *obj, const Vector3& intersectionPo
 			Vector3 specularColor = material.specularCoefficient() * material.specularColor() * powf(reflectedRay * eyeDirection, material.specularExponent());
 			Vector3 diffuseLightColor = attenuationFactor * it->diffuseColor().multiply(diffuseColor + specularColor);
 			lightColor += diffuseLightColor;
+		} else {
+			color += Vector3::zero;
 		}
 		
 		color += lightColor; 
