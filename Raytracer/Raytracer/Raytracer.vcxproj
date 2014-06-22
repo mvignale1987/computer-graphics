@@ -96,6 +96,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneError.cpp" />
     <ClCompile Include="SceneObject.cpp" />
+    <ClCompile Include="SceneObjectQuad.cpp" />
     <ClCompile Include="SceneObjectSphere.cpp" />
     <ClCompile Include="ShapeDefinition.cpp" />
     <ClCompile Include="Sphere.cpp" />
@@ -129,6 +130,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneError.h" />
     <ClInclude Include="SceneObject.h" />
+    <ClInclude Include="SceneObjectQuad.h" />
     <ClInclude Include="SceneObjectSphere.h" />
     <ClInclude Include="Shape.h" />
     <ClInclude Include="ShapeDefinition.h" />
