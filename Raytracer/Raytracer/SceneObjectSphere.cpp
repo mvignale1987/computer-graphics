@@ -53,15 +53,18 @@ Intersection SceneObjectSphere::intersection(const Ray& ray)
 		return Intersection::noIntersection;
 
     // if t0 is less than zero, the intersection point is at t1
-    if (t0 < 0)
+    if (t0 < -0.01f && t1 > 0.01f)
     {
 		return Intersection(this, t1);
     }
     // else the intersection point is at t0
-    else
+    else if(t0 > 0.01f)
     {
 		return Intersection(this, t0);
-    }
+    } else
+	{
+		return Intersection::noIntersection;
+	}
 }
 
 Vector3 SceneObjectSphere::normalAt(const Vector3& p)
