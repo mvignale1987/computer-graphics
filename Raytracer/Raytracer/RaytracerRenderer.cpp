@@ -240,7 +240,7 @@ Vector3 RaytracerRenderer::shade(SceneObject &obj, const Vector3& intersectionPo
 	vector<Light>& lights = scene().lights();
 	for(vector<Light>::iterator it = lights.begin(); it != lights.end(); ++it)
 	{
-		/*Vector3 lightVector = it->position() - intersectionPoint;
+		Vector3 lightVector = it->position() - intersectionPoint;
 		Vector3 lightDirection = lightVector.normalized();
 		Ray shadowRay(intersectionPoint, lightDirection);
 
@@ -260,9 +260,24 @@ Vector3 RaytracerRenderer::shade(SceneObject &obj, const Vector3& intersectionPo
 			Vector3 diffuseLightColor = attenuationFactor * it->diffuseColor(). multiply(diffuseColor + specularColor);
 		}
 		
-		color += lightColor; */
+		color += lightColor; 
 	}
-
+	if (/*profundidad < profundidadMax*/ true)
+	{
+		if (/*objeto es reflejante*/true)
+		{ 
+		
+		
+		}
+		if (/*objeto es translparente*/true)
+		{ 
+			if (/*no ocurre reflexion interna total*/true)
+			{ 
+		
+		
+			}
+		}
+	}
 	return color.clamped();
 }
 
