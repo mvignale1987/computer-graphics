@@ -57,8 +57,11 @@ public:
     GLfloat distance(const Vector3& v) const;
     GLfloat distanceSquared(const Vector3& v) const;
 	Vector3 scale(GLfloat x, GLfloat y, GLfloat z) const;
+	Vector3 multiply(const Vector3& v2);
 
 	SDL_Color toSDLColor() const; // clamps to [0,1] to 0, 255 and returns the SDL color
+
+	Vector3 clamped() const;
 };
 
 Vector3 operator * (GLfloat k, const Vector3& v);

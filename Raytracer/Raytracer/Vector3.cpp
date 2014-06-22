@@ -150,6 +150,35 @@ SDL_Color Vector3::toSDLColor() const
 	return res;
 }
 
+Vector3 Vector3::clamped() const
+{
+	float x = coords[0];
+	float y = coords[1];
+	float z = coords[2];
+	if(x < 0)
+		x = 0;
+	else if(x > 1)
+		x = 1;
+	if(y < 0)
+		y = 0;
+	else if(y > 1)
+		y = 1;
+	if(z < 0)
+		z = 0;
+	else if(z > 1)
+		z = 1;
+	return Vector3(x,y,z);
+}
+
+
+Vector3 Vector3::multiply(const Vector3& v2)
+{
+	const GLfloat *v1v = coords;
+	const GLfloat *v2v = v2.coords;
+
+	return Vector3(v1v[0] * v2v[0], v1v[1] * v2v[1], v1v[2] * v2v[2]);
+}
+
 Vector3 Vector3::operator -() const
 {
 	return Vector3(-coords[0], -coords[1], -coords[2]);
