@@ -6,7 +6,6 @@
 #include <SDL_image.h>
 #include <sstream>
 #include <GL/freeglut.h>
-#include <IL/il.h>
 
 using namespace std;
 
@@ -89,8 +88,6 @@ int App::initWindow()
 		SDL_SetWindowIcon(win, image); 
 		SDL_FreeSurface(image);
 	}
-
-	ilInit();
 
 	setVSync(true);
 

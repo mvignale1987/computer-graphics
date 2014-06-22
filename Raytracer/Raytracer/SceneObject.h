@@ -1,30 +1,18 @@
 #pragma once
 
 #include "Material.h"
-#include "ShapeDefinition.h"
 #include "Intersection.h"
 #include "Ray.h"
 
 class SceneObject
 {
 private:
-	ShapeDefinition *m_shape;
-	Vector3			m_position;
-	Vector3			m_rotation;
-	Material		*m_material;
-public:
-	SceneObject();
-
+	Material *m_material;
+protected:
 	SceneObject(
-		ShapeDefinition *shape,
-		Vector3 position,
-		Vector3 rotation,
 		Material *material
 	);
-
-	ShapeDefinition *shape() const;
-	Vector3 position() const;
-	Vector3 rotation() const;
+public:
 	Material *material() const;
-	Intersection intersection(const Ray& r);
+	virtual Intersection intersection(const Ray& r) = 0;
 };

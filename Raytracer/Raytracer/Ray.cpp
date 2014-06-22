@@ -5,9 +5,9 @@ Ray::Ray()
 {
 }
 
-Ray::Ray(const Vector3& direction, const Vector3& origin):
-	m_direction(direction),
-	m_origin(origin)
+Ray::Ray(const Vector3& origin, const Vector3& direction):
+	m_origin(origin),
+	m_direction(direction)
 {
 }
 

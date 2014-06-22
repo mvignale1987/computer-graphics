@@ -9,9 +9,7 @@
     <DllFiles Include="$(ProjectDir)\lib\$(PlatformTarget)\libpng16-16.dll"/>
     <DllFiles Include="$(ProjectDir)\lib\$(PlatformTarget)\libjpeg-9.dll"/>
     <DllFiles Include="$(ProjectDir)\lib\$(PlatformTarget)\freeglut.dll"/>
-    <DllFiles Include="$(ProjectDir)\lib\$(PlatformTarget)\DevIL.dll"/>
-    <DllFiles Include="$(ProjectDir)\lib\$(PlatformTarget)\ILU.dll"/>
-    <DllFiles Include="$(ProjectDir)\lib\$(PlatformTarget)\ILUT.dll"/>
+    <DllFiles Include="$(ProjectDir)\lib\$(PlatformTarget)\FreeImage.dll"/>
   </ItemGroup>
 
   <Target Name="CopyDLLs" AfterTargets="AfterLink" Inputs="@(DllFiles)" Outputs="@(DllFiles->'$(OutputPath)%(Filename)%(Extension)')">

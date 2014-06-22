@@ -11,17 +11,13 @@ public:
 	static const Intersection noIntersection;
 	static const float minIntersectionDistance;
 private:
-	Vector3 m_normal;
-	Vector3 m_point;
 	float m_distance;
 	SceneObject *m_object;
 public:
 	Intersection();
-	Intersection(SceneObject *obj, const Vector3& point, const Vector3& normal, float distance);
+	Intersection(SceneObject *obj, float distance);
 
 	SceneObject *obj() const;
-	Vector3 normal() const;
-	Vector3 point() const;
 	float distance() const;
 
 	bool intersects() const;

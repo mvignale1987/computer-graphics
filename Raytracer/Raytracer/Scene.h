@@ -24,7 +24,7 @@ private:
 	std::vector<Light> lights;
 	std::map<std::string, Material *> materials;
 	std::map<std::string, ShapeDefinition *> shapeDefinitions;
-	std::vector<SceneObject> m_objects;
+	std::vector<SceneObject *> m_objects;
 	Vector3 bgColor;
 	Camera cam;
 	int m_imageWidth, m_imageHeight;
@@ -38,14 +38,14 @@ public:
 	int imageHeight() const;
 	std::string outputDir() const;
 	Camera camera() const;
-	std::vector<SceneObject>& objects();
+	std::vector<SceneObject *>& objects();
 private:
 
 	// métodos para lectura de los componentes principales de la escena
 	static std::vector<Light> readLights(const pugi::xml_node &scene);
 	static std::map<std::string, Material *> readMaterials(const pugi::xml_node &scene);
 	static std::map<std::string, ShapeDefinition *> readShapeDefinitions(const pugi::xml_node &scene);
-	static std::vector<SceneObject> readSceneObjects(Scene& scene, const pugi::xml_node &sceneNode);
+	static std::vector<SceneObject *> readSceneObjects(Scene& scene, const pugi::xml_node &sceneNode);
 	static Vector3 readBackgroundColor(const pugi::xml_node &scene);
 	static Camera readCamera(const pugi::xml_node &scene);
 	static void readSceneResolution(const pugi::xml_node &scene, int& outWidth, int& outHeight);

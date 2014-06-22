@@ -5,9 +5,8 @@
 #include <set>
 #include <SDL_opengl.h>
 #include <SDL_thread.h>
+#include <FreeImage.h>
 #include <GL/GLU.h>
-#include <IL/il.h>
-#include <IL/ilu.h>
 #include "Scene.h"
 #include "App.h"
 #include "SceneError.h"
@@ -43,7 +42,9 @@ RaytracerRenderer::RaytracerRenderer(App &app, Scene &scene):
 
 	Camera camera = scene.camera();
 
-	xmax = sqrt(1.0/ (cos(camera.fov() * 0.5) * cos(camera.fov() * 0.5)) - 1);
+	float midCameraFov = camera.fov() * 0.5f * (float) M_PI / 180.0f;
+
+	xmax = sqrt(1.0/ cos(midCameraFov * midCameraFov) - 1);
 	ymax = xmax * bufferHeight / bufferWidth;
 
 	// TODO calcular las direcciones a partir de la orientación de la cámara
@@ -80,7 +81,7 @@ void RaytracerRenderer::initOpenGL()
     // Associate this texture id with some texture-specific data
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 }
 
@@ -89,7 +90,8 @@ Ray RaytracerRenderer::getRay(int x, int y)
 	Vector3 up    = (float)((2.0f * y / bufferHeight - 1) * ymax) * upWindowDirection;
 	Vector3 right = (float)((2.0f * x / bufferWidth  - 1) * xmax) * rightWindowDirection;
 	Vector3 referencePoint = up + right + windowCenter;
-	return Ray(scene().camera().position(), referencePoint);
+	Vector3 origin = scene().camera().position();
+	return Ray(origin, referencePoint - origin);
 }
 
 void RaytracerRenderer::prepareBlocks()
@@ -198,7 +200,7 @@ void RaytracerRenderer::processBlock(const ImageBlock& block)
 			Ray r = getRay((int)x, (int)y);
 			unsigned int position = y * bufferWidth + x;
 			Vector3 color = rayTrace(r, 1);
-			colorBuffer[position] = BufferContent(bgColor);
+			colorBuffer[position] = color;
 		}
 	}
 }
@@ -215,10 +217,10 @@ Vector3 RaytracerRenderer::rayTrace(const Ray& ray, int depth)
 Intersection RaytracerRenderer::findFirstHit(const Ray& ray)
 {
 	Intersection res = Intersection::noIntersection;
-	vector<SceneObject>& objects = scene().objects();
-	for(vector<SceneObject>::iterator it = objects.begin(); it != objects.end(); ++it)
+	vector<SceneObject *>& objects = scene().objects();
+	for(vector<SceneObject *>::iterator it = objects.begin(); it != objects.end(); ++it)
 	{
-		Intersection potential = it->intersection(ray);
+		Intersection potential = (*it)->intersection(ray);
 		if(potential.intersects() && (!res.intersects() || potential.distance() < res.distance()))
 		{
 			res = potential;
@@ -317,26 +319,33 @@ void RaytracerRenderer::saveImage()
 
 	CreateDirectory(scene().outputDir().c_str(), NULL);
 
-	ILuint imageID = ilGenImage();
-	ilBindImage(imageID);
-	ilTexImage(
-		(ILuint) bufferWidth,
-		(ILuint) bufferHeight,
-		1,  // OpenIL supports 3d textures!  but we don't want it to be 3d. so we just set this to be 1
-		4,  //  channels: one for R , one for G, one for B, one for A
-		IL_RGBA,  // duh, yeah use rgba
-		IL_UNSIGNED_BYTE,  // the type of data the imData array contains (next)
-		colorBuffer  // and the array of bytes represneting the actual image data
-	);
-	ilEnable(IL_FILE_OVERWRITE);
-	iluScale(scene().imageWidth(), scene().imageHeight(), 1);
-	ilSave( IL_PNG, outPath.c_str());
+	FIBITMAP *dib = FreeImage_Allocate(bufferWidth, bufferHeight, 32,
+		 FI_RGBA_RED_MASK, FI_RGBA_GREEN_MASK, FI_RGBA_BLUE_MASK);
+	if(!dib)
+		throw SceneError("saveImage: couldn't allocate image");
 
-	ILenum ilError = ilGetError();
-	if(ilError != IL_NO_ERROR)
-	{
-		throw SceneError::fromILError(ilError, "Error while saving image");
+	// Calculate the number of bytes per pixel (3 for 24-bit or 4 for 32-bit)
+	int bytespp = FreeImage_GetLine(dib) / FreeImage_GetWidth(dib);
+	for(unsigned y = 0; y < FreeImage_GetHeight(dib); y++) {
+		BYTE *bits = FreeImage_GetScanLine(dib, y);
+		for(unsigned x = 0; x < FreeImage_GetWidth(dib); x++) {
+			size_t position = (bufferHeight - y - 1) * bufferWidth + x;
+			BufferContent& color = colorBuffer[position];
+
+			bits[FI_RGBA_RED] = color.r;
+			bits[FI_RGBA_GREEN] = color.g;
+			bits[FI_RGBA_BLUE] = color.b;
+			bits[FI_RGBA_ALPHA] = color.a;
+			
+			bits += bytespp;
+		}
 	}
+
+	FIBITMAP *scaledDib = FreeImage_Rescale(dib, scene().imageWidth(), scene().imageHeight());
+
+	
+	if(!FreeImage_Save(FIF_PNG, scaledDib, outPath.c_str(), PNG_Z_BEST_COMPRESSION))
+		throw SceneError("saveImage: save image");
 } 
 
 

@@ -26,8 +26,6 @@ public:
 	Quad& asQuad();
 	Triangle& asTriangle();
 
-	virtual Intersection intersection(const Ray& ray) = 0;
-
 	virtual ~ShapeDefinition();
 };
 

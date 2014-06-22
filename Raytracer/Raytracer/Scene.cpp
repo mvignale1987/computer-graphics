@@ -1,4 +1,5 @@
 #include "Scene.h"
+#include "SceneObjectSphere.h"
 #include <stdexcept>
 #include <sstream>
 #include <shlobj.h>
@@ -74,7 +75,7 @@ string Scene::outputDir() const
 	return m_outputDir;
 }
 
-std::vector<SceneObject>& Scene::objects()
+std::vector<SceneObject *>& Scene::objects()
 {
 	return m_objects;
 }
@@ -273,13 +274,13 @@ map<string, ShapeDefinition *> Scene::readShapeDefinitions(const xml_node &scene
 	return res;
 }
 
-vector<SceneObject> Scene::readSceneObjects(Scene& scene, const xml_node &sceneNode)
+vector<SceneObject *> Scene::readSceneObjects(Scene& scene, const xml_node &sceneNode)
 {
 	xml_node objectsNode = sceneNode.child("objects");
 	if(!objectsNode)
 		throw domain_error("readSceneObjects: Couldn't found <objects> node");
 
-	vector<SceneObject> res;
+	vector<SceneObject *> res;
 
 	for (xml_node node = objectsNode.first_child(); node; node = node.next_sibling())
 	{
@@ -301,9 +302,15 @@ vector<SceneObject> Scene::readSceneObjects(Scene& scene, const xml_node &sceneN
 		xml_node rotationNode = node.child("rotation");
 		Vector3 rotation = rotationNode ? vectorFromNode(rotationNode) : Vector3::zero;
 
-		SceneObject sceneObject(shapeDefinition, position, rotation, material);
 
-		res.push_back(sceneObject);
+
+		switch(shapeDefinition->shapeType())
+		{
+		case Shape::SPHERE:
+			res.push_back(new SceneObjectSphere(material, position, shapeDefinition->asSphere().radius()));
+		default:
+			break;
+		}
 	}
 
 	return res;

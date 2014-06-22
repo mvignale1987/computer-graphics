@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scene>
   <backgroundColor>#ff8000</backgroundColor>
-  <resolution>1920 1080</resolution>
+  <resolution>800 600</resolution>
   <outputDir>%DESKTOP%\Raytracer</outputDir>
 
   <!-- Luces de la escena -->
@@ -64,10 +64,10 @@
   <!-- objetos a ser renderizados en la escena -->
   <objects>
     <object def="sphere" material="diffuseMaterial">
-      <position>0 0 -5</position>
+      <position>0 -1 4</position>
     </object>
     <object def="cyllinder" material="diffuseMaterial">
-      <position>0 0 -10</position>
+      <position>0 0 10</position>
       <rotation>0 90 90</rotation>
     </object>
     <object def="plane" material="diffuseMaterial">
