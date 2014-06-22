@@ -40,3 +40,8 @@ Material *SceneObject::material() const
 {
 	return m_material;
 }
+
+Intersection SceneObject::intersection(const Ray& r)
+{
+	return m_shape->intersection(r);
+}

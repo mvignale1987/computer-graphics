@@ -24,7 +24,7 @@ private:
 	std::vector<Light> lights;
 	std::map<std::string, Material *> materials;
 	std::map<std::string, ShapeDefinition *> shapeDefinitions;
-	std::vector<SceneObject> objects;
+	std::vector<SceneObject> m_objects;
 	Vector3 bgColor;
 	Camera cam;
 	int m_imageWidth, m_imageHeight;
@@ -38,6 +38,7 @@ public:
 	int imageHeight() const;
 	std::string outputDir() const;
 	Camera camera() const;
+	std::vector<SceneObject>& objects();
 private:
 
 	// métodos para lectura de los componentes principales de la escena

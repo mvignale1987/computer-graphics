@@ -7,6 +7,7 @@
 #include "Vector3.h"
 #include "ImageBlock.h"
 #include "BufferContent.h"
+#include "Intersection.h"
 #include "Ray.h"
 
 class RaytracerRenderer: public Renderer
@@ -18,8 +19,8 @@ public:
 	static const unsigned int blockSize;
 private:
 	// buffer
-	size_t					bufferWidth;
-	size_t					bufferHeight;
+	unsigned int			bufferWidth;
+	unsigned int			bufferHeight;
 	BufferContent *			colorBuffer;
 
 	// synchronization vars
@@ -47,13 +48,20 @@ public:
 	void handleReshape(int h, int w);
 	void renderNextFrame();
 private:
+	// rendering
+	void initOpenGL();
 	void renderColorBuffer();
 	void saveImage();
+
+	// inicio del rendering
 	static int raytraceAsync(void *self);
+	void prepareBlocks();
 	static int processPendingBlocks(void *self);
 	void processBlock(const ImageBlock& block);
-	Ray  getRay(int x, int y);
-	void prepareBlocks();
-	void initOpenGL();
+
+	// raytracing
+	Ray getRay(int x, int y);
+	Vector3 rayTrace(const Ray& ray, int depth);
+	Intersection findFirstHit(const Ray& r);
 };
 

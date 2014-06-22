@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 #include "Shape.h"
+#include "Intersection.h"
+#include "Ray.h"
 
 class Sphere;
 class Cyllinder;
@@ -23,6 +25,8 @@ public:
 	Cyllinder& asCyllinder();
 	Quad& asQuad();
 	Triangle& asTriangle();
+
+	virtual Intersection intersection(const Ray& ray) = 0;
 
 	virtual ~ShapeDefinition();
 };

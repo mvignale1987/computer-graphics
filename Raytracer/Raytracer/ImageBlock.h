@@ -5,17 +5,17 @@
 class ImageBlock
 {
 private:
-	size_t m_x;
-	size_t m_y;
-	size_t h;
-	size_t w;
+	unsigned int m_x;
+	unsigned int m_y;
+	unsigned int h;
+	unsigned int w;
 public:
 	ImageBlock();
-	ImageBlock(size_t x, size_t y, size_t width, size_t height);
-	size_t x() const;
-	size_t y() const;
-	size_t width() const;
-	size_t height() const;
+	ImageBlock(unsigned int x, unsigned int y, unsigned int width, unsigned int height);
+	unsigned int x() const;
+	unsigned int y() const;
+	unsigned int width() const;
+	unsigned int height() const;
 
 	std::string toString() const;
 };

@@ -6,6 +6,7 @@
 #include <SDL_image.h>
 #include <sstream>
 #include <GL/freeglut.h>
+#include <IL/il.h>
 
 using namespace std;
 
@@ -37,6 +38,7 @@ int App::initWindow()
 		Logger::logSDLError("SDL_Init Error");
 		return 1;
 	}
+
 
 	// Settings for antialiasing
     SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
@@ -87,6 +89,8 @@ int App::initWindow()
 		SDL_SetWindowIcon(win, image); 
 		SDL_FreeSurface(image);
 	}
+
+	ilInit();
 
 	setVSync(true);
 

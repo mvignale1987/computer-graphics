@@ -2,6 +2,8 @@
 
 #include "Material.h"
 #include "ShapeDefinition.h"
+#include "Intersection.h"
+#include "Ray.h"
 
 class SceneObject
 {
@@ -24,4 +26,5 @@ public:
 	Vector3 position() const;
 	Vector3 rotation() const;
 	Material *material() const;
+	Intersection intersection(const Ray& r);
 };

@@ -9,5 +9,7 @@ public:
 	Sphere();
 	Sphere(const std::string &id, float r);
 	float radius();
+
+	Intersection intersection(const Ray& ray);
 };
 

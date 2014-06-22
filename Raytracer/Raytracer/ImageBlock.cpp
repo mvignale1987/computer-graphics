@@ -1,5 +1,6 @@
 #include "ImageBlock.h"
 #include <sstream>
+#include <iomanip>
 
 using namespace std;
 
@@ -8,28 +9,28 @@ ImageBlock::ImageBlock():
 {
 }
 
-ImageBlock::ImageBlock(size_t x, size_t y, size_t width, size_t height):
+ImageBlock::ImageBlock(unsigned int x, unsigned int y, unsigned int width, unsigned int height):
 	m_x(x), m_y(y), w(width), h(height)
 {
 }
 
 
-size_t ImageBlock::x() const
+unsigned int ImageBlock::x() const
 {
 	return m_x;
 }
 
-size_t ImageBlock::y() const
+unsigned int ImageBlock::y() const
 {
 	return m_y;
 }
 
-size_t ImageBlock::width() const
+unsigned int ImageBlock::width() const
 {
 	return w;
 }
 
-size_t ImageBlock::height() const
+unsigned int ImageBlock::height() const
 {
 	return h;
 }
@@ -37,6 +38,6 @@ size_t ImageBlock::height() const
 string ImageBlock::toString() const
 {
 	stringstream ss;
-	ss << "<x: " << m_x << " , y: " << m_y << ", w: " << w << ", h: " << h << ">";
+	ss << "<x: " << setw(4) << m_x << " , y: " << setw(4) << m_y << ", w: " << setw(3) << w << ", h: " << setw(3) << h << ">";
 	return ss.str();
 }

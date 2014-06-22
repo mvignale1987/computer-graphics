@@ -14,4 +14,6 @@ public:
 	Cyllinder(const std::string &id, float cHeight, float cRadius);
 	float height() const;
 	float radius() const;
+
+	Intersection intersection(const Ray& ray);
 };

@@ -42,7 +42,7 @@ Scene Scene::readFromPath(const string &path)
 	res.lights = readLights(sceneNode);
 	res.materials = readMaterials(sceneNode);
 	res.shapeDefinitions = readShapeDefinitions(sceneNode);
-	res.objects = readSceneObjects(res, sceneNode); 
+	res.m_objects = readSceneObjects(res, sceneNode); 
 	res.m_outputDir = readOutputDir(sceneNode);
 	readSceneResolution(sceneNode, res.m_imageWidth, res.m_imageHeight);
 
@@ -72,6 +72,11 @@ int Scene::imageHeight() const
 string Scene::outputDir() const
 {
 	return m_outputDir;
+}
+
+std::vector<SceneObject>& Scene::objects()
+{
+	return m_objects;
 }
 
 Vector3 Scene::readBackgroundColor(const xml_node &scene)

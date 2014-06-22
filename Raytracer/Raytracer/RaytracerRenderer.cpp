@@ -1,10 +1,13 @@
 #include "RaytracerRenderer.h"
 #include <sstream>
 #include <ctime>
+#include <deque>
+#include <set>
 #include <SDL_opengl.h>
 #include <SDL_thread.h>
 #include <GL/GLU.h>
-#include <IL/devil_cpp_wrapper.hpp>
+#include <IL/il.h>
+#include <IL/ilu.h>
 #include "Scene.h"
 #include "App.h"
 #include "SceneError.h"
@@ -40,7 +43,7 @@ RaytracerRenderer::RaytracerRenderer(App &app, Scene &scene):
 
 	Camera camera = scene.camera();
 
-	xmax = sqrt(1.0/ cos(camera.fov() * 0.5) - 1);
+	xmax = sqrt(1.0/ (cos(camera.fov() * 0.5) * cos(camera.fov() * 0.5)) - 1);
 	ymax = xmax * bufferHeight / bufferWidth;
 
 	// TODO calcular las direcciones a partir de la orientación de la cámara
@@ -54,7 +57,7 @@ void RaytracerRenderer::init()
 	Logger::log("Init OpenGL");
 	initOpenGL();
 	Logger::log("Init Buffer");
-	size_t bufferSize = bufferWidth * bufferHeight * sizeof(BufferContent);
+	unsigned int bufferSize = bufferWidth * bufferHeight * sizeof(BufferContent);
 	memset(colorBuffer, 0xFF, bufferSize);
 	
 	SDL_Thread *thread = SDL_CreateThread(raytraceAsync, "RT_Init", this);
@@ -91,26 +94,54 @@ Ray RaytracerRenderer::getRay(int x, int y)
 
 void RaytracerRenderer::prepareBlocks()
 {
-	// initialize image to sample output color
-	size_t blockHorizontalSize = (size_t) ceil((double)bufferWidth / blockSize);
-	size_t blockVerticalSize = (size_t) ceil((double)bufferHeight / blockSize);
+	typedef pair<unsigned int, unsigned int> pairUint;
 
-	for(size_t i = 0; i < blockVerticalSize; ++i){
-		for(size_t j = 0; j < blockHorizontalSize; ++j){
-			size_t x = blockSize * j;
-			size_t y = blockSize * i;
-			size_t sizeX = min<size_t>(x + blockSize, bufferWidth) - x;
-			size_t sizeY = min<size_t>(y + blockSize, bufferHeight) - y;
-			pendingBlocks.push(ImageBlock(x,y,sizeX, sizeY));
-		}
+	// initialize image to sample output color
+	unsigned int blockHorizontalSize = (unsigned int) ceil((double)bufferWidth / blockSize);
+	unsigned int blockVerticalSize = (unsigned int) ceil((double)bufferHeight / blockSize);
+
+	set<pairUint> visited;
+	deque<pairUint> pendingPut;
+
+	pendingPut.push_front(pairUint(blockHorizontalSize/2, blockVerticalSize/2));
+
+	while(!pendingPut.empty())
+	{
+		pairUint firstPendingPut = pendingPut.front();
+		pendingPut.pop_front();
+
+		if(firstPendingPut.first >= blockHorizontalSize)
+			continue;
+		if(firstPendingPut.second >= blockVerticalSize)
+			continue;
+		if(visited.find(firstPendingPut) != visited.end())
+			continue;
+		
+		visited.insert(firstPendingPut);
+
+		unsigned int x = blockSize * firstPendingPut.first;
+		unsigned int y = blockSize * firstPendingPut.second;
+		unsigned int sizeX = min<unsigned int>(x + blockSize, bufferWidth) - x;
+		unsigned int sizeY = min<unsigned int>(y + blockSize, bufferHeight) - y;
+		pendingBlocks.push(ImageBlock(x,y,sizeX, sizeY));
+
+		pairUint left = pairUint(firstPendingPut.first-1, firstPendingPut.second);
+		pendingPut.push_back(left);
+
+		pairUint right = pairUint(firstPendingPut.first+1, firstPendingPut.second);
+		pendingPut.push_back(right);
+
+		pairUint up = pairUint(firstPendingPut.first, firstPendingPut.second-1);
+		pendingPut.push_back(up);
+
+		pairUint down = pairUint(firstPendingPut.first, firstPendingPut.second+1);
+		pendingPut.push_back(down);
 	}
 }
 
 int RaytracerRenderer::raytraceAsync(void *s)
 {
 	RaytracerRenderer &self = *(RaytracerRenderer *) s;
-
-	Logger::log("PrepareBlocks");
 	self.prepareBlocks();
 
 	for(int i = 0; i < self.nThreads; ++i)
@@ -120,7 +151,6 @@ int RaytracerRenderer::raytraceAsync(void *s)
 		SDL_Thread *thread = SDL_CreateThread(processPendingBlocks, ss.str().c_str(), &self);
 		SDL_DetachThread(thread); 
 	}
-	Logger::log("Done init");
 
 	return 0;
 }
@@ -158,18 +188,43 @@ void RaytracerRenderer::processBlock(const ImageBlock& block)
 {
 	Logger::log("ProcessBlock " + block.toString());
 
-	Vector3 bgColor = Vector3::random(); //scene().backgroundColor();
-	size_t maxX = block.width() + block.x();
-	size_t maxY = block.height() + block.y();
-	for(size_t y = block.y(); y < maxY; ++y)
+	Vector3 bgColor = scene().backgroundColor();
+	unsigned int maxX = block.width() + block.x();
+	unsigned int maxY = block.height() + block.y();
+	for(unsigned int y = block.y(); y < maxY; ++y)
 	{
-		for(size_t x = block.x(); x < maxX; ++x)
+		for(unsigned int x = block.x(); x < maxX; ++x)
 		{
-			Ray r = getRay(x, y);
-			size_t position = y * bufferWidth + x;
+			Ray r = getRay((int)x, (int)y);
+			unsigned int position = y * bufferWidth + x;
+			Vector3 color = rayTrace(r, 1);
 			colorBuffer[position] = BufferContent(bgColor);
 		}
 	}
+}
+
+Vector3 RaytracerRenderer::rayTrace(const Ray& ray, int depth)
+{
+	Intersection firstHit = findFirstHit(ray);
+	if(firstHit.intersects())
+		return Vector3::zero;
+	else
+		return scene().backgroundColor();
+}
+
+Intersection RaytracerRenderer::findFirstHit(const Ray& ray)
+{
+	Intersection res = Intersection::noIntersection;
+	vector<SceneObject>& objects = scene().objects();
+	for(vector<SceneObject>::iterator it = objects.begin(); it != objects.end(); ++it)
+	{
+		Intersection potential = it->intersection(ray);
+		if(potential.intersects() && (!res.intersects() || potential.distance() < res.distance()))
+		{
+			res = potential;
+		}
+	}
+	return res;
 }
 
 void RaytracerRenderer::handleReshape(int width, int height)

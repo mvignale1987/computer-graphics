@@ -15,3 +15,8 @@ float Sphere::radius(){
 	return m_radius;
 
 }
+
+Intersection Sphere::intersection(const Ray& ray)
+{
+	return Intersection::noIntersection;
+}

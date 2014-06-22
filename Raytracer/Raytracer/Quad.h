@@ -20,5 +20,7 @@ public:
 
 	std::vector<Vector3> points() const;
 	const Vector3 *pointsPointer() const;
+
+	Intersection intersection(const Ray& ray);
 };
 
