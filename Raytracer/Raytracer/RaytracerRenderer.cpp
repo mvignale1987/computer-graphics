@@ -211,7 +211,7 @@ Vector3 RaytracerRenderer::rayTrace(const Ray& ray, int depth)
 	if(firstHit.intersects())
 	{
 		Vector3 intersectionPoint = ray.origin() + firstHit.distance() * ray.direction();
-		return shade(firstHit.obj(), intersectionPoint, depth);
+		return shade(firstHit.obj(), ray, intersectionPoint, depth);
 	} else
 		return scene().backgroundColor();
 }
@@ -231,9 +231,9 @@ Intersection RaytracerRenderer::findFirstHit(const Ray& ray)
 	return res;
 }
 
-Vector3 RaytracerRenderer::shade(SceneObject *obj, const Vector3& intersectionPoint, int depth)
+Vector3 RaytracerRenderer::shade(SceneObject *obj, const Ray& ray, const Vector3& intersectionPoint, int depth)
 {
-	Vector3 normal = obj->normalAt(intersectionPoint).normalized();
+	Vector3 normal = obj->normalAt(ray, intersectionPoint).normalized();
 	Vector3 eyeDirection = (scene().camera().position() - intersectionPoint).normalized();
 	Material &material = *obj->material();
 	Vector3 color = Vector3::zero;
@@ -242,32 +242,32 @@ Vector3 RaytracerRenderer::shade(SceneObject *obj, const Vector3& intersectionPo
 	{
 		Vector3 lightVector = it->position() - intersectionPoint;
 		Vector3 lightDirection = lightVector.normalized();
-		Ray shadowRay(intersectionPoint, lightDirection);
 
-		Vector3 lightColor = it->ambientColor().multiply(material.ambientColor()) * material.ambientCoefficient(); 
+		Vector3 ambientColor = it->ambientColor().multiply(material.ambientColor()) * material.ambientCoefficient(); 
+		color += ambientColor; 
 
-		Intersection intersection = findFirstHit(shadowRay);
-		
-		if(!intersection.intersects())
+		Intersection shadowIntersection = findFirstHit(Ray(intersectionPoint, lightDirection));
+
+		if(shadowIntersection.intersects() && shadowIntersection.distance() < (intersectionPoint - it->position()).length())
 		{
-			Vector3 reflectedRay = 2 * normal * (normal * lightDirection) - lightDirection;
-
-			float invAttenuation = (it->linearAttenuation() * lightVector.length() + it->quadAttenuation() * lightVector.lengthSquared() );
-			if(invAttenuation <= 0)
-				invAttenuation = 1;
-			float attenuationFactor = min<float>(1 / invAttenuation, 1);
-
-			Vector3 diffuseColor = material.diffuseCoefficient() * material.diffuseColor() * (normal * lightDirection);
-
-			float specularExponent = powf(max<float>(reflectedRay * eyeDirection, 0), material.specularExponent());
-			Vector3 specularColor = material.specularCoefficient() * material.specularColor() * specularExponent;
-			
-			Vector3 diffuseLightColor = attenuationFactor * it->diffuseColor().multiply(specularColor+ diffuseColor);
-			
-			lightColor += diffuseLightColor;
+			continue;
 		}
 		
-		color += lightColor; 
+		Vector3 reflectedRay = 2 * normal * (normal * lightDirection) - lightDirection;
+
+		float invAttenuation = (it->linearAttenuation() * lightVector.length() + it->quadAttenuation() * lightVector.lengthSquared() );
+		if(invAttenuation <= 0)
+			invAttenuation = 1;
+		float attenuationFactor = min<float>(1 / invAttenuation, 1);
+
+		Vector3 diffuseColor = material.diffuseCoefficient() * material.diffuseColor() * (normal * lightDirection);
+
+		float specularExponent = powf(max<float>(reflectedRay * eyeDirection, 0), material.specularExponent());
+		Vector3 specularColor = material.specularCoefficient() * material.specularColor() * specularExponent;
+			
+		Vector3 nonAmbientColor = attenuationFactor * it->diffuseColor().multiply(specularColor+ diffuseColor);
+			
+		color += nonAmbientColor;
 	}
 	color = color.clamped();
 	return color;
