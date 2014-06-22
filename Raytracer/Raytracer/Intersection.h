@@ -9,7 +9,6 @@ class Intersection
 public:
 	// intersección a distancia infinita
 	static const Intersection noIntersection;
-	static const float minIntersectionDistance;
 private:
 	float m_distance;
 	SceneObject *m_object;

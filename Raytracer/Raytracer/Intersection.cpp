@@ -5,7 +5,6 @@
 using namespace std;
 
 const Intersection Intersection::noIntersection(NULL, -1);
-const float Intersection::minIntersectionDistance = 0.0001f;
 
 Intersection::Intersection():
 	m_object(NULL),
