@@ -1,5 +1,6 @@
 #include "Scene.h"
 #include "SceneObjectSphere.h"
+#include "SceneObjectQuad.h"
 #include <stdexcept>
 #include <sstream>
 #include <shlobj.h>
@@ -314,6 +315,16 @@ vector<SceneObject *> Scene::readSceneObjects(Scene& scene, const xml_node &scen
 		{
 		case Shape::SPHERE:
 			res.push_back(new SceneObjectSphere(material, position, shapeDefinition->asSphere().radius()));
+			break;
+		case Shape::QUAD:
+			res.push_back(new SceneObjectQuad(
+				material,
+				shapeDefinition->asQuad().points()[0],
+				shapeDefinition->asQuad().points()[1],
+				shapeDefinition->asQuad().points()[2],
+				shapeDefinition->asQuad().points()[3]
+			));
+			break;
 		default:
 			break;
 		}
