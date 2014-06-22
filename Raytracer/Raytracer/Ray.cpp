@@ -6,7 +6,7 @@ Ray::Ray()
 }
 
 Ray::Ray(const Vector3& direction, const Vector3& origin):
-	m_direction(direction.normalized()),
+	m_direction(),
 	m_origin(origin)
 {
 }

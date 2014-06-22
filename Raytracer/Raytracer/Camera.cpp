@@ -2,7 +2,7 @@
 
 Camera::Camera():
 	pos(Vector3::zero),
-	rot(Vector3::zero),
+	lookAtPos(Vector3::zero),
 	upDirection(Vector3::up),
 	zNearVal(-1),
 	zFarVal(1),
@@ -10,9 +10,9 @@ Camera::Camera():
 {
 }
 
-Camera::Camera(const Vector3 &pos, const Vector3 &rot, const Vector3 &up, float zNear, float zFar, float fov):
+Camera::Camera(const Vector3 &pos, const Vector3 &lookAt, const Vector3 &up, float zNear, float zFar, float fov):
 	pos(pos),
-	rot(rot),
+	lookAtPos(lookAt),
 	upDirection(up),
 	zNearVal(zNear),
 	zFarVal(zFar),
@@ -24,9 +24,9 @@ Vector3 Camera::position() const
 {
 	return pos;
 }
-Vector3 Camera::rotation() const
+Vector3 Camera::lookAt() const
 {
-	return rot;
+	return lookAtPos;
 }
 Vector3 Camera::up() const
 {

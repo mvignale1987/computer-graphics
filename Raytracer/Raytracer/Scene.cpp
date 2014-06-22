@@ -1,7 +1,6 @@
 #include "Scene.h"
 #include <stdexcept>
 #include <sstream>
-#include <windows.h>
 #include <shlobj.h>
 
 using namespace std;
@@ -55,6 +54,11 @@ Vector3 Scene::backgroundColor() const
 	return bgColor;
 }
 
+Camera Scene::camera() const
+{
+	return cam;
+}
+
 int Scene::imageWidth() const
 {
 	return m_imageWidth;
@@ -83,7 +87,7 @@ Camera Scene::readCamera(const xml_node &scene)
 
 	return Camera (
 		vectorFromChild(node, "position"),
-		vectorFromChild(node, "rotation"),
+		vectorFromChild(node, "lookAt"),
 		vectorFromChild(node, "up"),
 		floatFromChild(node, "near"),
 		floatFromChild(node, "far"),

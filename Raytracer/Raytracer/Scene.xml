@@ -18,7 +18,7 @@
   <!-- cámara a usar en la escena -->
   <camera>
     <position>0 0 0</position>
-    <rotation>0 0 0</rotation>
+    <lookAt>0 0 10</lookAt>
     <up>0 1 0</up>
     <near>0.1</near>
     <far>200</far>

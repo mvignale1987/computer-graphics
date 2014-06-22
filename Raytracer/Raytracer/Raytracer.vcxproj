@@ -104,7 +104,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>opengl32.lib;glu32.lib;sdl2.lib;sdl2main.lib;SDL2_image.lib;DevIL.lib;ILU.lib;ILUT.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -143,9 +143,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="BufferContent.cpp" />
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="CPUInfo.cpp" />
     <ClCompile Include="Cyllinder.cpp" />
+    <ClCompile Include="ImageBlock.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="main.cpp" />
@@ -155,7 +156,6 @@
     <ClCompile Include="pugixml.cpp" />
     <ClCompile Include="Ray.cpp" />
     <ClCompile Include="RaytracerRenderer.cpp" />
-    <ClCompile Include="RaytracerThread.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneError.cpp" />
@@ -175,9 +175,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
+    <ClInclude Include="BufferContent.h" />
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="CPUInfo.h" />
     <ClInclude Include="Cyllinder.h" />
+    <ClInclude Include="ImageBlock.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="Material.h" />
@@ -185,7 +186,6 @@
     <ClInclude Include="Quad.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="RaytracerRenderer.h" />
-    <ClInclude Include="RaytracerThread.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Scene.h" />
