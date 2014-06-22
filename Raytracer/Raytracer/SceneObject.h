@@ -15,4 +15,5 @@ protected:
 public:
 	Material *material() const;
 	virtual Intersection intersection(const Ray& r) = 0;
+	virtual Vector3 normalAt(const Vector3& point) = 0;
 };

@@ -63,3 +63,8 @@ Intersection SceneObjectSphere::intersection(const Ray& ray)
 		return Intersection(this, t0);
     }
 }
+
+Vector3 SceneObjectSphere::normalAt(const Vector3& p)
+{
+	return p - center;
+}

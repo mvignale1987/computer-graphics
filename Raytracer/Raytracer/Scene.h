@@ -21,7 +21,7 @@ class SceneObject;
 class Scene 
 {
 private:
-	std::vector<Light> lights;
+	std::vector<Light> m_lights;
 	std::map<std::string, Material *> materials;
 	std::map<std::string, ShapeDefinition *> shapeDefinitions;
 	std::vector<SceneObject *> m_objects;
@@ -39,6 +39,7 @@ public:
 	std::string outputDir() const;
 	Camera camera() const;
 	std::vector<SceneObject *>& objects();
+	std::vector<Light>& lights();
 private:
 
 	// métodos para lectura de los componentes principales de la escena

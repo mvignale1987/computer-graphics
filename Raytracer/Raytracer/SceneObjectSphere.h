@@ -11,5 +11,6 @@ public:
 	SceneObjectSphere(Material *material, const Vector3& center, float radius);
 
 	virtual Intersection intersection(const Ray& r);
+	virtual Vector3 normalAt(const Vector3& p);
 };
 

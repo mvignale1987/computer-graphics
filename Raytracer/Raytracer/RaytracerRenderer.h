@@ -63,5 +63,6 @@ private:
 	Ray getRay(int x, int y);
 	Vector3 rayTrace(const Ray& ray, int depth);
 	Intersection findFirstHit(const Ray& r);
+	Vector3 shade(SceneObject &obj, const Vector3& intersectionPoint, int depth);
 };
 

@@ -40,7 +40,7 @@ Scene Scene::readFromPath(const string &path)
 
 	res.bgColor = readBackgroundColor(sceneNode);
 	res.cam = readCamera(sceneNode);
-	res.lights = readLights(sceneNode);
+	res.m_lights = readLights(sceneNode);
 	res.materials = readMaterials(sceneNode);
 	res.shapeDefinitions = readShapeDefinitions(sceneNode);
 	res.m_objects = readSceneObjects(res, sceneNode); 
@@ -75,10 +75,16 @@ string Scene::outputDir() const
 	return m_outputDir;
 }
 
-std::vector<SceneObject *>& Scene::objects()
+vector<SceneObject *>& Scene::objects()
 {
 	return m_objects;
 }
+
+vector<Light>& Scene::lights()
+{
+	return m_lights;
+}
+
 
 Vector3 Scene::readBackgroundColor(const xml_node &scene)
 {
