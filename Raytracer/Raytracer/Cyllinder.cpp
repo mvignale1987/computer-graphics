@@ -22,8 +22,3 @@ float Cyllinder::radius() const
 {
 	return m_radius;
 }
-
-Intersection Cyllinder::intersection(const Ray& ray)
-{
-	return Intersection::noIntersection;
-}

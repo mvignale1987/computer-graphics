@@ -36,8 +36,3 @@ const Vector3 *Quad::pointsPointer() const
 {
 	return m_points;
 }
-
-Intersection Quad::intersection(const Ray& ray)
-{
-	return Intersection::noIntersection;
-}

@@ -32,8 +32,3 @@ const Vector3 *Triangle::pointsPointer() const
 {
 	return m_points;
 }
-
-Intersection Triangle::intersection(const Ray& ray)
-{
-	return Intersection::noIntersection;
-}
