@@ -24,7 +24,10 @@ Intersection SceneObjectQuad::intersection(const Ray& r)
 	else
 		distance = numerator / denominator; // ray intersects on single place
 	
-	return Intersection(this, distance);
+	if(distance > 0.001f)
+		return Intersection(this, distance);
+	else 
+		return Intersection::noIntersection;
 }
 
 Vector3 SceneObjectQuad::normalAt(const Vector3& point)
