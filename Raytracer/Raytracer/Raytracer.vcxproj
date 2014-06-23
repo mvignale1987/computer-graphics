@@ -98,6 +98,7 @@
     <ClCompile Include="SceneObject.cpp" />
     <ClCompile Include="SceneObjectQuad.cpp" />
     <ClCompile Include="SceneObjectSphere.cpp" />
+    <ClCompile Include="SceneObjectTriangle.cpp" />
     <ClCompile Include="ShapeDefinition.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Triangle.cpp" />
@@ -132,6 +133,7 @@
     <ClInclude Include="SceneObject.h" />
     <ClInclude Include="SceneObjectQuad.h" />
     <ClInclude Include="SceneObjectSphere.h" />
+    <ClInclude Include="SceneObjectTriangle.h" />
     <ClInclude Include="Shape.h" />
     <ClInclude Include="ShapeDefinition.h" />
     <ClInclude Include="Sphere.h" />
