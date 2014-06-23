@@ -45,7 +45,7 @@ RaytracerRenderer::RaytracerRenderer(App &app, Scene &scene):
 	float midCameraFov = camera.fov() * 0.5f * (float) M_PI / 180.0f;
 
 	xmax = sqrt(1.0/ cos(midCameraFov * midCameraFov) - 1);
-	ymax = xmax * bufferHeight / bufferWidth;
+	ymax = xmax * ((float)bufferHeight / (float)bufferWidth) ;
 
 	// TODO calcular las direcciones a partir de la orientación de la cámara
 	windowCenter = camera.position() + Vector3::forward * camera.zNear();
@@ -81,13 +81,13 @@ void RaytracerRenderer::initOpenGL()
     // Associate this texture id with some texture-specific data
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 }
 
 Ray RaytracerRenderer::getRay(int x, int y)
 {
-	Vector3 up    = (float)((2.0f * y / bufferHeight - 1) * ymax) * upWindowDirection;
+	Vector3 up    = (float)((1 - 2.0f * y / bufferHeight) * ymax) * upWindowDirection;
 	Vector3 right = (float)((2.0f * x / bufferWidth  - 1) * xmax) * rightWindowDirection;
 	Vector3 referencePoint = up + right + windowCenter;
 	Vector3 origin = scene().camera().position();
@@ -319,10 +319,10 @@ void RaytracerRenderer::renderColorBuffer()
     const int SIZE_OF_VERTEX = (2 + 2)*sizeof(GLfloat);
 
     GLfloat data[] = {// 2 texture coordinates followed by 2 vertex coordinates in counterclockwise order
-        0, 0, -1, -1,// Bottomleft
-        1, 0, +1, -1,// Bottomright
-        1, 1, +1, +1,// Topright
-        0, 1, -1, +1,// Topleft
+        0, 0, -1, +1,// Bottomleft
+        1, 0, +1, +1,// Bottomright
+        1, 1, +1, -1,// Topright
+        0, 1, -1, -1,// Topleft
     };
 
     // Use this texture
@@ -373,7 +373,7 @@ void RaytracerRenderer::saveImage()
 	for(unsigned y = 0; y < FreeImage_GetHeight(dib); y++) {
 		BYTE *bits = FreeImage_GetScanLine(dib, y);
 		for(unsigned x = 0; x < FreeImage_GetWidth(dib); x++) {
-			size_t position = y * bufferWidth + x;
+			size_t position = (bufferHeight - y - 1) * bufferWidth + x;
 			BufferContent& color = colorBuffer[position];
 
 			bits[FI_RGBA_RED] = color.r;
