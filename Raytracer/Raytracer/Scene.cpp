@@ -1,5 +1,6 @@
 #include "Scene.h"
 #include "SceneObjectSphere.h"
+#include "SceneObjectTriangle.h"
 #include "SceneObjectQuad.h"
 #include <stdexcept>
 #include <sstream>
@@ -323,6 +324,14 @@ vector<SceneObject *> Scene::readSceneObjects(Scene& scene, const xml_node &scen
 				shapeDefinition->asQuad().points()[1],
 				shapeDefinition->asQuad().points()[2],
 				shapeDefinition->asQuad().points()[3]
+			));
+			break;
+		case Shape::TRIANGLE:
+			res.push_back(new SceneObjectTriangle(
+				material,
+				shapeDefinition->asTriangle().points()[0],
+				shapeDefinition->asTriangle().points()[1],
+				shapeDefinition->asTriangle().points()[2]
 			));
 			break;
 		default:
