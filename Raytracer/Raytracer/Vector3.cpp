@@ -173,10 +173,7 @@ Vector3 Vector3::clamped() const
 
 Vector3 Vector3::multiply(const Vector3& v2)
 {
-	const GLfloat *v1v = coords;
-	const GLfloat *v2v = v2.coords;
-
-	return Vector3(v1v[0] * v2v[0], v1v[1] * v2v[1], v1v[2] * v2v[2]);
+	return Vector3(coords[0] * v2.coords[0], coords[1] * v2.coords[1], coords[2] * v2.coords[2]);
 }
 
 Vector3 Vector3::operator -() const

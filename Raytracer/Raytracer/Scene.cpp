@@ -1,6 +1,8 @@
 #include "Scene.h"
 #include "SceneObjectSphere.h"
 #include "SceneObjectCyllinder.h"
+#include "SceneObjectTriangle.h"
+#include "SceneObjectQuad.h"
 #include <stdexcept>
 #include <sstream>
 #include <shlobj.h>
@@ -223,7 +225,8 @@ map<string, Material *> Scene::readMaterials(const xml_node &scene)
 			floatFromChild(node, "diffuseCoefficient"),
 			colorFromChild(node, "specularColor"),
 			floatFromChild(node, "specularCoefficient"),
-			intFromChild(node, "specularExponent")
+			intFromChild(node, "specularExponent"),
+			stringAttributeFromNode(node, "mirrored") == "true"
 			);
 
 		pair<map<string, Material *>::iterator, bool> ret = 
@@ -318,6 +321,22 @@ vector<SceneObject *> Scene::readSceneObjects(Scene& scene, const xml_node &scen
 			break;
 		case Shape::CYLLINDER:
 			res.push_back(new SceneObjectCyllinder(material, position, shapeDefinition->asCyllinder().radius(),shapeDefinition->asCyllinder().height()));
+		case Shape::QUAD:
+			res.push_back(new SceneObjectQuad(
+				material,
+				shapeDefinition->asQuad().points()[0],
+				shapeDefinition->asQuad().points()[1],
+				shapeDefinition->asQuad().points()[2],
+				shapeDefinition->asQuad().points()[3]
+			));
+			break;
+		case Shape::TRIANGLE:
+			res.push_back(new SceneObjectTriangle(
+				material,
+				shapeDefinition->asTriangle().points()[0],
+				shapeDefinition->asTriangle().points()[1],
+				shapeDefinition->asTriangle().points()[2]
+			));
 			break;
 		default:
 			break;

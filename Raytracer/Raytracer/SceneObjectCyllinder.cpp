@@ -88,7 +88,7 @@ Intersection SceneObjectCyllinder::intersection(const Ray& ray)
 	
 }
 
-Vector3 SceneObjectCyllinder::normalAt(const Vector3& p)
+Vector3 SceneObjectCyllinder::normalAt(const Ray& r, const Vector3& point)
 {
-	return p - center;
+	return point - center;
 }

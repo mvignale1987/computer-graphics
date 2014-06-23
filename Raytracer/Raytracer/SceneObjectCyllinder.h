@@ -12,6 +12,6 @@ public:
 	SceneObjectCyllinder(Material *material, const Vector3& center, float radius, float height);
 
 	virtual Intersection intersection(const Ray& r);
-	virtual Vector3 normalAt(const Vector3& p);
+	virtual Vector3 normalAt(const Ray& r, const Vector3& point);
 };
 

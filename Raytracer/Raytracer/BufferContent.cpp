@@ -16,17 +16,17 @@ BufferContent::BufferContent(const Vector3& color, unsigned char a):
 		r = 0;
 	if(r > 1)
 		r = 1;
-	this->r = (unsigned char) (r * 256.0f);
+	this->r = (unsigned char) (r * 255.0f);
 
 	if(g < 0)
 		g = 0;
 	if(g > 1)
 		g = 1;
-	this->g = (unsigned char) (g * 256.0f);
+	this->g = (unsigned char) (g * 255.0f);
 
 	if(b < 0)
 		b = 0;
 	if(b > 1)
 		b = 1;
-	this->b = (unsigned char) (b * 256.0f);
+	this->b = (unsigned char) (b * 255.0f);
 }

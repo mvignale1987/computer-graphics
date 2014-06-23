@@ -51,7 +51,7 @@ private:
 	// rendering
 	void initOpenGL();
 	void renderColorBuffer();
-	void saveImage();
+	static int saveImage(void *self);
 
 	// inicio del rendering
 	static int raytraceAsync(void *self);
@@ -62,7 +62,7 @@ private:
 	// raytracing
 	Ray getRay(int x, int y);
 	Vector3 rayTrace(const Ray& ray, int depth);
-	Intersection findFirstHit(const Ray& r, SceneObject *caster = NULL);
-	Vector3 shade(SceneObject *obj, const Vector3& intersectionPoint, int depth);
+	Intersection findFirstHit(const Ray& r);
+	Vector3 shade(SceneObject *obj, const Ray& ray, const Vector3& intersectionPoint, int depth);
 };
 

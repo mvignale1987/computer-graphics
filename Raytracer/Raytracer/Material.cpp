@@ -21,7 +21,8 @@ Material::Material(
 	float diffuseCoefficient,
 	Vector3 specularColor,
 	float specularCoefficient,
-	int specularExponent
+	int specularExponent,
+	bool mirrored
 ):
 	m_id(id),
 	m_ambientColor(ambientColor),
@@ -30,7 +31,8 @@ Material::Material(
 	m_diffuseCoefficient(diffuseCoefficient),
 	m_specularColor(specularColor),
 	m_specularCoefficient(specularCoefficient),
-	m_specularExponent((unsigned char)specularExponent)
+	m_specularExponent((unsigned char)specularExponent),
+	m_mirrored(mirrored)
 {
 	if(ambientCoefficient < 0 || ambientCoefficient > 1)
 		throw std::out_of_range("ambientCoefficient must be betweeen 0 and 1");
@@ -79,4 +81,9 @@ float Material::specularCoefficient() const
 unsigned char Material::specularExponent() const
 {
 	return m_specularExponent;
+}
+
+bool Material::mirrored() const
+{
+	return m_mirrored;
 }
