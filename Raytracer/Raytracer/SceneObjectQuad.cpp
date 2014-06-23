@@ -7,7 +7,10 @@ SceneObjectQuad::SceneObjectQuad(Material *material, const Vector3& a, const Vec
 {
 	Vector3 v1 = b - a;
 	Vector3 v2 = c - a;
+	Vector3 v3 = d - a;
 	normal = v1.cross(v2).normalized();
+	if((v1.cross(v3).normalized() - normal).length() > 0.1)
+		throw std::invalid_argument("Points are not coplanar");
 }
 
 Intersection SceneObjectQuad::intersection(const Ray& r)
