@@ -51,7 +51,7 @@ private:
 	// rendering
 	void initOpenGL();
 	void renderColorBuffer();
-	void saveImage();
+	static int saveImage(void *self);
 
 	// inicio del rendering
 	static int raytraceAsync(void *self);

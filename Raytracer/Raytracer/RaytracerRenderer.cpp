@@ -55,12 +55,12 @@ RaytracerRenderer::RaytracerRenderer(App &app, Scene &scene):
 
 void RaytracerRenderer::init()
 {
-	Logger::log("Init OpenGL");
 	initOpenGL();
-	Logger::log("Init Buffer");
 	unsigned int bufferSize = bufferWidth * bufferHeight * sizeof(BufferContent);
 	memset(colorBuffer, 0xFF, bufferSize);
 	
+	Logger::log("Init Raytracing");
+
 	SDL_Thread *thread = SDL_CreateThread(raytraceAsync, "RT_Init", this);
 	SDL_DetachThread(thread); 
 }
@@ -181,6 +181,7 @@ int RaytracerRenderer::processPendingBlocks(void *s)
 			self.processBlock(block);
 		}
 	}
+
 	SDL_AtomicDecRef(&self.pendingThreads);
 
 	return 0;
@@ -188,8 +189,6 @@ int RaytracerRenderer::processPendingBlocks(void *s)
 
 void RaytracerRenderer::processBlock(const ImageBlock& block)
 {
-	Logger::log("ProcessBlock " + block.toString());
-
 	Vector3 bgColor = scene().backgroundColor();
 	unsigned int maxX = block.width() + block.x();
 	unsigned int maxY = block.height() + block.y();
@@ -266,9 +265,16 @@ Vector3 RaytracerRenderer::shade(SceneObject *obj, const Ray& ray, const Vector3
 		Vector3 specularColor = material.specularCoefficient() * material.specularColor() * specularExponent;
 			
 		Vector3 nonAmbientColor = attenuationFactor * it->diffuseColor().multiply(specularColor+ diffuseColor);
-			
+
 		color += nonAmbientColor;
 	}
+	
+	if(depth > 0 && material.mirrored())
+	{
+		color += material.specularCoefficient() * rayTrace(Ray(intersectionPoint, normal), depth-1);
+	} 
+
+
 	color = color.clamped();
 	return color;
 }
@@ -295,10 +301,10 @@ void RaytracerRenderer::renderNextFrame()
 	int pendingThreadsVal = SDL_AtomicGet(&pendingThreads);
 	if(pendingThreadsVal == 0 && !imageSaved)
 	{
-		Logger::log("Saving image");
-		saveImage();
+		Logger::log("Finished Rendering. Saving image...");
+		SDL_Thread *thread = SDL_CreateThread(saveImage, "RT_SaveImage", this);
+		SDL_DetachThread(thread); 
 		imageSaved = true;
-		Logger::log("Saved image");
 	}
 }
 
@@ -350,8 +356,10 @@ void RaytracerRenderer::renderColorBuffer()
     glDrawArrays(GL_QUADS, 0, 4);
 }
 
-void RaytracerRenderer::saveImage()
+int RaytracerRenderer::saveImage(void *s)
 {
+	RaytracerRenderer *self = (RaytracerRenderer *)s;
+
 	static const int maxTimeLength = 255;
 	char timeStr[maxTimeLength];
 	time_t rawtime;
@@ -359,11 +367,11 @@ void RaytracerRenderer::saveImage()
 	tm timeinfo;
 	localtime_s(&timeinfo, &rawtime);
 	strftime (timeStr, maxTimeLength, "%Y-%m-%d %H.%M.%S", &timeinfo);
-	string outPath = scene().outputDir() + '\\' + timeStr + ".png";
+	string outPath = self->scene().outputDir() + '\\' + timeStr + ".png";
 
-	CreateDirectory(scene().outputDir().c_str(), NULL);
+	CreateDirectory(self->scene().outputDir().c_str(), NULL);
 
-	FIBITMAP *dib = FreeImage_Allocate(bufferWidth, bufferHeight, 32,
+	FIBITMAP *dib = FreeImage_Allocate(self->bufferWidth, self->bufferHeight, 32,
 		 FI_RGBA_RED_MASK, FI_RGBA_GREEN_MASK, FI_RGBA_BLUE_MASK);
 	if(!dib)
 		throw SceneError("saveImage: couldn't allocate image");
@@ -373,8 +381,8 @@ void RaytracerRenderer::saveImage()
 	for(unsigned y = 0; y < FreeImage_GetHeight(dib); y++) {
 		BYTE *bits = FreeImage_GetScanLine(dib, y);
 		for(unsigned x = 0; x < FreeImage_GetWidth(dib); x++) {
-			size_t position = (bufferHeight - y - 1) * bufferWidth + x;
-			BufferContent& color = colorBuffer[position];
+			size_t position = (self->bufferHeight - y - 1) * self->bufferWidth + x;
+			BufferContent& color = self->colorBuffer[position];
 
 			bits[FI_RGBA_RED] = color.r;
 			bits[FI_RGBA_GREEN] = color.g;
@@ -385,11 +393,16 @@ void RaytracerRenderer::saveImage()
 		}
 	}
 
-	FIBITMAP *scaledDib = FreeImage_Rescale(dib, scene().imageWidth(), scene().imageHeight());
+	FIBITMAP *scaledDib = FreeImage_Rescale(dib, self->scene().imageWidth(), self->scene().imageHeight());
 
 	
 	if(!FreeImage_Save(FIF_PNG, scaledDib, outPath.c_str(), PNG_Z_BEST_COMPRESSION))
 		throw SceneError("saveImage: save image");
+
+
+	Logger::log("Saved image at '" + outPath + "'");
+
+	return 0;
 } 
 
 
