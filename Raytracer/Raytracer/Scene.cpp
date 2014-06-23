@@ -224,7 +224,8 @@ map<string, Material *> Scene::readMaterials(const xml_node &scene)
 			floatFromChild(node, "diffuseCoefficient"),
 			colorFromChild(node, "specularColor"),
 			floatFromChild(node, "specularCoefficient"),
-			intFromChild(node, "specularExponent")
+			intFromChild(node, "specularExponent"),
+			stringAttributeFromNode(node, "mirrored") == "true"
 			);
 
 		pair<map<string, Material *>::iterator, bool> ret = 

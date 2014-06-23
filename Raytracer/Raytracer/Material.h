@@ -14,6 +14,7 @@ private:
 	Vector3			m_specularColor;
 	float			m_specularCoefficient;
 	unsigned char	m_specularExponent;
+	bool			m_mirrored;
 public:
 	Material();
 	Material(
@@ -24,7 +25,8 @@ public:
 		float diffuseCoefficient,
 		Vector3 specularColor,
 		float specularCoefficient,
-		int specularExponent
+		int specularExponent,
+		bool mirrored
 		);
 
 	std::string	id() const;
@@ -35,5 +37,6 @@ public:
 	Vector3 specularColor() const;
 	float specularCoefficient() const;
 	unsigned char specularExponent() const;
+	bool mirrored() const;
 };
 
