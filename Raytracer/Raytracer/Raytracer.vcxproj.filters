@@ -90,6 +90,9 @@
     <ClCompile Include="SceneObjectSphere.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SceneObjectCyllinder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Libraries.targets" />
@@ -174,6 +177,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SceneObjectSphere.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneObjectCyllinder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
