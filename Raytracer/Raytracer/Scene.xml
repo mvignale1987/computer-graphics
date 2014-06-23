@@ -122,9 +122,9 @@
       <position> 20 -20  20</position>
     </quad>
     <triangle id="triangle">
-      <position> 10  0  0</position>
-      <position> 10  0  15</position>
-      <position> 10  5  15</position>
+      <position> 10  0  10</position>
+      <position> 10  2  15</position>
+      <position> 10  10  15</position>
     </triangle>
   </defs>
 
