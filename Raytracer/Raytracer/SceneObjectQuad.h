@@ -1,9 +1,11 @@
 #pragma once
 #include "SceneObject.h"
+#include <vector>
+
 class SceneObjectQuad : public SceneObject
 {
 private:
-	Vector3 a, b, c, d;
+	std::vector<Vector3> vertexs;
 	Vector3 normal;
 public:
 	SceneObjectQuad(Material *material, const Vector3& a, const Vector3& b, const Vector3& c, const Vector3& d);
