@@ -319,8 +319,12 @@ vector<SceneObject *> Scene::readSceneObjects(Scene& scene, const xml_node &scen
 		case Shape::SPHERE:
 			res.push_back(new SceneObjectSphere(material, position, shapeDefinition->asSphere().radius()));
 			break;
-//		case Shape::CYLLINDER:
-//			res.push_back(new SceneObjectCyllinder(material, position, shapeDefinition->asCyllinder().radius(),shapeDefinition->asCyllinder().height()));
+		case Shape::CYLLINDER:
+			res.push_back(new SceneObjectCyllinder(material, position,
+				shapeDefinition->asCyllinder().radius(),
+				shapeDefinition->asCyllinder().height()
+			));
+			break;
 		case Shape::QUAD:
 			res.push_back(new SceneObjectQuad(
 				material,
