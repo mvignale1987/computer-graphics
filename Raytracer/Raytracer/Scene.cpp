@@ -328,18 +328,18 @@ vector<SceneObject *> Scene::readSceneObjects(Scene& scene, const xml_node &scen
 		case Shape::QUAD:
 			res.push_back(new SceneObjectQuad(
 				material,
-				shapeDefinition->asQuad().points()[0],
-				shapeDefinition->asQuad().points()[1],
-				shapeDefinition->asQuad().points()[2],
-				shapeDefinition->asQuad().points()[3]
+				shapeDefinition->asQuad().points()[0] + position,
+				shapeDefinition->asQuad().points()[1] + position,
+				shapeDefinition->asQuad().points()[2] + position,
+				shapeDefinition->asQuad().points()[3] + position
 			));
 			break;
 		case Shape::TRIANGLE:
 			res.push_back(new SceneObjectTriangle(
 				material,
-				shapeDefinition->asTriangle().points()[0],
-				shapeDefinition->asTriangle().points()[1],
-				shapeDefinition->asTriangle().points()[2]
+				shapeDefinition->asTriangle().points()[0] + position,
+				shapeDefinition->asTriangle().points()[1] + position,
+				shapeDefinition->asTriangle().points()[2] + position
 			));
 			break;
 		default:
