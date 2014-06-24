@@ -1,54 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scene>
   <backgroundColor>#000000</backgroundColor>
-  <resolution>1920 1080</resolution>
+  <resolution>800 600</resolution>
   <outputDir>%DESKTOP%\Raytracer</outputDir>
 
   <!-- Luces de la escena -->
   <lights>
-    <light id="light0">
-      <position>-10 10 10</position>
-      <ambientColor>#FFFFFF</ambientColor>
-      <diffuseColor>#FFFFFF</diffuseColor>
-      <linearAttenuation>0.01</linearAttenuation>
-      <quadAttenuation>0.01</quadAttenuation>
-    </light>
     <light id="light1">
-      <position>10 10 10</position>
+      <position>0 20 5</position>
       <ambientColor>#FFFFFF</ambientColor>
-      <diffuseColor>#FFFFFF</diffuseColor>
-      <linearAttenuation>0.01</linearAttenuation>
-      <quadAttenuation>0.01</quadAttenuation>
+      <diffuseColor>#FFFFAA</diffuseColor>
+      <linearAttenuation>0.00</linearAttenuation>
+      <quadAttenuation>0.002</quadAttenuation>
+    </light>
+
+    <light id="light2">
+      <position>0 20 20</position>
+      <ambientColor>#FFFFFF</ambientColor>
+      <diffuseColor>#AAFFFF</diffuseColor>
+      <linearAttenuation>0.00</linearAttenuation>
+      <quadAttenuation>0.002</quadAttenuation>
     </light>
   </lights>
   
   <!-- cámara a usar en la escena -->
   <camera>
-    <position>0 5 0</position>
+    <position>0 15 -40</position>
     <lookAt>0 0 10</lookAt>
     <up>0 1 0</up>
     <near>0.1</near>
-    <far>200</far>
-    <fieldOfView>60</fieldOfView>
+    <far>400</far>
+    <fieldOfView>30</fieldOfView>
   </camera>
 
 
   <!-- Materiales de los objetos -->
   <materials>
     <material id="red" mirrored="false">
-      <ambientColor>#FF0000</ambientColor>
-      <ambientCoefficient>0.0</ambientCoefficient>
-      <diffuseColor>#FF0000</diffuseColor>
-      <diffuseCoefficient>1</diffuseCoefficient>
+      <ambientColor>#800000</ambientColor>
+      <ambientCoefficient>0.1</ambientCoefficient>
+      <diffuseColor>#800000</diffuseColor>
+      <diffuseCoefficient>0.9</diffuseCoefficient>
       <specularColor>#ffffff</specularColor>
       <specularCoefficient>0</specularCoefficient>
       <specularExponent>5</specularExponent>
     </material>
     <material id="green" mirrored="false">
-      <ambientColor>#00FF00</ambientColor>
+      <ambientColor>#008000</ambientColor>
       <ambientCoefficient>0.1</ambientCoefficient>
-      <diffuseColor>#00FF00</diffuseColor>
-      <diffuseCoefficient>0.5</diffuseCoefficient>
+      <diffuseColor>#008000</diffuseColor>
+      <diffuseCoefficient>0.9</diffuseCoefficient>
       <specularColor>#ffffff</specularColor>
       <specularCoefficient>0</specularCoefficient>
       <specularExponent>100</specularExponent>
@@ -57,14 +58,14 @@
       <ambientColor>#0000FF</ambientColor>
       <ambientCoefficient>0.1</ambientCoefficient>
       <diffuseColor>#0000FF</diffuseColor>
-      <diffuseCoefficient>0.5</diffuseCoefficient>
+      <diffuseCoefficient>0.9</diffuseCoefficient>
       <specularColor>#ffffff</specularColor>
       <specularCoefficient>0</specularCoefficient>
       <specularExponent>100</specularExponent>
     </material>
     <material id="white" mirrored="false">
-      <ambientColor>#000000</ambientColor>
-      <ambientCoefficient>0.0</ambientCoefficient>
+      <ambientColor>#FFFFFF</ambientColor>
+      <ambientCoefficient>0.1</ambientCoefficient>
       <diffuseColor>#FFFFFF</diffuseColor>
       <diffuseCoefficient>0.9</diffuseCoefficient>
       <specularColor>#ffffff</specularColor>
@@ -74,7 +75,7 @@
     <material id="mirror" mirrored="true">
       <ambientColor>#000000</ambientColor>
       <ambientCoefficient>0.0</ambientCoefficient>
-      <diffuseColor>#000000</diffuseColor>
+      <diffuseColor>#00FF00</diffuseColor>
       <diffuseCoefficient>0.0</diffuseCoefficient>
       <specularColor>#ffffff</specularColor>
       <specularCoefficient>1</specularCoefficient>
@@ -87,62 +88,208 @@
     <sphere id="sphere">
       <radius>3</radius>
     </sphere>
+    <sphere id="bigSphere">
+      <radius>5</radius>
+    </sphere>
+    
     <cyllinder id="cyllinder">
       <height>10</height>
       <radius>3</radius>
     </cyllinder>
-    <quad id="planeBottom">
-      <position>-20 -5 -20</position>
-      <position>-20 -5 20</position>
-      <position>20 -5 20</position>
-      <position>20 -5 -20</position>
+    
+    <quad id="planeHorizontal">
+      <position>-20  0   0</position>
+      <position>-20  0  50</position>
+      <position> 20  0  50</position>
+      <position> 20  0   0</position>
     </quad>
-    <quad id="planeLeft">
-      <position>-20 -20 -20</position>
-      <position>-20 -20  20</position>
-      <position>-20  20  20</position>
-      <position>-20  20 -20</position>
-    </quad>
-    <quad id="planeRight">
-      <position> 20 -20 -20</position>
-      <position> 20 -20  20</position>
-      <position> 20  20  20</position>
-      <position> 20  20 -20</position>
-    </quad>
-    <quad id="planeTop">
-      <position>-20 20 -20</position>
-      <position>-20 20  20</position>
-      <position> 20 20  20</position>
-      <position> 20 20 -20</position>
+    <quad id="planeVertical">
+      <position>0   0   0</position>
+      <position>0   0  50</position>
+      <position>0  30  50</position>
+      <position>0  30   0</position>
     </quad>
     <quad id="planeBack">
-      <position>-20 -20  20</position>
-      <position>-20  20  20</position>
-      <position> 20  20  20</position>
-      <position> 20 -20  20</position>
-    </quad>
-    <triangle id="triangle">
-      <position> 10  0  10</position>
-      <position> 10  2  15</position>
-      <position> 10  10  15</position>
+      <position>-20   0 50</position>
+      <position>-20  30 50</position>
+      <position> 20  30 50</position>
+      <position> 20   0 50</position>
+    </quad> 
+    
+    <triangle id="triangleHorizontal1">
+      <position>   0  0  0</position>
+      <position>   0  0  10</position>
+      <position>  10  0  0</position>
+    </triangle>
+    <triangle id="triangleHorizontal2">
+      <position>10  0 10</position>
+      <position>10  0  0</position>
+      <position> 0  0 10</position>
+    </triangle>
+    <triangle id="triangleHorizontal3">
+      <position>   0  0  0</position>
+      <position>   0  0  5</position>
+      <position>  10  0  0</position>
+    </triangle>
+    <triangle id="triangleHorizontal4">
+      <position>10  0  5</position>
+      <position>10  0  0</position>
+      <position> 0  0  5</position>
+    </triangle>
+
+    <triangle id="triangleVertical1">
+      <position> 0  0  0</position>
+      <position>10  0  0</position>
+      <position> 0 10  0</position>
+    </triangle>
+    <triangle id="triangleVertical2">
+      <position> 0 10  0</position>
+      <position>10 10  0</position>
+      <position>10 0  0</position>
+    </triangle>
+
+    <triangle id="triangleLateral1">
+      <position>0 0  0</position>
+      <position>0 10 0</position>
+      <position>0 0  10</position>
+    </triangle>
+    <triangle id="triangleLateral2">
+      <position>0 10  10</position>
+      <position>0  0  10</position>
+      <position>0 10  0</position>
     </triangle>
   </defs>
 
   <!-- objetos a ser renderizados en la escena -->
   <objects>
     <object def="sphere" material="mirror">
-      <position>-5 -1 15</position>
+      <position>12 13 15</position>
     </object>
-    <object def="cyllinder" material="green">
+
+    <object def="bigSphere" material="blue">
+      <position>-7 15 25</position>
+    </object>
+
+    <!--<object def="cyllinder" material="green">
       <position>0 0 10</position>
       <rotation>0 90 90</rotation>
-    </object>
-    <object def="planeBottom" material="white"/>
-    <object def="planeLeft" material="red"/>
-    <object def="planeRight" material="green"/>
-    <object def="planeTop" material="white"/>
-    <object def="planeBack" material="white"/>
+    </object>-->
     
-    <object def="triangle" material="blue"/>
-  </objects>
+    <!-- Paredes -->
+    <object def="planeHorizontal" material="white"/>
+    <object def="planeVertical" material="red">
+      <position>-20 0 0</position>
+    </object>
+    <object def="planeVertical" material="green">
+      <position>20 0 0</position>
+    </object>
+    <object def="planeHorizontal" material="white">
+      <position>0 30 0</position>
+    </object>
+    <object def="planeBack" material="white"/>
+
+    <!-- Cara superior del prisma -->
+    <object def="triangleHorizontal1" material="white">
+      <position>-16 10 10</position>
+    </object>
+    <object def="triangleHorizontal2" material="white">
+      <position>-16 10 10</position>
+    </object>
+    <object def="triangleHorizontal1" material="white">
+      <position>-6 10 10</position>
+    </object>
+    <object def="triangleHorizontal2" material="white">
+      <position>-6 10 10</position>
+    </object>
+    <object def="triangleHorizontal1" material="white">
+      <position>4 10 10</position>
+    </object>
+    <object def="triangleHorizontal2" material="white">
+      <position>4 10 10</position>
+    </object>
+    <object def="triangleHorizontal1" material="white">
+      <position>-16 10 20</position>
+    </object>
+    <object def="triangleHorizontal2" material="white">
+      <position>-16 10 20</position>
+    </object>
+    <object def="triangleHorizontal1" material="white">
+      <position>-6 10 20</position>
+    </object>
+    <object def="triangleHorizontal2" material="white">
+      <position>-6 10 20</position>
+    </object>
+    <object def="triangleHorizontal1" material="white">
+      <position>4 10 20</position>
+    </object>
+    <object def="triangleHorizontal2" material="white">
+      <position>4 10 20</position>
+    </object>
+    <object def="triangleHorizontal3" material="white">
+      <position>-16 10 25</position>
+    </object>
+    <object def="triangleHorizontal4" material="white">
+      <position>-16 10 25</position>
+    </object>
+    <object def="triangleHorizontal3" material="white">
+      <position>-6 10 25</position>
+    </object>
+    <object def="triangleHorizontal4" material="white">
+      <position>-6 10 25</position>
+    </object>
+    <object def="triangleHorizontal3" material="white">
+      <position>4 10 25</position>
+    </object>
+    <object def="triangleHorizontal4" material="white">
+      <position>4 10 25</position>
+    </object>
+
+    <!-- Cara frontal del prisma -->
+    <object def="triangleVertical1" material="white">
+      <position>4 0 10</position>
+    </object>
+    <object def="triangleVertical2" material="white">
+      <position>4 0 10</position>
+    </object>
+    <object def="triangleVertical1" material="white">
+      <position>-6 0 10</position>
+    </object>
+    <object def="triangleVertical2" material="white">
+      <position>-6 0 10</position>
+    </object>
+    <object def="triangleVertical1" material="white">
+      <position>-16 0 10</position>
+    </object>
+    <object def="triangleVertical2" material="white">
+      <position>-16 0 10</position>
+    </object>
+
+    <!-- Cara izquierda del prisma (no se ve) -->
+    <object def="triangleLateral1" material="white">
+      <position>-16 0 10</position>
+    </object>
+    <object def="triangleLateral2" material="white">
+      <position>-16 0 10</position>
+    </object>
+    <object def="triangleLateral1" material="white">
+      <position>-16 0 20</position>
+    </object>
+    <object def="triangleLateral2" material="white">
+      <position>-16 0 20</position>
+    </object>
+
+    <!-- Cara derecha del prisma (no se ve) -->
+    <object def="triangleLateral1" material="white">
+      <position>14 0 10</position>
+    </object>
+    <object def="triangleLateral2" material="white">
+      <position>14 0 10</position>
+    </object>
+    <object def="triangleLateral1" material="white">
+      <position>14 0 20</position>
+    </object>
+    <object def="triangleLateral2" material="white">
+      <position>14 0 20</position>
+    </object>
+  </objects> 
 </scene>
