@@ -72,7 +72,6 @@ Intersection SceneObjectCyllinder::intersection(const Ray& ray)
     else
     {
 		float y0 =  o.y() + t0*d.y();
-		return Intersection(this, t0);
 		if (y0 > 0 && y0 < height)
 		{
 			return Intersection(this, t0);		
