@@ -97,13 +97,25 @@
       <radius>3</radius>
     </cyllinder>
     
-    <quad id="planeHorizontal">
+    <quad id="planeHorizontal1">
       <position>-20  0   0</position>
       <position>-20  0  50</position>
       <position> 20  0  50</position>
       <position> 20  0   0</position>
     </quad>
-    <quad id="planeVertical">
+    <quad id="planeHorizontal2">
+      <position> 20  0   0</position>
+      <position> 20  0  50</position>
+      <position>-20  0  50</position>
+      <position>-20  0   0</position>
+    </quad>
+    <quad id="planeVertical1">
+      <position>0  30   0</position>
+      <position>0  30  50</position>
+      <position>0   0  50</position>
+      <position>0   0   0</position>
+    </quad>
+    <quad id="planeVertical2">
       <position>0   0   0</position>
       <position>0   0  50</position>
       <position>0  30  50</position>
@@ -138,8 +150,8 @@
     </triangle>
 
     <triangle id="triangleVertical1">
-      <position> 0  0  0</position>
       <position>10  0  0</position>
+      <position> 0  0  0</position>
       <position> 0 10  0</position>
     </triangle>
     <triangle id="triangleVertical2">
@@ -176,14 +188,14 @@
     </object>-->
     
     <!-- Paredes -->
-    <object def="planeHorizontal" material="white"/>
-    <object def="planeVertical" material="red">
+    <object def="planeHorizontal1" material="white"/>
+    <object def="planeVertical1" material="red">
       <position>-20 0 0</position>
     </object>
-    <object def="planeVertical" material="green">
+    <object def="planeVertical2" material="green">
       <position>20 0 0</position>
     </object>
-    <object def="planeHorizontal" material="white">
+    <object def="planeHorizontal2" material="white">
       <position>0 30 0</position>
     </object>
     <object def="planeBack" material="white"/>
