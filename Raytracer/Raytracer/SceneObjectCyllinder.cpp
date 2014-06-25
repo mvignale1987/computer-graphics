@@ -59,20 +59,28 @@ Intersection SceneObjectCyllinder::intersection(const Ray& ray)
     if (t0 < 0)
     {
 		float y1 =  o.y() + t1*d.y();	//evaluate the ray on desired t value
-		if (y1 > 0 && y1 < height)		// checks if we intersect the whole cyllinder or just the finite part
+		if (y1 >= 0 && y1 <= height)		// checks if we intersect the whole cyllinder or just the finite part
 		{
-			return Intersection(this, t1);		
+			return Intersection(this, t1);			
 		}
 		else
 		{
 			return Intersection::noIntersection;
 		}
     }
-    // else the intersection point is at t0
+    // else the intersection point is at t0 OR AT THE CAP
     else
     {
+		
 		float y0 =  o.y() + t0*d.y();
-		if (y0 > 0 && y0 < height)
+		float y1 =  o.y() + t1*d.y();
+		if (y0 <= height && y1 >= height || y1 <= height && y0 >= height)
+		{
+			//SPECIAL CAP INTERSECTION
+			float t3 = (height -  o.y()) / d.y();
+			return Intersection(this, t3);		
+		}
+		if (y0 >= 0 && y0 <= height )
 		{
 			return Intersection(this, t0);		
 		}
@@ -81,6 +89,8 @@ Intersection SceneObjectCyllinder::intersection(const Ray& ray)
 			return Intersection::noIntersection;
 		}
     }
+
+	
 	
 
 	
