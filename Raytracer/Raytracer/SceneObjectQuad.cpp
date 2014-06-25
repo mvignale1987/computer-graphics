@@ -69,10 +69,7 @@ Intersection SceneObjectQuad::intersection(const Ray& r)
 
 
 
-Vector3 SceneObjectQuad::normalAt(const Ray& r, const Vector3& point)
+Vector3 SceneObjectQuad::normalAt(const Ray&, const Vector3&)
 {
-	if((r.origin() - point) * normal < 0)
-		return -normal;
-	else
-		return normal;
+	return normal;
 }

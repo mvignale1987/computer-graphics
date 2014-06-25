@@ -59,10 +59,7 @@ Intersection SceneObjectTriangle::intersection(const Ray& ray)
     return Intersection(this, r);
 }
 
-Vector3 SceneObjectTriangle::normalAt(const Ray& r, const Vector3& point)
+Vector3 SceneObjectTriangle::normalAt(const Ray&, const Vector3&)
 {
-	if((r.origin() - point) * normal < 0)
-		return -normal;
-	else
-		return normal;
+	return normal;
 }
