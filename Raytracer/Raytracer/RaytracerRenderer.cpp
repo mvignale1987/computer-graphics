@@ -34,6 +34,8 @@ RaytracerRenderer::RaytracerRenderer(App &app, Scene &scene):
 	bufferWidth(scene.imageWidth() * superSamplingConstant),
 	bufferHeight(scene.imageHeight() * superSamplingConstant),
 	colorBuffer(new BufferContent[bufferWidth * bufferHeight]),
+	ambientBuffer(new BufferContent[bufferWidth * bufferHeight]),
+	diffuseBuffer(new BufferContent[bufferWidth * bufferHeight]),
 	nThreads(SDL_GetCPUCount()),
 	imageSaved(false),
 	pendingBlocksMutex(SDL_CreateMutex())
@@ -58,6 +60,8 @@ void RaytracerRenderer::init()
 	initOpenGL();
 	unsigned int bufferSize = bufferWidth * bufferHeight * sizeof(BufferContent);
 	memset(colorBuffer, 0xFF, bufferSize);
+	memset(ambientBuffer, 0x00, bufferSize);
+	memset(diffuseBuffer, 0x00, bufferSize);
 	
 	Logger::log("Init Raytracing");
 
@@ -198,21 +202,26 @@ void RaytracerRenderer::processBlock(const ImageBlock& block)
 		{
 			Ray r = getRay((int)x, (int)y);
 			unsigned int position = y * bufferWidth + x;
-			Vector3 color = rayTrace(r, 1);
-			colorBuffer[position] = color;
+			Vector3  ambient, diffuse, total;
+			rayTrace(r, 1, ambient, diffuse, total);
+			colorBuffer[position] = total.clamped();
+			ambientBuffer[position] = ambient.clamped();
+			diffuseBuffer[position] = diffuse.clamped();
 		}
 	}
 }
 
-Vector3 RaytracerRenderer::rayTrace(const Ray& ray, int depth)
+void RaytracerRenderer::rayTrace(const Ray& ray, int depth, Vector3& ambient, Vector3 &diffuse, Vector3& total)
 {
 	Intersection firstHit = findFirstHit(ray);
 	if(firstHit.intersects())
 	{
 		Vector3 intersectionPoint = ray.origin() + firstHit.distance() * ray.direction();
-		return shade(firstHit.obj(), ray, intersectionPoint, depth);
-	} else
-		return scene().backgroundColor();
+		shade(firstHit.obj(), ray, intersectionPoint, depth, ambient, diffuse, total);
+	} else {
+		total = scene().backgroundColor();
+		ambient = diffuse = Vector3::zero;
+	}
 }
 
 Intersection RaytracerRenderer::findFirstHit(const Ray& ray)
@@ -230,20 +239,26 @@ Intersection RaytracerRenderer::findFirstHit(const Ray& ray)
 	return res;
 }
 
-Vector3 RaytracerRenderer::shade(SceneObject *obj, const Ray& ray, const Vector3& intersectionPoint, int depth)
+void RaytracerRenderer::shade(SceneObject *obj, const Ray& ray, const Vector3& intersectionPoint, int depth, 
+							  Vector3& ambient, Vector3 &diffuse, Vector3& color)
 {
+	color = ambient = diffuse = Vector3::zero;
+
 	Vector3 normal = obj->normalAt(ray, intersectionPoint).normalized();
 	Vector3 eyeDirection = (scene().camera().position() - intersectionPoint).normalized();
 	Material &material = *obj->material();
-	Vector3 color = Vector3::zero;
 	vector<Light>& lights = scene().lights();
 	for(vector<Light>::iterator it = lights.begin(); it != lights.end(); ++it)
 	{
 		Vector3 lightVector = it->position() - intersectionPoint;
 		Vector3 lightDirection = lightVector.normalized();
 
-		Vector3 ambientColor = it->ambientColor().multiply(material.ambientColor()) * material.ambientCoefficient(); 
-		color += ambientColor; 
+		if(material.ambientCoefficient() > 0)
+		{
+			Vector3 ambientColor = it->ambientColor().multiply(material.ambientColor()) * material.ambientCoefficient(); 
+			ambient += ambientColor;
+			color += ambientColor; 
+		}
 
 		Intersection shadowIntersection = findFirstHit(Ray(intersectionPoint, lightDirection));
 
@@ -259,24 +274,29 @@ Vector3 RaytracerRenderer::shade(SceneObject *obj, const Ray& ray, const Vector3
 			invAttenuation = 1;
 		float attenuationFactor = min<float>(1 / invAttenuation, 1);
 
-		Vector3 diffuseColor = material.diffuseCoefficient() * material.diffuseColor() * (normal * lightDirection);
+		Vector3 diffuseColor;
+		if(material.diffuseCoefficient() > 0)
+		{
+			diffuseColor = material.diffuseCoefficient() * material.diffuseColor() * (normal * lightDirection);
+			diffuse += diffuseColor;
+		}
 
-		float specularExponent = powf(max<float>(reflectedRay * eyeDirection, 0), material.specularExponent());
-		Vector3 specularColor = material.specularCoefficient() * material.specularColor() * specularExponent;
-			
-		Vector3 nonAmbientColor = attenuationFactor * it->diffuseColor().multiply(specularColor+ diffuseColor);
+		Vector3 specularColor;
+		if(material.specularCoefficient() > 0)
+		{
+			float specularExponent = powf(max<float>(reflectedRay * eyeDirection, 0), material.specularExponent());
+			specularColor = material.specularCoefficient() * material.specularColor() * specularExponent;
+		}
 
-		color += nonAmbientColor;
+		color += attenuationFactor * it->diffuseColor().multiply(specularColor + diffuseColor);
 	}
 	
 	if(depth > 0 && material.mirrored())
 	{
-		color += material.specularCoefficient() * rayTrace(Ray(intersectionPoint, normal), depth-1);
+		Vector3 colorMirrored, diffuseMirrored, ambientMirrored;
+		rayTrace(Ray(intersectionPoint, normal), depth-1, ambientMirrored, diffuseMirrored, colorMirrored);
+		color += material.specularCoefficient() * colorMirrored;
 	} 
-
-
-	color = color.clamped();
-	return color;
 }
 
 void RaytracerRenderer::handleReshape(int width, int height)
@@ -356,10 +376,8 @@ void RaytracerRenderer::renderColorBuffer()
     glDrawArrays(GL_QUADS, 0, 4);
 }
 
-int RaytracerRenderer::saveImage(void *s)
+static string getTimeStr()
 {
-	RaytracerRenderer *self = (RaytracerRenderer *)s;
-
 	static const int maxTimeLength = 255;
 	char timeStr[maxTimeLength];
 	time_t rawtime;
@@ -367,11 +385,35 @@ int RaytracerRenderer::saveImage(void *s)
 	tm timeinfo;
 	localtime_s(&timeinfo, &rawtime);
 	strftime (timeStr, maxTimeLength, "%Y-%m-%d %H.%M.%S", &timeinfo);
-	string outPath = self->scene().outputDir() + '\\' + timeStr + ".png";
 
-	CreateDirectory(self->scene().outputDir().c_str(), NULL);
+	return string(timeStr);
+}
 
-	FIBITMAP *dib = FreeImage_Allocate(self->bufferWidth, self->bufferHeight, 32,
+int RaytracerRenderer::saveImage(void *s)
+{
+	RaytracerRenderer *self = (RaytracerRenderer *)s;
+
+	string outputDir =  self->scene().outputDir() ;
+
+	CreateDirectory(outputDir.c_str(), NULL);
+
+	string timeStr = getTimeStr();
+	string outPathColor   = outputDir + '\\' + timeStr + "-total.png";
+	string outPathAmbient = outputDir + '\\' + timeStr + "-ambient.png";
+	string outPathDiffuse = outputDir + '\\' + timeStr + "-diffuse.png";
+
+	self->saveBufferToFile(self->colorBuffer, outPathColor);
+	self->saveBufferToFile(self->ambientBuffer, outPathAmbient);
+	self->saveBufferToFile(self->diffuseBuffer, outPathDiffuse);
+
+	Logger::log("Saved image at '" + outPathColor + "' (ambient & diffuse saved too)");
+
+	return 0;
+} 
+
+void RaytracerRenderer::saveBufferToFile(BufferContent *buffer, const std::string& outPath)
+{
+	FIBITMAP *dib = FreeImage_Allocate(bufferWidth, bufferHeight, 32,
 		 FI_RGBA_RED_MASK, FI_RGBA_GREEN_MASK, FI_RGBA_BLUE_MASK);
 	if(!dib)
 		throw SceneError("saveImage: couldn't allocate image");
@@ -381,8 +423,8 @@ int RaytracerRenderer::saveImage(void *s)
 	for(unsigned y = 0; y < FreeImage_GetHeight(dib); y++) {
 		BYTE *bits = FreeImage_GetScanLine(dib, y);
 		for(unsigned x = 0; x < FreeImage_GetWidth(dib); x++) {
-			size_t position = (self->bufferHeight - y - 1) * self->bufferWidth + x;
-			BufferContent& color = self->colorBuffer[position];
+			size_t position = (bufferHeight - y - 1) * bufferWidth + x;
+			BufferContent& color = buffer[position];
 
 			bits[FI_RGBA_RED] = color.r;
 			bits[FI_RGBA_GREEN] = color.g;
@@ -393,16 +435,8 @@ int RaytracerRenderer::saveImage(void *s)
 		}
 	}
 
-	FIBITMAP *scaledDib = FreeImage_Rescale(dib, self->scene().imageWidth(), self->scene().imageHeight());
-
+	FIBITMAP *scaledDib = FreeImage_Rescale(dib, scene().imageWidth(), scene().imageHeight());
 	
 	if(!FreeImage_Save(FIF_PNG, scaledDib, outPath.c_str(), PNG_Z_BEST_COMPRESSION))
 		throw SceneError("saveImage: save image");
-
-
-	Logger::log("Saved image at '" + outPath + "'");
-
-	return 0;
-} 
-
-
+}

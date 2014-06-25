@@ -22,6 +22,8 @@ private:
 	unsigned int			bufferWidth;
 	unsigned int			bufferHeight;
 	BufferContent *			colorBuffer;
+	BufferContent *			ambientBuffer;
+	BufferContent *			diffuseBuffer;
 
 	// synchronization vars
 	SDL_mutex *				pendingBlocksMutex;
@@ -61,8 +63,10 @@ private:
 
 	// raytracing
 	Ray getRay(int x, int y);
-	Vector3 rayTrace(const Ray& ray, int depth);
+	void rayTrace(const Ray& ray, int depth, Vector3& ambient, Vector3 &diffuse, Vector3& total);
 	Intersection findFirstHit(const Ray& r);
-	Vector3 shade(SceneObject *obj, const Ray& ray, const Vector3& intersectionPoint, int depth);
+	void shade(SceneObject *obj, const Ray& ray, const Vector3& intersectionPoint, int depth,
+		Vector3& ambient, Vector3 &diffuse, Vector3& total);
+	void saveBufferToFile(BufferContent *buffer, const std::string& outPath);
 };
 
