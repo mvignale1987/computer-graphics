@@ -181,10 +181,10 @@
       <!--<position>-15 25 35</position>-->
     </object>
 
-    <!--<object def="cyllinder" material="green">
-      <position>0 0 10</position>
+    <object def="cyllinder" material="green">
+      <position>0 10 15</position>
       <rotation>0 90 90</rotation>
-    </object>-->
+    </object>
     
     <!-- Paredes -->
     <object def="planeHorizontal1" material="cyan"/>
