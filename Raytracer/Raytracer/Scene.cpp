@@ -218,14 +218,17 @@ map<string, Material *> Scene::readMaterials(const xml_node &scene)
 
 		Material *material = new Material(
 			materialId,
-			colorFromChild(node, "ambientColor"),
-			floatFromChild(node, "ambientCoefficient"),
-			colorFromChild(node, "diffuseColor"),
-			floatFromChild(node, "diffuseCoefficient"),
-			colorFromChild(node, "specularColor"),
-			floatFromChild(node, "specularCoefficient"),
-			intFromChild(node, "specularExponent"),
-			stringAttributeFromNode(node, "mirrored") == "true"
+			colorFromChild(node, "ambientColor", Vector3::zero),
+			floatFromChild(node, "ambientCoefficient", 0),
+			colorFromChild(node, "diffuseColor", Vector3::zero),
+			floatFromChild(node, "diffuseCoefficient", 0),
+			colorFromChild(node, "specularColor", Vector3::zero),
+			floatFromChild(node, "specularCoefficient", 0),
+			intFromChild(node, "specularExponent", 1),
+			stringAttributeFromNode(node, "mirrored", "false") == "true",
+			stringAttributeFromNode(node, "refractive", "false") == "true",
+			floatFromChild(node, "refractionIndex", 1),
+			floatFromChild(node, "transparency", 0)
 			);
 
 		pair<map<string, Material *>::iterator, bool> ret = 
@@ -415,6 +418,12 @@ Vector3 Scene::vectorFromNode(const xml_node &node)
 	return Vector3(x, y, z);
 }
 
+Vector3 Scene::vectorFromChild(const xml_node &node, const string &child, const Vector3& defaultValue)
+{
+	xml_node childNode = node.child(child.c_str());
+	return childNode ? vectorFromNode(childNode) : defaultValue;	
+}
+
 Vector3 Scene::vectorFromChild(const xml_node &node, const string &child)
 {
 	xml_node childNode = node.child(child.c_str());
@@ -438,6 +447,12 @@ Vector3 Scene::colorFromChild(const xml_node &node, const string &child)
 	return Vector3::fromHTML(childNode.text().as_string());
 }
 
+Vector3 Scene::colorFromChild(const xml_node &node, const string &child, const Vector3& defaultColor)
+{
+	xml_node childNode = node.child(child.c_str());
+	return childNode ? Vector3::fromHTML(childNode.text().as_string()) : defaultColor;
+}
+
 float Scene::floatFromChild(const xml_node &node, const string &child)
 {
 	xml_node childNode = node.child(child.c_str());
@@ -449,6 +464,12 @@ float Scene::floatFromChild(const xml_node &node, const string &child)
 	return childNode.text().as_float();
 }
 
+float Scene::floatFromChild(const xml_node &node, const string &child, float defaultValue)
+{
+	xml_node childNode = node.child(child.c_str());
+	return childNode ? childNode.text().as_float() : defaultValue;
+}
+
 int Scene::intFromChild(const xml_node &node, const string &child)
 {
 	xml_node childNode = node.child(child.c_str());
@@ -458,6 +479,12 @@ int Scene::intFromChild(const xml_node &node, const string &child)
 		throw invalid_argument(ss.str().c_str());
 	}
 	return childNode.text().as_int();
+}
+
+int Scene::intFromChild(const xml_node &node, const string &child, int defaultValue)
+{
+	xml_node childNode = node.child(child.c_str());
+	return childNode ? childNode.text().as_int() : defaultValue;
 }
 
 string Scene::idFromNode(const xml_node &node)
@@ -474,6 +501,12 @@ string Scene::stringAttributeFromNode(const xml_node &node, const string& attrib
 		throw invalid_argument(ss.str().c_str());
 	}
 	return attr.as_string();
+}
+
+string Scene::stringAttributeFromNode(const xml_node &node, const string& attributeName, const string& defaultValue)
+{
+	xml_attribute attr = node.attribute(attributeName.c_str());
+	return attr ? attr.as_string() : defaultValue;
 }
 
 ShapeDefinition *Scene::getShapeDefinition(const string& id)

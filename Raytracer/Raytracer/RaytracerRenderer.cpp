@@ -62,7 +62,7 @@ void RaytracerRenderer::init()
 	memset(colorBuffer, 0xFF, bufferSize);
 	memset(ambientBuffer, 0x00, bufferSize);
 	memset(diffuseBuffer, 0x00, bufferSize);
-	
+
 	Logger::log("Init Raytracing");
 
 	SDL_Thread *thread = SDL_CreateThread(raytraceAsync, "RT_Init", this);
@@ -80,13 +80,13 @@ void RaytracerRenderer::initOpenGL()
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculation
 
 	glGenTextures(1, &colorTextureId);
-    // Use this texture id
-    glBindTexture(GL_TEXTURE_2D, colorTextureId);
-    // Associate this texture id with some texture-specific data
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	// Use this texture id
+	glBindTexture(GL_TEXTURE_2D, colorTextureId);
+	// Associate this texture id with some texture-specific data
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 }
 
 Ray RaytracerRenderer::getRay(int x, int y)
@@ -122,7 +122,7 @@ void RaytracerRenderer::prepareBlocks()
 			continue;
 		if(visited.find(firstPendingPut) != visited.end())
 			continue;
-		
+
 		visited.insert(firstPendingPut);
 
 		unsigned int x = blockSize * firstPendingPut.first;
@@ -203,7 +203,7 @@ void RaytracerRenderer::processBlock(const ImageBlock& block)
 			Ray r = getRay((int)x, (int)y);
 			unsigned int position = y * bufferWidth + x;
 			Vector3  ambient, diffuse, total;
-			rayTrace(r, 1, ambient, diffuse, total);
+			rayTrace(r, 3, ambient, diffuse, total);
 			colorBuffer[position] = total.clamped();
 			ambientBuffer[position] = ambient.clamped();
 			diffuseBuffer[position] = diffuse.clamped();
@@ -239,14 +239,11 @@ Intersection RaytracerRenderer::findFirstHit(const Ray& ray)
 	return res;
 }
 
-void RaytracerRenderer::shade(SceneObject *obj, const Ray& ray, const Vector3& intersectionPoint, int depth, 
-							  Vector3& ambient, Vector3 &diffuse, Vector3& color)
+void RaytracerRenderer::shadePhong(const Vector3& intersectionPoint, const Vector3& normal, Material& material,
+		Vector3& ambient, Vector3 &diffuse, Vector3& color)
 {
-	color = ambient = diffuse = Vector3::zero;
-
-	Vector3 normal = obj->normalAt(ray, intersectionPoint).normalized();
+	
 	Vector3 eyeDirection = (scene().camera().position() - intersectionPoint).normalized();
-	Material &material = *obj->material();
 	vector<Light>& lights = scene().lights();
 	for(vector<Light>::iterator it = lights.begin(); it != lights.end(); ++it)
 	{
@@ -266,7 +263,7 @@ void RaytracerRenderer::shade(SceneObject *obj, const Ray& ray, const Vector3& i
 		{
 			continue;
 		}
-		
+
 		Vector3 reflectedRay = 2 * normal * (normal * lightDirection) - lightDirection;
 
 		float invAttenuation = (it->linearAttenuation() * lightVector.length() + it->quadAttenuation() * lightVector.lengthSquared() );
@@ -290,13 +287,46 @@ void RaytracerRenderer::shade(SceneObject *obj, const Ray& ray, const Vector3& i
 
 		color += attenuationFactor * it->diffuseColor().multiply(specularColor + diffuseColor);
 	}
-	
-	if(depth > 0 && material.mirrored())
+}
+
+void RaytracerRenderer::shade(SceneObject *obj, const Ray& ray, const Vector3& intersectionPoint, int depth, 
+							  Vector3& ambient, Vector3 &diffuse, Vector3& color)
+{
+	color = ambient = diffuse = Vector3::zero;
+
+	Vector3 normal = obj->normalAt(ray, intersectionPoint).normalized();
+	Material &material = *obj->material();
+
+	shadePhong(intersectionPoint, normal, material, ambient, diffuse, color);
+
+	if(depth == 0) 
+	{
+		return;
+	}
+
+	if(material.mirrored())
 	{
 		Vector3 colorMirrored, diffuseMirrored, ambientMirrored;
 		rayTrace(Ray(intersectionPoint, normal), depth-1, ambientMirrored, diffuseMirrored, colorMirrored);
 		color += material.specularCoefficient() * colorMirrored;
 	} 
+	if(material.refractive())
+	{
+		Vector3 colorRefraction, diffuseRefraction, ambientRefraction;
+
+		Vector3 I = ray.direction().normalized();
+		float eta, c1, cs2 ;
+		c1 = - I * normal;
+		eta = c1 > 0 ? 1 / material.refractionIndex(): material.refractionIndex();			
+		cs2 = 1 - eta * eta * (1 - c1 * c1) ;
+
+		if (cs2 < 0)
+			return ;		/* total internal reflection */
+	
+		Vector3 rayDirection = eta * I + (eta * c1 - sqrt(cs2)) * normal;
+		rayTrace(Ray(intersectionPoint, rayDirection), depth-1, ambientRefraction, diffuseRefraction, colorRefraction);
+		color += material.transparency() * colorRefraction;
+	}
 }
 
 void RaytracerRenderer::handleReshape(int width, int height)
@@ -339,24 +369,24 @@ void RaytracerRenderer::renderColorBuffer()
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, colorBuffer);
 
 	glEnableClientState(GL_VERTEX_ARRAY);
-    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	// One vertex is (2 + 2)*4 bytes (2 GLfloats for position, 2 GLfloats for texture coordinates, 4 bytes per GLfloat)
-    const int SIZE_OF_VERTEX = (2 + 2)*sizeof(GLfloat);
+	const int SIZE_OF_VERTEX = (2 + 2)*sizeof(GLfloat);
 
-    GLfloat data[] = {// 2 texture coordinates followed by 2 vertex coordinates in counterclockwise order
-        0, 0, -1, +1,// Bottomleft
-        1, 0, +1, +1,// Bottomright
-        1, 1, +1, -1,// Topright
-        0, 1, -1, -1,// Topleft
-    };
+	GLfloat data[] = {// 2 texture coordinates followed by 2 vertex coordinates in counterclockwise order
+		0, 0, -1, +1,// Bottomleft
+		1, 0, +1, +1,// Bottomright
+		1, 1, +1, -1,// Topright
+		0, 1, -1, -1,// Topleft
+	};
 
-    // Use this texture
+	// Use this texture
 	glBindTexture(GL_TEXTURE_2D, colorTextureId);
 
-    // Tell OpenGL where our vertex data begins and how big each vertex is
-    glTexCoordPointer(2, GL_FLOAT, SIZE_OF_VERTEX, data+0);// Texture data begins at index 0
-    glVertexPointer  (2, GL_FLOAT, SIZE_OF_VERTEX, data+2);// Vertex  data begins at index 2
+	// Tell OpenGL where our vertex data begins and how big each vertex is
+	glTexCoordPointer(2, GL_FLOAT, SIZE_OF_VERTEX, data+0);// Texture data begins at index 0
+	glVertexPointer  (2, GL_FLOAT, SIZE_OF_VERTEX, data+2);// Vertex  data begins at index 2
 
 	int winWidth, winHeight;
 	SDL_GetWindowSize(app().getWindow(), &winWidth, &winHeight);
@@ -372,8 +402,8 @@ void RaytracerRenderer::renderColorBuffer()
 		glScalef(winWidth * imageAspectRatio / windowAspectRatio, (GLfloat)winHeight, 1.0f);
 	}
 
-    // Draw data
-    glDrawArrays(GL_QUADS, 0, 4);
+	// Draw data
+	glDrawArrays(GL_QUADS, 0, 4);
 }
 
 static string getTimeStr()
@@ -414,7 +444,7 @@ int RaytracerRenderer::saveImage(void *s)
 void RaytracerRenderer::saveBufferToFile(BufferContent *buffer, const std::string& outPath)
 {
 	FIBITMAP *dib = FreeImage_Allocate(bufferWidth, bufferHeight, 32,
-		 FI_RGBA_RED_MASK, FI_RGBA_GREEN_MASK, FI_RGBA_BLUE_MASK);
+		FI_RGBA_RED_MASK, FI_RGBA_GREEN_MASK, FI_RGBA_BLUE_MASK);
 	if(!dib)
 		throw SceneError("saveImage: couldn't allocate image");
 
@@ -430,13 +460,13 @@ void RaytracerRenderer::saveBufferToFile(BufferContent *buffer, const std::strin
 			bits[FI_RGBA_GREEN] = color.g;
 			bits[FI_RGBA_BLUE] = color.b;
 			bits[FI_RGBA_ALPHA] = color.a;
-			
+
 			bits += bytespp;
 		}
 	}
 
 	FIBITMAP *scaledDib = FreeImage_Rescale(dib, scene().imageWidth(), scene().imageHeight());
-	
+
 	if(!FreeImage_Save(FIF_PNG, scaledDib, outPath.c_str(), PNG_Z_BEST_COMPRESSION))
 		throw SceneError("saveImage: save image");
 }

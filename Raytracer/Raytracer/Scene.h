@@ -60,12 +60,17 @@ private:
 
 	// métodos auxiliares para leer elementos comunes
 	static Vector3 vectorFromChild(const pugi::xml_node &node, const std::string &child);
+	static Vector3 vectorFromChild(const pugi::xml_node &node, const std::string &child, const Vector3& defaultValue);
 	static Vector3 vectorFromNode(const pugi::xml_node &node);
 	static Vector3 colorFromChild(const pugi::xml_node &node, const std::string &child);
+	static Vector3 colorFromChild(const pugi::xml_node &node, const std::string &child, const Vector3& defaultColor);
 	static float  floatFromChild(const pugi::xml_node &node, const std::string &child);
+	static float  floatFromChild(const pugi::xml_node &node, const std::string &child, float defaultValue);
 	static int  intFromChild(const pugi::xml_node &node, const std::string &child);
+	static int  intFromChild(const pugi::xml_node &node, const std::string &child, int defaultValue);
 	static std::string idFromNode(const pugi::xml_node &node);
 	static std::string stringAttributeFromNode(const pugi::xml_node &node, const std::string& attributeName);
+	static std::string stringAttributeFromNode(const pugi::xml_node &node, const std::string& attributeName, const std::string& defaultValue);
 
 	// métodos de acceso internos
 	ShapeDefinition *getShapeDefinition(const std::string& id);
