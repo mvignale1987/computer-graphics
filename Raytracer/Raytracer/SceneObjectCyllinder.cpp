@@ -56,7 +56,7 @@ Intersection SceneObjectCyllinder::intersection(const Ray& ray)
 
 	// with these values we calculate y axis position of the ray and check if it collides the finite cyllinder
 	// if t0 is less than zero, the intersection point is at t1
-    if (t0 < 0)
+    if (t0 < -0.01f && t1 > 0.01f)
     {
 		float y1 =  o.y() + t1*d.y();	//evaluate the ray on desired t value
 		if (y1 >= 0 && y1 <= height)		// checks if we intersect the whole cyllinder or just the finite part
@@ -69,18 +69,18 @@ Intersection SceneObjectCyllinder::intersection(const Ray& ray)
 		}
     }
     // else the intersection point is at t0 OR AT THE CAP!!!!
-    else
+    else if(t0 > 0.01f)
     {
 		
 		float y0 =  o.y() + t0*d.y();
 		float y1 =  o.y() + t1*d.y();
-		if (y0 <= height && y1 >= height || y1 <= height && y0 >= height)
+		if (y0 <= height && y1 >= height || y1 <= height && y0 >= height) // here we should improve the angle of the cap
 		{
 			//SPECIAL UPPER CAP INTERSECTION
 			float t3 = (height -  o.y()) / d.y();
 			return Intersection(this, t3);		
 		}
-		if (y0 <= 0 && y1 >= 0 || y1 <= 0 && y0 >= 0)
+		if (y0 <= 0 && y1 >= 0 /*|| y1 <= 0 && y0 >= 0*/)
 		{
 			//SPECIAL LOWER CAP INTERSECTION
 			float t3 = (0.0f -  o.y()) / d.y();
@@ -95,16 +95,23 @@ Intersection SceneObjectCyllinder::intersection(const Ray& ray)
 			return Intersection::noIntersection;
 		}
     }
+	else
+	{
+		return Intersection::noIntersection;
+}
 }
 
 Vector3 SceneObjectCyllinder::normalAt(const Ray& r, const Vector3& point)
 {
-	if (point.y() == 0)
-		return Vector3::down;
-	else if (point.y() == height)
-		return Vector3::up;
-	else
-		return Vector3(point.x()/radius,0.0f,point.z()/radius);
+	
+	if (point.y() > center.y() && point.y() < center.y()+height)
+		return point + Vector3(point.x()/radius,0.0f,point.z()/radius);
+	else if (point.y() == center.y())
+		return point + Vector3::down;
+	else if (point.y() == center.y()+height)
+		return point + Vector3::up;
+	
+		
 }
 
 Vector2 SceneObjectCyllinder::textureCoordinatesAt(const Vector3&)
