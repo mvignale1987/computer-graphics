@@ -15,11 +15,13 @@ class Material;
 class RaytracerRenderer: public Renderer
 {
 public:
-	// cuanto se agranda la imagen para hacer superSampling debería ser 2
-	static const unsigned short superSamplingConstant;
 	// el tamaño de un bloque de imagen que agarra un thread
 	static const unsigned int blockSize;
 private:
+	short					rayDepth;
+	// cuanto se agranda la imagen; para hacer superSampling debería ser 2
+	short					superSamplingConstant;
+
 	// buffer
 	unsigned int			bufferWidth;
 	unsigned int			bufferHeight;
@@ -44,12 +46,16 @@ private:
 	Vector3 windowCenter;
 	Vector3 rightWindowDirection;
 	Vector3 upWindowDirection;
+
+	// runtime rendering options
+	bool linearTexture;
 public:
 	RaytracerRenderer(App &app, Scene &scene);
 
 	// métodos base del Renderer
 	void init();
 	void handleReshape(int h, int w);
+	bool handleEvent(const SDL_Event &ev);
 	void renderNextFrame();
 private:
 	// rendering

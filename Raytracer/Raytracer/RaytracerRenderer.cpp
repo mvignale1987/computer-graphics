@@ -14,7 +14,6 @@
 
 using namespace std;
 
-const unsigned short RaytracerRenderer::superSamplingConstant = 2;
 const unsigned int RaytracerRenderer::blockSize = 256;
 
 static void lockMutex(SDL_mutex *mutex)
@@ -31,14 +30,17 @@ static void unlockMutex(SDL_mutex *mutex)
 
 RaytracerRenderer::RaytracerRenderer(App &app, Scene &scene):
 	Renderer(app, scene),
-	bufferWidth(scene.imageWidth() * superSamplingConstant),
-	bufferHeight(scene.imageHeight() * superSamplingConstant),
+	rayDepth(scene.rayDepth()),
+	superSamplingConstant(scene.supersampling()),
+	bufferWidth(scene.imageWidth() * scene.supersampling()),
+	bufferHeight(scene.imageHeight() * scene.supersampling()),
 	colorBuffer(new BufferContent[bufferWidth * bufferHeight]),
 	ambientBuffer(new BufferContent[bufferWidth * bufferHeight]),
 	diffuseBuffer(new BufferContent[bufferWidth * bufferHeight]),
 	nThreads(SDL_GetCPUCount()),
 	imageSaved(false),
-	pendingBlocksMutex(SDL_CreateMutex())
+	pendingBlocksMutex(SDL_CreateMutex()),
+	linearTexture(true)
 {
 	SDL_AtomicSet(&pendingThreads, nThreads);
 
@@ -85,8 +87,20 @@ void RaytracerRenderer::initOpenGL()
 	// Associate this texture id with some texture-specific data
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, linearTexture ? GL_LINEAR : GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,  linearTexture ? GL_LINEAR : GL_NEAREST);
+}
+
+bool RaytracerRenderer::handleEvent(const SDL_Event &ev)
+{
+	if(ev.type == SDL_KEYDOWN && ev.key.keysym.sym == SDLK_l)
+	{
+		linearTexture = !linearTexture;
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, linearTexture ? GL_LINEAR : GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,  linearTexture ? GL_LINEAR : GL_NEAREST);
+	}
+
+	return true;
 }
 
 Ray RaytracerRenderer::getRay(int x, int y)
@@ -203,7 +217,7 @@ void RaytracerRenderer::processBlock(const ImageBlock& block)
 			Ray r = getRay((int)x, (int)y);
 			unsigned int position = y * bufferWidth + x;
 			Vector3  ambient, diffuse, total;
-			rayTrace(r, 3, ambient, diffuse, total);
+			rayTrace(r, rayDepth, ambient, diffuse, total);
 			colorBuffer[position] = total.clamped();
 			ambientBuffer[position] = ambient.clamped();
 			diffuseBuffer[position] = diffuse.clamped();
@@ -265,12 +279,9 @@ void RaytracerRenderer::shadePhong(SceneObject *obj, const Vector3& intersection
 		Vector3 lightVector = it->position() - intersectionPoint;
 		Vector3 lightDirection = lightVector.normalized();
 
-		if(material.ambientCoefficient() > 0)
-		{
-			Vector3 ambientColor = it->ambientColor().multiply(materialAmbientColor) * material.ambientCoefficient(); 
-			ambient += ambientColor;
-			color += ambientColor; 
-		}
+		Vector3 ambientColor = it->ambientColor().multiply(materialAmbientColor) * material.ambientCoefficient(); 
+		ambient += ambientColor;
+		color += ambientColor; 
 
 		Intersection shadowIntersection = findFirstHit(Ray(intersectionPoint, lightDirection));
 
@@ -289,7 +300,7 @@ void RaytracerRenderer::shadePhong(SceneObject *obj, const Vector3& intersection
 		Vector3 diffuseColor;
 		if(material.diffuseCoefficient() > 0)
 		{
-			diffuseColor = material.diffuseCoefficient() * materialDiffuseColor * (normal * lightDirection);
+			diffuseColor = material.diffuseCoefficient() * materialDiffuseColor * max<float>(normal * lightDirection, 0);
 			diffuse += diffuseColor;
 		}
 
@@ -300,7 +311,12 @@ void RaytracerRenderer::shadePhong(SceneObject *obj, const Vector3& intersection
 			specularColor = material.specularCoefficient() * material.specularColor() * specularExponent;
 		}
 
-		color += attenuationFactor * it->diffuseColor().multiply(specularColor + diffuseColor);
+		Vector3 nonambientColor = attenuationFactor * it->diffuseColor().multiply(specularColor + diffuseColor);
+		if(nonambientColor.x() < 0 || nonambientColor.y() < 0 || nonambientColor.z() < 0)
+		{
+			nonambientColor = nonambientColor.clamped();
+		}
+		color += nonambientColor;
 	}
 }
 
