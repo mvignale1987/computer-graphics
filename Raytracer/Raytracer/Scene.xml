@@ -6,7 +6,7 @@
 
   <!-- Luces de la escena -->
   <lights>
-    <light id="light1">
+    <light>
       <position>0 20 5</position>
       <ambientColor>#FFFFFF</ambientColor>
       <diffuseColor>#FFFFAA</diffuseColor>
@@ -14,7 +14,7 @@
       <quadAttenuation>0.002</quadAttenuation>
     </light>
 
-    <light id="light2">
+    <light>
       <position>0 20 20</position>
       <ambientColor>#FFFFFF</ambientColor>
       <diffuseColor>#AAFFFF</diffuseColor>
@@ -36,50 +36,48 @@
 
   <!-- Materiales de los objetos -->
   <materials>
-    <material id="red" mirrored="false">
+    <material id="red">
       <ambientColor>#800000</ambientColor>
       <ambientCoefficient>0.1</ambientCoefficient>
       <diffuseColor>#800000</diffuseColor>
       <diffuseCoefficient>0.9</diffuseCoefficient>
-      <specularColor>#ffffff</specularColor>
-      <specularCoefficient>0</specularCoefficient>
-      <specularExponent>5</specularExponent>
     </material>
-    <material id="green" mirrored="false">
+    <material id="green">
       <ambientColor>#008000</ambientColor>
       <ambientCoefficient>0.1</ambientCoefficient>
       <diffuseColor>#008000</diffuseColor>
       <diffuseCoefficient>0.9</diffuseCoefficient>
-      <specularColor>#ffffff</specularColor>
-      <specularCoefficient>0</specularCoefficient>
-      <specularExponent>100</specularExponent>
     </material>
-    <material id="blue" mirrored="false">
-      <ambientColor>#0000FF</ambientColor>
-      <ambientCoefficient>0.1</ambientCoefficient>
-      <diffuseColor>#0000FF</diffuseColor>
-      <diffuseCoefficient>0.9</diffuseCoefficient>
-      <specularColor>#ffffff</specularColor>
-      <specularCoefficient>0</specularCoefficient>
-      <specularExponent>100</specularExponent>
-    </material>
-    <material id="white" mirrored="false">
+    <material id="white">
       <ambientColor>#FFFFFF</ambientColor>
       <ambientCoefficient>0.1</ambientCoefficient>
       <diffuseColor>#FFFFFF</diffuseColor>
       <diffuseCoefficient>0.9</diffuseCoefficient>
-      <specularColor>#ffffff</specularColor>
-      <specularCoefficient>0.0</specularCoefficient>
-      <specularExponent>5</specularExponent>
+    </material>
+    <material id="cyan">
+      <ambientColor>#00f0ff</ambientColor>
+      <ambientCoefficient>0.1</ambientCoefficient>
+      <diffuseColor>#00f0ff</diffuseColor>
+      <diffuseCoefficient>0.9</diffuseCoefficient>
+    </material>
+    <material id="orange">
+      <ambientColor>#FF8000</ambientColor>
+      <ambientCoefficient>0.1</ambientCoefficient>
+      <diffuseColor>#FF8000</diffuseColor>
+      <diffuseCoefficient>0.9</diffuseCoefficient>
     </material>
     <material id="mirror" mirrored="true">
-      <ambientColor>#000000</ambientColor>
-      <ambientCoefficient>0.0</ambientCoefficient>
-      <diffuseColor>#00FF00</diffuseColor>
-      <diffuseCoefficient>0.0</diffuseCoefficient>
       <specularColor>#ffffff</specularColor>
       <specularCoefficient>1</specularCoefficient>
       <specularExponent>50</specularExponent>
+    </material>
+    <material id="blue" refractive="true">
+      <ambientColor>#0000FF</ambientColor>
+      <ambientCoefficient>0.0</ambientCoefficient>
+      <diffuseColor>#0000FF</diffuseColor>
+      <diffuseCoefficient>0.0</diffuseCoefficient>
+      <refractionIndex>1.5</refractionIndex>
+      <transparency>0.9</transparency>
     </material>
   </materials>
 
@@ -180,6 +178,7 @@
 
     <object def="bigSphere" material="blue">
       <position>-7 15 25</position>
+      <!--<position>-15 25 35</position>-->
     </object>
 
     <!--<object def="cyllinder" material="green">
@@ -188,14 +187,14 @@
     </object>-->
     
     <!-- Paredes -->
-    <object def="planeHorizontal1" material="white"/>
+    <object def="planeHorizontal1" material="cyan"/>
     <object def="planeVertical1" material="red">
       <position>-20 0 0</position>
     </object>
     <object def="planeVertical2" material="green">
       <position>20 0 0</position>
     </object>
-    <object def="planeHorizontal2" material="white">
+    <object def="planeHorizontal2" material="orange">
       <position>0 30 0</position>
     </object>
     <object def="planeBack" material="white"/>
