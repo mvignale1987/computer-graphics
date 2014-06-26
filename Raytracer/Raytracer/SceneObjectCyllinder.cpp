@@ -74,13 +74,13 @@ Intersection SceneObjectCyllinder::intersection(const Ray& ray)
 		
 		float y0 =  o.y() + t0*d.y();
 		float y1 =  o.y() + t1*d.y();
-		if (y0 <= height && y1 >= height || y1 <= height && y0 >= height)
+		if (y0 <= height && y1 >= height /*|| y1 <= height && y0 >= height*/)
 		{
 			//SPECIAL UPPER CAP INTERSECTION
 			float t3 = (height -  o.y()) / d.y();
 			return Intersection(this, t3);		
 		}
-		if (y0 <= 0 && y1 >= 0 || y1 <= 0 && y0 >= 0)
+		if (y0 <= 0 && y1 >= 0 /*|| y1 <= 0 && y0 >= 0*/)
 		{
 			//SPECIAL LOWER CAP INTERSECTION
 			float t3 = (0.0f -  o.y()) / d.y();
