@@ -15,6 +15,8 @@ SceneObjectTriangle::SceneObjectTriangle(Material *material, const Vector3& v0, 
     uv = u * v;
     vv = v * v;
 	uv2_uuvv = uv * uv - uu * vv;
+
+	area = normal.length() / 2.0f;
 }
 
 Intersection SceneObjectTriangle::intersection(const Ray& ray)
@@ -62,4 +64,17 @@ Intersection SceneObjectTriangle::intersection(const Ray& ray)
 Vector3 SceneObjectTriangle::normalAt(const Ray&, const Vector3&)
 {
 	return normal;
+}
+
+
+Vector2 SceneObjectTriangle::textureCoordinatesAt(const Vector3& point)
+{
+	Vector3 AP = point - v0;
+	Vector3 APxAC = AP.cross(v);
+	Vector3 APxAB = AP.cross(u);
+
+	float texCoordX = (APxAC.length() / 2.0f) / area;
+	float texCoordY = (APxAB.length() / 2.0f) / area;
+
+	return Vector2(texCoordX, texCoordY);
 }

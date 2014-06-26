@@ -71,3 +71,20 @@ Vector3 SceneObjectSphere::normalAt(const Ray&, const Vector3& p)
 {
 	return p - center;
 }
+
+Vector2 SceneObjectSphere::textureCoordinatesAt(const Vector3& point)
+{
+	Vector3 normal = (point - center).normalized();
+
+	float phi = acosf(Vector3::up * normal);
+    float v = phi/ (float)M_PI;
+	float u;
+
+	float theta = (acosf( normal * Vector3::right )/ sinf(phi)) / (2.0f * (float)M_PI);
+	if (normal * (Vector3::up.cross(Vector3::right)) > 0)
+       u = theta;
+    else
+       u = 1 - theta;
+
+	return Vector2(u, v);
+}

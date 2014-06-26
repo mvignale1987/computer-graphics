@@ -106,3 +106,8 @@ Vector3 SceneObjectCyllinder::normalAt(const Ray& r, const Vector3& point)
 	else
 		return Vector3(point.x()/radius,0.0f,point.z()/radius);
 }
+
+Vector2 SceneObjectCyllinder::textureCoordinatesAt(const Vector3&)
+{
+	return Vector2::zero;
+}

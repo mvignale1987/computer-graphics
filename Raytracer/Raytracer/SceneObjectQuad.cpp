@@ -12,11 +12,14 @@ SceneObjectQuad::SceneObjectQuad(Material *material, const Vector3& a, const Vec
 	vertexs.push_back(c);
 	vertexs.push_back(d);
 
-	Vector3 v1 = b - a;
-	Vector3 v2 = c - a;
-	Vector3 v3 = d - a;
-	normal = v1.cross(v2).normalized();
-	if((v1.cross(v3).normalized() - normal).length() > 0.1)
+	v0 = a;
+	u = (b - a).normalized();
+	v = (d - a).normalized();
+	lengthU = (b - a).length();
+	lengthV = (d - a).length();
+	Vector3 w = c - a;
+	normal = u.cross(v).normalized();
+	if((u.cross(w).normalized() - normal).length() > 0.1)
 		throw std::invalid_argument("Points are not coplanar");
 }
 
@@ -72,4 +75,11 @@ Intersection SceneObjectQuad::intersection(const Ray& r)
 Vector3 SceneObjectQuad::normalAt(const Ray&, const Vector3&)
 {
 	return normal;
+}
+
+
+Vector2 SceneObjectQuad::textureCoordinatesAt(const Vector3& point)
+{
+	Vector3 p = point - v0;
+	return Vector2((p * u) / lengthU, (p * v) / lengthV);
 }

@@ -12,5 +12,6 @@ public:
 
 	virtual Intersection intersection(const Ray& r);
 	virtual Vector3 normalAt(const Ray& r, const Vector3& p);
+	virtual Vector2 textureCoordinatesAt(const Vector3& point);
 };
 
