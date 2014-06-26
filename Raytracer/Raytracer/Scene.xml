@@ -54,10 +54,8 @@
       <diffuseColor>#FFFFFF</diffuseColor>
       <diffuseCoefficient>0.9</diffuseCoefficient>
     </material>
-    <material id="cyan">
-      <ambientColor>#00f0ff</ambientColor>
+    <material id="cyan" texture="chessboard.png">
       <ambientCoefficient>0.1</ambientCoefficient>
-      <diffuseColor>#00f0ff</diffuseColor>
       <diffuseCoefficient>0.9</diffuseCoefficient>
     </material>
     <material id="orange">
@@ -178,7 +176,7 @@
 
     <object def="bigSphere" material="blue">
       <position>-7 15 25</position>
-      <!--<position>-15 25 35</position>-->
+      <position>-15 25 35</position>
     </object>
 
     <object def="cyllinder" material="green">
@@ -199,7 +197,7 @@
     </object>
     <object def="planeBack" material="white"/>
 
-    <!-- Cara superior del prisma -->
+     <!--Cara superior del prisma--> 
     <object def="triangleHorizontal1" material="white">
       <position>-16 10 10</position>
     </object>
@@ -255,7 +253,7 @@
       <position>4 10 25</position>
     </object>
 
-    <!-- Cara frontal del prisma -->
+     <!--Cara frontal del prisma--> 
     <object def="triangleVertical1" material="white">
       <position>4 0 10</position>
     </object>
@@ -275,7 +273,7 @@
       <position>-16 0 10</position>
     </object>
 
-    <!-- Cara izquierda del prisma (no se ve) -->
+     <!--Cara izquierda del prisma (no se ve)--> 
     <object def="triangleLateral1" material="white">
       <position>-16 0 10</position>
     </object>
@@ -289,7 +287,7 @@
       <position>-16 0 20</position>
     </object>
 
-    <!-- Cara derecha del prisma (no se ve) -->
+     <!--Cara derecha del prisma (no se ve)--> 
     <object def="triangleLateral1" material="white">
       <position>14 0 10</position>
     </object>
