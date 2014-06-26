@@ -1,5 +1,5 @@
 #include "Material.h"
-
+#include <FreeImage.h>
 
 Material::Material():
 	m_id(""),
@@ -13,7 +13,8 @@ Material::Material():
 	m_mirrored(false),
 	m_refractive(false),
 	m_refractionIndex(1),
-	m_transparency(1)
+	m_transparency(1),
+	texture(NULL)
 {
 }
 
@@ -29,7 +30,8 @@ Material::Material(
 	bool mirrored,
 	bool refractive,
 	float refractionIndex,
-	float transparency
+	float transparency,
+	std::string texturePath
 ):
 	m_id(id),
 	m_ambientColor(ambientColor),
@@ -56,6 +58,33 @@ Material::Material(
 		throw std::out_of_range("refraction index must be positive");
 	if(transparency < 0 || transparency > 1)
 		throw std::out_of_range("transparency must be betweeen 0 and 1");
+
+	if(!texturePath.empty())
+	{
+		const char *filename = texturePath.c_str();
+		texture = NULL;
+		FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
+		// check the file signature and deduce its format
+		// (the second argument is currently not used by FreeImage)
+		fif = FreeImage_GetFileType(filename, 0);
+		if(fif == FIF_UNKNOWN) {
+			// no signature ?
+			// try to guess the file format from the file extension
+			fif = FreeImage_GetFIFFromFilename(filename);
+		}
+		// check that the plugin has reading capabilities ...
+		if((fif != FIF_UNKNOWN) && FreeImage_FIFSupportsReading(fif)) {
+			// ok, let's load the file
+			texture = FreeImage_Load(fif, filename);
+			// unless a bad file format, we are done !
+		}
+
+		if(texture == NULL)
+			throw std::invalid_argument("Couldn't load texture '" + texturePath + "'");
+
+		textureWidth = FreeImage_GetWidth(texture);
+		textureHeight = FreeImage_GetHeight(texture);
+	}
 }
 
 std::string	Material::id() const
@@ -115,4 +144,28 @@ float Material::refractionIndex() const
 float Material::transparency() const
 {
 	return m_transparency;
+}
+
+bool Material::textured() const 
+{
+	return texture != NULL;
+}
+
+Vector3 Material::getColorAt(Vector2 uv) const
+{
+	unsigned x = (unsigned) ceilf(uv.x() * textureWidth);
+	unsigned y = (unsigned) ceilf(uv.y() * textureHeight);
+
+	RGBQUAD res;
+
+	if(x >= textureWidth || y >= textureHeight || !FreeImage_GetPixelColor(texture, x, y, &res))
+	{
+		return Vector3::zero;
+	} else
+	{
+		float r = res.rgbRed / 255.0f;
+		float g = res.rgbGreen / 255.0f;
+		float b = res.rgbBlue / 255.0f;
+		return Vector3(r, g, b);
+	}
 }

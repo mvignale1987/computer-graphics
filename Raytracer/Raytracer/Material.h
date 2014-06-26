@@ -1,12 +1,17 @@
 #pragma once
 
 #include "Vector3.h"
+#include "Vector2.h"
 #include <string>
+
+struct FIBITMAP;
 
 class Material
 {
 private:
 	std::string		m_id;
+	
+	// lighting properties
 	Vector3			m_ambientColor;
 	float			m_ambientCoefficient;
 	Vector3			m_diffuseColor;
@@ -14,10 +19,17 @@ private:
 	Vector3			m_specularColor;
 	float			m_specularCoefficient;
 	unsigned char	m_specularExponent;
+
+	// mirror & refractive properties
 	bool			m_mirrored;
 	bool			m_refractive;
 	float			m_refractionIndex;
 	float			m_transparency;
+	
+	// texturing properties
+	FIBITMAP *		texture;
+	unsigned int	textureWidth;
+	unsigned int	textureHeight;
 public:
 	Material();
 	Material(
@@ -32,7 +44,8 @@ public:
 		bool mirrored,
 		bool refractive,
 		float refractionIndex,
-		float transparency
+		float transparency,
+		std::string texturePath
 		);
 
 	std::string	id() const;
@@ -47,5 +60,7 @@ public:
 	bool refractive() const;
 	float refractionIndex() const;
 	float transparency() const;
+	bool textured() const;
+	Vector3 getColorAt(Vector2 uv) const;
 };
 
