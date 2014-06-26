@@ -61,6 +61,6 @@ public:
 	float refractionIndex() const;
 	float transparency() const;
 	bool textured() const;
-	Vector3 getColorAt(Vector2 uv) const;
+	Vector3 getColorAt(const Vector2& uv) const;
 };
 

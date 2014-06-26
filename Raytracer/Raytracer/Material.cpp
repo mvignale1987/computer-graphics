@@ -151,14 +151,19 @@ bool Material::textured() const
 	return texture != NULL;
 }
 
-Vector3 Material::getColorAt(Vector2 uv) const
+Vector3 Material::getColorAt(const Vector2& uv) const
 {
 	unsigned x = (unsigned) ceilf(uv.x() * textureWidth);
 	unsigned y = (unsigned) ceilf(uv.y() * textureHeight);
 
 	RGBQUAD res;
 
-	if(x >= textureWidth || y >= textureHeight || !FreeImage_GetPixelColor(texture, x, y, &res))
+	if(x >= textureWidth)
+		x = textureWidth - 1;
+	if(y >= textureHeight)
+		y = textureHeight - 1;
+
+	if(!FreeImage_GetPixelColor(texture, x, y, &res))
 	{
 		return Vector3::zero;
 	} else
