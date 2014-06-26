@@ -76,8 +76,14 @@ Intersection SceneObjectCyllinder::intersection(const Ray& ray)
 		float y1 =  o.y() + t1*d.y();
 		if (y0 <= height && y1 >= height || y1 <= height && y0 >= height)
 		{
-			//SPECIAL CAP INTERSECTION
+			//SPECIAL UPPER CAP INTERSECTION
 			float t3 = (height -  o.y()) / d.y();
+			return Intersection(this, t3);		
+		}
+		if (y0 <= 0 && y1 >= 0 || y1 <= 0 && y0 >= 0)
+		{
+			//SPECIAL LOWER CAP INTERSECTION
+			float t3 = (0.0f -  o.y()) / d.y();
 			return Intersection(this, t3);		
 		}
 		if (y0 >= 0 && y0 <= height )
@@ -89,16 +95,14 @@ Intersection SceneObjectCyllinder::intersection(const Ray& ray)
 			return Intersection::noIntersection;
 		}
     }
-
-	
-	
-
-	
-	
 }
 
 Vector3 SceneObjectCyllinder::normalAt(const Ray& r, const Vector3& point)
 {
-	
-	return point - center;
+	if (point.y() == 0)
+		return Vector3::down;
+	else if (point.y() == height)
+		return Vector3::up;
+	else
+		return Vector3(point.x()/radius,0.0f,point.z()/radius);
 }
