@@ -74,7 +74,7 @@ Intersection SceneObjectCyllinder::intersection(const Ray& ray)
 		
 		float y0 =  o.y() + t0*d.y();
 		float y1 =  o.y() + t1*d.y();
-		if (y0 <= height && y1 >= height /*|| y1 <= height && y0 >= height*/)
+		if (y0 <= height && y1 >= height || y1 <= height && y0 >= height) // here we should improve the angle of the cap
 		{
 			//SPECIAL UPPER CAP INTERSECTION
 			float t3 = (height -  o.y()) / d.y();
