@@ -145,6 +145,7 @@
     <ClInclude Include="Vector3.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="basketball.png" />
     <Image Include="chessboard.png" />
     <Image Include="icon.png" />
     <None Include="raytracer.ico" />
