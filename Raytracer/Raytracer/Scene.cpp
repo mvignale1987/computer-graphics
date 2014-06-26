@@ -228,7 +228,8 @@ map<string, Material *> Scene::readMaterials(const xml_node &scene)
 			stringAttributeFromNode(node, "mirrored", "false") == "true",
 			stringAttributeFromNode(node, "refractive", "false") == "true",
 			floatFromChild(node, "refractionIndex", 1),
-			floatFromChild(node, "transparency", 0)
+			floatFromChild(node, "transparency", 0),
+			stringAttributeFromNode(node, "texture", "")
 			);
 
 		pair<map<string, Material *>::iterator, bool> ret = 
