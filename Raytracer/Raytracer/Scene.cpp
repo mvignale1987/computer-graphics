@@ -180,7 +180,6 @@ vector<Light> Scene::readLights(const xml_node &scene)
 		}
 
 		Light light(
-			idFromNode(node),
 			vectorFromChild(node, "position"),
 			colorFromChild(node, "ambientColor"),
 			colorFromChild(node, "diffuseColor"),

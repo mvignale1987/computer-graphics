@@ -8,14 +8,12 @@ Light::Light():
 }
 
 Light::Light(
-	const std::string id,
 	const Vector3& position,
 	const Vector3& ambientColor,
 	const Vector3& diffuseColor,
 	float linearAttenuation,
 	float quadAttenuation
 ):
-	m_id(id),
 	m_position(position),
 	m_ambientColor(ambientColor),
 	m_diffuseColor(diffuseColor),
@@ -24,10 +22,6 @@ Light::Light(
 {
 }
 
-std::string Light::id() const
-{
-	return m_id;
-}
 
 Vector3 Light::position() const
 {
