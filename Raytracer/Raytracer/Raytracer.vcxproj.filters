@@ -91,12 +91,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SceneObjectCyllinder.cpp">
-	   <Filter>Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SceneObjectQuad.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SceneObjectTriangle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -194,9 +197,13 @@
     <ClInclude Include="SceneObjectTriangle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Vector2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="icon.png" />
+    <Image Include="chessboard.png" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Raytracer.rc">
