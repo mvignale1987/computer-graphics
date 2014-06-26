@@ -68,7 +68,7 @@ Intersection SceneObjectCyllinder::intersection(const Ray& ray)
 			return Intersection::noIntersection;
 		}
     }
-    // else the intersection point is at t0 OR AT THE CAP
+    // else the intersection point is at t0 OR AT THE CAP!!!!
     else
     {
 		
@@ -99,5 +99,6 @@ Intersection SceneObjectCyllinder::intersection(const Ray& ray)
 
 Vector3 SceneObjectCyllinder::normalAt(const Ray& r, const Vector3& point)
 {
+	
 	return point - center;
 }

@@ -183,7 +183,7 @@
     </object>
 
     <object def="cyllinder" material="green">
-      <position>0 0 10</position>
+      <position>0 10 15</position>
       <rotation>0 90 90</rotation>
     </object>
     
