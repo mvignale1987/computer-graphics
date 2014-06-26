@@ -239,12 +239,27 @@ Intersection RaytracerRenderer::findFirstHit(const Ray& ray)
 	return res;
 }
 
-void RaytracerRenderer::shadePhong(const Vector3& intersectionPoint, const Vector3& normal, Material& material,
+void RaytracerRenderer::shadePhong(SceneObject *obj, const Vector3& intersectionPoint, const Vector3& normal, Material& material,
 		Vector3& ambient, Vector3 &diffuse, Vector3& color)
 {
 	
 	Vector3 eyeDirection = (scene().camera().position() - intersectionPoint).normalized();
 	vector<Light>& lights = scene().lights();
+
+	Vector3 materialDiffuseColor;
+	Vector3 materialAmbientColor;
+
+	if(material.textured())
+	{
+		Vector2 uv = obj->textureCoordinatesAt(intersectionPoint);
+		Vector3 texturedColor = material.getColorAt(uv);
+		materialDiffuseColor = materialAmbientColor = texturedColor;
+	} else 
+	{
+		materialAmbientColor = material.ambientColor();
+		materialDiffuseColor = material.diffuseColor();
+	}
+
 	for(vector<Light>::iterator it = lights.begin(); it != lights.end(); ++it)
 	{
 		Vector3 lightVector = it->position() - intersectionPoint;
@@ -252,7 +267,7 @@ void RaytracerRenderer::shadePhong(const Vector3& intersectionPoint, const Vecto
 
 		if(material.ambientCoefficient() > 0)
 		{
-			Vector3 ambientColor = it->ambientColor().multiply(material.ambientColor()) * material.ambientCoefficient(); 
+			Vector3 ambientColor = it->ambientColor().multiply(materialAmbientColor) * material.ambientCoefficient(); 
 			ambient += ambientColor;
 			color += ambientColor; 
 		}
@@ -274,7 +289,7 @@ void RaytracerRenderer::shadePhong(const Vector3& intersectionPoint, const Vecto
 		Vector3 diffuseColor;
 		if(material.diffuseCoefficient() > 0)
 		{
-			diffuseColor = material.diffuseCoefficient() * material.diffuseColor() * (normal * lightDirection);
+			diffuseColor = material.diffuseCoefficient() * materialDiffuseColor * (normal * lightDirection);
 			diffuse += diffuseColor;
 		}
 
@@ -297,7 +312,7 @@ void RaytracerRenderer::shade(SceneObject *obj, const Ray& ray, const Vector3& i
 	Vector3 normal = obj->normalAt(ray, intersectionPoint).normalized();
 	Material &material = *obj->material();
 
-	shadePhong(intersectionPoint, normal, material, ambient, diffuse, color);
+	shadePhong(obj, intersectionPoint, normal, material, ambient, diffuse, color);
 
 	if(depth == 0) 
 	{

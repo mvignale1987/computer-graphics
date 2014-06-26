@@ -69,7 +69,7 @@ private:
 	Intersection findFirstHit(const Ray& r);
 	void shade(SceneObject *obj, const Ray& ray, const Vector3& intersectionPoint, int depth,
 		Vector3& ambient, Vector3 &diffuse, Vector3& total);
-	void shadePhong(const Vector3& intersectionPoint, const Vector3& normal, Material& material,
+	void shadePhong(SceneObject *obj, const Vector3& intersectionPoint, const Vector3& normal, Material& material,
 		Vector3& ambient, Vector3 &diffuse, Vector3& total);
 	void saveBufferToFile(BufferContent *buffer, const std::string& outPath);
 };
