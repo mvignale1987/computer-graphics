@@ -3,6 +3,8 @@
   <backgroundColor>#000000</backgroundColor>
   <resolution>800 600</resolution>
   <outputDir>%DESKTOP%\Raytracer</outputDir>
+  <rayDepth>3</rayDepth>
+  <superSampling>2</superSampling>
 
   <!-- Luces de la escena -->
   <lights>
@@ -54,9 +56,13 @@
       <diffuseColor>#FFFFFF</diffuseColor>
       <diffuseCoefficient>0.9</diffuseCoefficient>
     </material>
-    <material id="cyan" texture="chessboard.png">
+    <material id="cyanCheckboard" texture="chessboard.png">
       <ambientCoefficient>0.1</ambientCoefficient>
       <diffuseCoefficient>0.9</diffuseCoefficient>
+    </material>
+    <material id="ball" texture="basketball.png">
+      <ambientCoefficient>0.2</ambientCoefficient>
+      <diffuseCoefficient>0.8</diffuseCoefficient>
     </material>
     <material id="orange">
       <ambientColor>#FF8000</ambientColor>
@@ -89,7 +95,7 @@
     </sphere>
     
     <cyllinder id="cyllinder">
-      <height>10</height>
+      <height>6</height>
       <radius>3</radius>
     </cyllinder>
     
@@ -174,18 +180,22 @@
       <position>12 13 15</position>
     </object>
 
+    <object def="sphere" material="ball">
+      <position>0 3 6</position>
+    </object>
+
     <object def="bigSphere" material="blue">
       <position>-7 15 25</position>
       <position>-15 25 35</position>
     </object>
 
     <object def="cyllinder" material="green">
-      <position>0 10 15</position>
+      <position>-5 10 25</position>
       <rotation>0 90 90</rotation>
     </object>
     
     <!-- Paredes -->
-    <object def="planeHorizontal1" material="cyan"/>
+    <object def="planeHorizontal1" material="cyanCheckboard"/>
     <object def="planeVertical1" material="red">
       <position>-20 0 0</position>
     </object>

@@ -49,6 +49,8 @@ Scene Scene::readFromPath(const string &path)
 	res.m_objects = readSceneObjects(res, sceneNode); 
 	res.m_outputDir = readOutputDir(sceneNode);
 	readSceneResolution(sceneNode, res.m_imageWidth, res.m_imageHeight);
+	res.m_rayDepth = (short) intFromChild(sceneNode, "rayDepth", 3);
+	res.m_supersampling = (short) intFromChild(sceneNode, "superSampling", 1);
 
 	return res;
 }
@@ -71,6 +73,16 @@ int Scene::imageWidth() const
 int Scene::imageHeight() const
 {
 	return m_imageHeight;
+}
+
+short Scene::rayDepth() const
+{
+	return m_rayDepth;
+}
+
+short Scene::supersampling() const
+{
+	return m_supersampling;
 }
 
 string Scene::outputDir() const

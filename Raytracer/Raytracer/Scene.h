@@ -26,6 +26,8 @@ private:
 	std::map<std::string, ShapeDefinition *> shapeDefinitions;
 	std::vector<SceneObject *> m_objects;
 	Vector3 bgColor;
+	short m_supersampling;
+	short m_rayDepth;
 	Camera cam;
 	int m_imageWidth, m_imageHeight;
 	std::string m_outputDir;
@@ -36,6 +38,9 @@ public:
 	Vector3 backgroundColor() const;
 	int imageWidth() const;
 	int imageHeight() const;
+	short rayDepth() const;
+	short supersampling() const;
+
 	std::string outputDir() const;
 	Camera camera() const;
 	std::vector<SceneObject *>& objects();
