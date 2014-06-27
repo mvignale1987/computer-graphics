@@ -131,8 +131,8 @@ void OpenGLRenderer::renderSphere(SceneObjectSphere *sphere)
 {
 	glPushMatrix();
 	{
-		glTranslate(sphere->position());
-		glutSolidSphere(sphere->sphereRadius(), 32, 32);
+		glTranslate(sphere->center());
+		glutSolidSphere(sphere->radius(), 32, 32);
 	}
 	glPopMatrix();
 }

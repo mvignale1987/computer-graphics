@@ -3,8 +3,10 @@
 
 SceneObjectSphere::SceneObjectSphere(Material *material, const Vector3& center, float radius):
 	SceneObject(material),
-	center(center),
-	radius(radius)
+	m_center(center),
+	m_radius(radius),
+	m_aabb(m_center.x() - m_radius, m_center.y() - m_radius, m_center.z() - m_radius,
+		m_center.x() + m_radius, m_center.y() + m_radius, m_center.z() + m_radius)
 {
 }
 
@@ -12,11 +14,11 @@ Intersection SceneObjectSphere::intersection(const Ray& ray)
 {
 	//Compute A, B and C coefficients
 	Vector3 d = ray.direction();
-	Vector3 o = ray.origin() - center;
+	Vector3 o = ray.origin() - m_center;
 
 	float a = d * d;
 	float b = 2 * o * d;
-	float c = o*o - (radius * radius);
+	float c = o*o - (m_radius * m_radius);
 
     //Find discriminant
     float disc = b * b - 4 * a * c;
@@ -69,12 +71,12 @@ Intersection SceneObjectSphere::intersection(const Ray& ray)
 
 Vector3 SceneObjectSphere::normalAt(const Ray&, const Vector3& p)
 {
-	return p - center;
+	return p - m_center;
 }
 
 Vector2 SceneObjectSphere::textureCoordinatesAt(const Vector3& point)
 {
-	Vector3 normal = (point - center).normalized();
+	Vector3 normal = (point - m_center).normalized();
 
 	float phi = acosf(Vector3::up * normal);
     float v = phi/ (float)M_PI;
@@ -91,20 +93,25 @@ Vector2 SceneObjectSphere::textureCoordinatesAt(const Vector3& point)
 
 Vector3 SceneObjectSphere::xTextureVector(const Vector3& point)
 {
-	return Vector3::up.cross(point-center).normalized(); 
+	return Vector3::up.cross(point-m_center).normalized(); 
 }
 
 Vector3 SceneObjectSphere::yTextureVector(const Vector3& point)
 {
-	return Vector3::right.cross(point-center).normalized();
+	return Vector3::right.cross(point-m_center).normalized();
 }
 
-Vector3 SceneObjectSphere::position() const
+AABB SceneObjectSphere::aabb()
 {
-	return center;
+	return m_aabb;
 }
 
-float SceneObjectSphere::sphereRadius() const
+Vector3 SceneObjectSphere::center() const
 {
-	return radius;
+	return m_center;
+}
+
+float SceneObjectSphere::radius() const
+{
+	return m_radius;
 }

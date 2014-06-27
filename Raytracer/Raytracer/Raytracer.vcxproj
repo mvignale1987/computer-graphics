@@ -77,6 +77,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AABB.cpp" />
     <ClCompile Include="App.cpp" />
     <ClCompile Include="BufferContent.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -115,6 +116,7 @@
     </Xml>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AABB.h" />
     <ClInclude Include="App.h" />
     <ClInclude Include="BufferContent.h" />
     <ClInclude Include="Camera.h" />

@@ -6,8 +6,9 @@ class SceneObjectCyllinder: public SceneObject
 {
 private:
 	Vector3 center;
-	float radius;
-	float height;
+	float	radius;
+	float	height;
+	AABB	m_aabb;
 public:
 	SceneObjectCyllinder(Material *material, const Vector3& center, float radius, float height);
 
@@ -16,5 +17,6 @@ public:
 	virtual Vector2 textureCoordinatesAt(const Vector3& point);
 	virtual Vector3 xTextureVector(const Vector3& point);
 	virtual Vector3 yTextureVector(const Vector3& point);
+	virtual AABB aabb();
 };
 

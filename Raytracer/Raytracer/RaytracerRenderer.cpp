@@ -40,7 +40,8 @@ RaytracerRenderer::RaytracerRenderer(App &app, Scene &scene):
 	nThreads(SDL_GetCPUCount()),
 	imageSaved(false),
 	pendingBlocksMutex(SDL_CreateMutex()),
-	linearTexture(true)
+	linearTexture(true),
+	raytracerStarted(0)
 {
 	SDL_AtomicSet(&pendingThreads, nThreads);
 
@@ -64,6 +65,8 @@ void RaytracerRenderer::init()
 	memset(colorBuffer, 0xFF, bufferSize);
 	memset(ambientBuffer, 0x00, bufferSize);
 	memset(diffuseBuffer, 0x00, bufferSize);
+
+	raytracerStarted = SDL_GetTicks();
 
 	Logger::log("Init Raytracing");
 
@@ -200,7 +203,11 @@ int RaytracerRenderer::processPendingBlocks(void *s)
 		}
 	}
 
-	SDL_AtomicDecRef(&self.pendingThreads);
+	int pendingBlocksBefore = SDL_AtomicAdd(&self.pendingThreads, -1);
+	if(pendingBlocksBefore == 1)
+	{
+		self.raytracerEnded = SDL_GetTicks();
+	}
 
 	return 0;
 }
@@ -244,6 +251,9 @@ Intersection RaytracerRenderer::findFirstHit(const Ray& ray)
 	vector<SceneObject *>& objects = scene().objects();
 	for(vector<SceneObject *>::iterator it = objects.begin(); it != objects.end(); ++it)
 	{
+		if(!(*it)->aabb().intersects(ray))
+			continue;
+
 		Intersection potential = (*it)->intersection(ray);
 		if(potential.intersects() && (!res.intersects() || potential.distance() < res.distance()))
 		{
@@ -392,7 +402,9 @@ void RaytracerRenderer::renderNextFrame()
 	int pendingThreadsVal = SDL_AtomicGet(&pendingThreads);
 	if(pendingThreadsVal == 0 && !imageSaved)
 	{
-		Logger::log("Finished Rendering. Saving image...");
+		stringstream ss;
+		ss << "Finished Rendering in " << (raytracerEnded - raytracerStarted) / 1000.0f << "s. Saving image...";
+		Logger::log(ss.str());
 		SDL_Thread *thread = SDL_CreateThread(saveImage, "RT_SaveImage", this);
 		SDL_DetachThread(thread); 
 		imageSaved = true;

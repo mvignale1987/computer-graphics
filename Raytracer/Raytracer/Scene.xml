@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scene renderMethod="raytrace">
   <backgroundColor>#000000</backgroundColor>
-  <resolution>1920 1920</resolution>
+  <resolution>800 600</resolution>
   <outputDir>%DESKTOP%\Raytracer</outputDir>
   <rayDepth>3</rayDepth>
   <superSampling>2</superSampling>
@@ -13,7 +13,7 @@
       <ambientColor>#FFFFFF</ambientColor>
       <diffuseColor>#FFFFAA</diffuseColor>
       <linearAttenuation>0.00</linearAttenuation>
-      <quadAttenuation>0.002</quadAttenuation>
+      <quadAttenuation>0.001</quadAttenuation>
     </light>
 
     <light>
@@ -21,7 +21,7 @@
       <ambientColor>#FFFFFF</ambientColor>
       <diffuseColor>#AAFFFF</diffuseColor>
       <linearAttenuation>0.00</linearAttenuation>
-      <quadAttenuation>0.002</quadAttenuation>
+      <quadAttenuation>0.001</quadAttenuation>
     </light>
   </lights>
   
@@ -40,9 +40,9 @@
   <materials>
     <material id="red" normalMap="brickwall-normal.png">
       <ambientColor>#800000</ambientColor>
-      <ambientCoefficient>0.1</ambientCoefficient>
+      <ambientCoefficient>0.0</ambientCoefficient>
       <diffuseColor>#800000</diffuseColor>
-      <diffuseCoefficient>0.9</diffuseCoefficient>
+      <diffuseCoefficient>1</diffuseCoefficient>
     </material>
     <material id="green">
       <ambientColor>#008000</ambientColor>

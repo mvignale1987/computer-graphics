@@ -5,7 +5,9 @@ SceneObjectCyllinder::SceneObjectCyllinder(Material *material, const Vector3& ce
 	SceneObject(material),
 	center(center),
 	radius(radius),
-	height(height)
+	height(height),
+	m_aabb(center.x() - radius, center.y() - height, center.z() - radius, 
+		center.x() + radius, center.y() + height, center.z() + radius)
 {
 }
 
@@ -114,6 +116,11 @@ Vector3 SceneObjectCyllinder::normalAt(const Ray& r, const Vector3& point)
 		
 }
 
+AABB SceneObjectCyllinder::aabb()
+{
+	return m_aabb;
+}
+
 Vector2 SceneObjectCyllinder::textureCoordinatesAt(const Vector3&)
 {
 	return Vector2::zero;
@@ -128,3 +135,4 @@ Vector3 SceneObjectCyllinder::yTextureVector(const Vector3&)
 {
 	return Vector3::up;
 }
+

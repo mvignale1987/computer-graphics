@@ -1,5 +1,6 @@
 #include "SceneObjectTriangle.h"
 
+using namespace std;
 
 SceneObjectTriangle::SceneObjectTriangle(Material *material, const Vector3& v0, const Vector3& v1, const Vector3& v2):
 	SceneObject(material),
@@ -11,7 +12,7 @@ SceneObjectTriangle::SceneObjectTriangle(Material *material, const Vector3& v0, 
 	vnormalized = v.normalized();
 	m_normal = u.cross(v);
 	if(m_normal == Vector3::zero)
-		throw std::invalid_argument("Triangle is degenerate");
+		throw invalid_argument("Triangle is degenerate");
 	
 	uu = u * u;
     uv = u * v;
@@ -19,6 +20,16 @@ SceneObjectTriangle::SceneObjectTriangle(Material *material, const Vector3& v0, 
 	uv2_uuvv = uv * uv - uu * vv;
 
 	area = m_normal.length() / 2.0f;
+
+	float minx = min<float>(v0.x(), min<float>(v1.x(), v2.x()));
+	float miny = min<float>(v0.y(), min<float>(v1.y(), v2.y()));
+	float minz = min<float>(v0.z(), min<float>(v1.z(), v2.z()));
+	
+	float maxx = max<float>(v0.x(), max<float>(v1.x(), v2.x()));
+	float maxy = max<float>(v0.y(), max<float>(v1.y(), v2.y()));
+	float maxz = max<float>(v0.z(), max<float>(v1.z(), v2.z()));
+
+	m_aabb = AABB(minx, miny, minz, maxx, maxy, maxz);
 }
 
 Intersection SceneObjectTriangle::intersection(const Ray& ray)
@@ -89,6 +100,11 @@ Vector3 SceneObjectTriangle::xTextureVector(const Vector3&)
 Vector3 SceneObjectTriangle::yTextureVector(const Vector3&)
 {
 	return vnormalized;
+}
+
+AABB SceneObjectTriangle::aabb()
+{
+	return m_aabb;
 }
 
 Vector3 SceneObjectTriangle::a() const 

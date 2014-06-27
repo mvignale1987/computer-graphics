@@ -4,6 +4,7 @@
 #include "Intersection.h"
 #include "Ray.h"
 #include "Vector2.h"
+#include "AABB.h"
 
 class SceneObject
 {
@@ -26,4 +27,6 @@ public:
 	virtual Vector3 xTextureVector(const Vector3& point) = 0;
 	// v vector in uv coordinates
 	virtual Vector3 yTextureVector(const Vector3& point) = 0;
+	// AABB containing object
+	virtual AABB aabb() = 0;
 };

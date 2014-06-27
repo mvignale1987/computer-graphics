@@ -1,8 +1,6 @@
 #include "SceneObjectQuad.h"
 
-// si es true se consideran los quads como planos (más rápido de evaluar)
-#define QUAD_AS_PLANE 0
-
+using namespace std;
 
 SceneObjectQuad::SceneObjectQuad(Material *material, const Vector3& a, const Vector3& b, const Vector3& c, const Vector3& d):
 	SceneObject(material)
@@ -21,6 +19,16 @@ SceneObjectQuad::SceneObjectQuad(Material *material, const Vector3& a, const Vec
 	m_normal = u.cross(v).normalized();
 	if((u.cross(w).normalized() - m_normal).length() > 0.1)
 		throw std::invalid_argument("Points are not coplanar");
+
+	float minx = min<float>(a.x(), min<float>(b.x(), min<float>(c.x(), d.x())));
+	float miny = min<float>(a.y(), min<float>(b.y(), min<float>(c.y(), d.x())));
+	float minz = min<float>(a.z(), min<float>(b.z(), min<float>(c.z(), d.z())));
+	
+	float maxx = max<float>(a.x(), max<float>(b.x(), max<float>(c.x(), d.x())));
+	float maxy = max<float>(a.y(), max<float>(b.y(), max<float>(c.y(), d.y())));
+	float maxz = max<float>(a.z(), max<float>(b.z(), max<float>(c.z(), d.z())));
+
+	m_aabb = AABB(minx, miny, minz, maxx, maxy, maxz);
 }
 
 
@@ -42,9 +50,7 @@ Intersection SceneObjectQuad::intersection(const Ray& r)
 	{
 		return Intersection::noIntersection;
 	}
-#if QUAD_AS_PLANE
-	return Intersection(this, distance);
-#else
+
 	// calc angle between point and m_vertexs
 	float anglesum=0;
 	Vector3 q = r.origin() + distance * r.direction();
@@ -67,21 +73,22 @@ Intersection SceneObjectQuad::intersection(const Ray& r)
 		return Intersection(this, distance);
 	else
 		return Intersection::noIntersection;
-#endif
 }
-
-
 
 Vector3 SceneObjectQuad::normalAt(const Ray&, const Vector3&)
 {
 	return m_normal;
 }
 
+AABB SceneObjectQuad::aabb()
+{
+	return m_aabb;
+}
+
 Vector3 SceneObjectQuad::normal()
 {
 	return m_normal;
 }
-
 
 Vector2 SceneObjectQuad::textureCoordinatesAt(const Vector3& point)
 {

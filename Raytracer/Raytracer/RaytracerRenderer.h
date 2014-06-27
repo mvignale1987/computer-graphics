@@ -3,6 +3,7 @@
 #include <queue>
 #include <SDL_mutex.h>
 #include <SDL_atomic.h>
+#include <SDL_timer.h>
 #include "Renderer.h"
 #include "Vector3.h"
 #include "ImageBlock.h"
@@ -36,6 +37,9 @@ private:
 
 	// color buffer texture
 	GLuint					colorTextureId;
+
+	Uint32					raytracerStarted;
+	Uint32					raytracerEnded;
 
 	int						nThreads;
 	bool					imageSaved;
