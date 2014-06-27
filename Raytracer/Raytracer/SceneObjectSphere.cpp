@@ -88,3 +88,13 @@ Vector2 SceneObjectSphere::textureCoordinatesAt(const Vector3& point)
 
 	return Vector2(u, v);
 }
+
+Vector3 SceneObjectSphere::position() const
+{
+	return center;
+}
+
+float SceneObjectSphere::sphereRadius() const
+{
+	return radius;
+}

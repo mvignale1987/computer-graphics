@@ -285,6 +285,11 @@ void glVertex(const Vector3& v)
 	glVertex3fv(v.vector());
 }
 
+void glNormal(const Vector3& v)
+{
+	glNormal3fv(v.vector());
+}
+
 void gluLookAt(const Vector3& eye, const Vector3& center, const Vector3& up)
 {
 	gluLookAt(eye.x(), eye.y(), eye.z(), center.x(), center.y(), center.z(), up.x(), up.y(), up.z());

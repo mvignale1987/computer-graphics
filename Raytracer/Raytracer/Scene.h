@@ -17,6 +17,7 @@ class SceneObject;
 #include "Material.h"
 #include "ShapeDefinition.h"
 #include "SceneObject.h"
+#include "RenderMethod.h"
 
 class Scene 
 {
@@ -31,6 +32,7 @@ private:
 	Camera cam;
 	int m_imageWidth, m_imageHeight;
 	std::string m_outputDir;
+	RenderMethod::Enum m_renderMethod;
 public:
 	Scene();
 	static Scene readFromPath(const std::string &path);
@@ -40,6 +42,7 @@ public:
 	int imageHeight() const;
 	short rayDepth() const;
 	short supersampling() const;
+	RenderMethod::Enum renderMethod() const;
 
 	std::string outputDir() const;
 	Camera camera() const;

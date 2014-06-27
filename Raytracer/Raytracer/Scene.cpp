@@ -51,6 +51,8 @@ Scene Scene::readFromPath(const string &path)
 	readSceneResolution(sceneNode, res.m_imageWidth, res.m_imageHeight);
 	res.m_rayDepth = (short) intFromChild(sceneNode, "rayDepth", 3);
 	res.m_supersampling = (short) intFromChild(sceneNode, "superSampling", 1);
+	res.m_renderMethod = stringAttributeFromNode(sceneNode, "renderMethod", "raytrace") == "raytrace" ?
+		RenderMethod::RAYTRACE : RenderMethod::OPENGL;
 
 	return res;
 }
@@ -88,6 +90,11 @@ short Scene::supersampling() const
 string Scene::outputDir() const
 {
 	return m_outputDir;
+}
+
+RenderMethod::Enum Scene::renderMethod() const
+{
+	return m_renderMethod;
 }
 
 vector<SceneObject *>& Scene::objects()

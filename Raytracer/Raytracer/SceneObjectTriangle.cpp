@@ -7,8 +7,8 @@ SceneObjectTriangle::SceneObjectTriangle(Material *material, const Vector3& v0, 
 {
 	u = v1 - v0;
     v = v2 - v0;
-	normal = u.cross(v);
-	if(normal == Vector3::zero)
+	m_normal = u.cross(v);
+	if(m_normal == Vector3::zero)
 		throw std::invalid_argument("Triangle is degenerate");
 	
 	uu = u * u;
@@ -16,7 +16,7 @@ SceneObjectTriangle::SceneObjectTriangle(Material *material, const Vector3& v0, 
     vv = v * v;
 	uv2_uuvv = uv * uv - uu * vv;
 
-	area = normal.length() / 2.0f;
+	area = m_normal.length() / 2.0f;
 }
 
 Intersection SceneObjectTriangle::intersection(const Ray& ray)
@@ -26,8 +26,8 @@ Intersection SceneObjectTriangle::intersection(const Ray& ray)
 
 	dir = ray.direction();              // ray direction vector
 	w0 = ray.origin() - v0;
-    a = -normal * w0;
-    b = normal * dir;
+    a = -m_normal * w0;
+    b = m_normal * dir;
     if (fabs(b) < 0.001f) {     // ray is  parallel to triangle plane
         if (a == 0)             // ray lies in triangle plane
             return Intersection(this, 0);
@@ -63,7 +63,7 @@ Intersection SceneObjectTriangle::intersection(const Ray& ray)
 
 Vector3 SceneObjectTriangle::normalAt(const Ray&, const Vector3&)
 {
-	return normal;
+	return m_normal;
 }
 
 
@@ -77,4 +77,24 @@ Vector2 SceneObjectTriangle::textureCoordinatesAt(const Vector3& point)
 	float texCoordY = (APxAB.length() / 2.0f) / area;
 
 	return Vector2(texCoordX, texCoordY);
+}
+
+Vector3 SceneObjectTriangle::a() const 
+{
+	return v0;
+}
+
+Vector3 SceneObjectTriangle::b() const 
+{
+	return v1;
+}
+
+Vector3 SceneObjectTriangle::c() const 
+{
+	return v2;
+}
+
+Vector3 SceneObjectTriangle::normal() const
+{
+	return m_normal;
 }

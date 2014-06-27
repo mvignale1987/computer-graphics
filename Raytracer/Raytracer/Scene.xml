@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<scene>
+<scene renderMethod="raytrace">
   <backgroundColor>#000000</backgroundColor>
   <resolution>800 600</resolution>
-  <outputDir>%DESKTOP%\Raytracer</outputDir>
+  <outputDir>C:\windows\temp\Raytracer</outputDir>
   <rayDepth>3</rayDepth>
   <superSampling>2</superSampling>
 
@@ -28,7 +28,7 @@
   <!-- cámara a usar en la escena -->
   <camera>
     <position>0 15 -40</position>
-    <lookAt>0 0 10</lookAt>
+    <lookAt>0 15 10</lookAt>
     <up>0 1 0</up>
     <near>0.1</near>
     <far>400</far>
@@ -57,11 +57,15 @@
       <diffuseCoefficient>0.9</diffuseCoefficient>
     </material>
     <material id="cyanCheckboard" texture="chessboard.png">
+      <ambientColor>#FFFFFF</ambientColor>
       <ambientCoefficient>0.1</ambientCoefficient>
+      <ambientColor>#FFFFFF</ambientColor>
       <diffuseCoefficient>0.9</diffuseCoefficient>
     </material>
     <material id="ball" texture="basketball.png">
+      <ambientColor>#FF8000</ambientColor>
       <ambientCoefficient>0.2</ambientCoefficient>
+      <diffuseColor>#FF8000</diffuseColor>
       <diffuseCoefficient>0.8</diffuseCoefficient>
     </material>
     <material id="orange">

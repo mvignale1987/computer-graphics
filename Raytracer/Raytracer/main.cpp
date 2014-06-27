@@ -30,8 +30,12 @@ int main(int argc, char **argv)
 	}
 
 	App app;
-	RaytracerRenderer renderer(app, scene);
-	app.setRenderer(&renderer);
+	Renderer *renderer;
+	if(scene.renderMethod() == RenderMethod::RAYTRACE)
+		renderer = new RaytracerRenderer(app, scene);
+	else
+		renderer = new OpenGLRenderer(app, scene);
+	app.setRenderer(renderer);
 
 	return app.run(argc, argv);
 }
