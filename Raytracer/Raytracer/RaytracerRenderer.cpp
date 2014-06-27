@@ -325,8 +325,18 @@ void RaytracerRenderer::shade(SceneObject *obj, const Ray& ray, const Vector3& i
 {
 	color = ambient = diffuse = Vector3::zero;
 
-	Vector3 normal = obj->normalAt(ray, intersectionPoint).normalized();
 	Material &material = *obj->material();
+	Vector3 normal = obj->normalAt(ray, intersectionPoint).normalized();
+	if(material.hasNormalMap())
+	{
+		Vector2 uv = obj->textureCoordinatesAt(intersectionPoint);
+		Vector3 rawNormal = material.getNormalAt(uv);
+		normal = (
+			rawNormal.x() * obj->xTextureVector(intersectionPoint) + 
+			rawNormal.y() * obj->yTextureVector(intersectionPoint) +
+			rawNormal.z() * normal
+			).normalized();
+	}
 
 	shadePhong(obj, intersectionPoint, normal, material, ambient, diffuse, color);
 

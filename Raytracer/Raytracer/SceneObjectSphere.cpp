@@ -89,6 +89,16 @@ Vector2 SceneObjectSphere::textureCoordinatesAt(const Vector3& point)
 	return Vector2(u, v);
 }
 
+Vector3 SceneObjectSphere::xTextureVector(const Vector3& point)
+{
+	return Vector3::up.cross(point-center).normalized(); 
+}
+
+Vector3 SceneObjectSphere::yTextureVector(const Vector3& point)
+{
+	return Vector3::right.cross(point-center).normalized();
+}
+
 Vector3 SceneObjectSphere::position() const
 {
 	return center;

@@ -16,6 +16,8 @@ public:
 	virtual Intersection intersection(const Ray& r);
 	virtual Vector3 normalAt(const Ray& r, const Vector3& point);
 	virtual Vector2 textureCoordinatesAt(const Vector3& point);
+	virtual Vector3 xTextureVector(const Vector3& point);
+	virtual Vector3 yTextureVector(const Vector3& point);
 
 	std::vector<Vector3>& vertexs();
 	Vector3 normal();

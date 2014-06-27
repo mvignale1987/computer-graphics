@@ -118,3 +118,13 @@ Vector2 SceneObjectCyllinder::textureCoordinatesAt(const Vector3&)
 {
 	return Vector2::zero;
 }
+
+Vector3 SceneObjectCyllinder::xTextureVector(const Vector3&)
+{
+	return Vector3::right;
+}
+
+Vector3 SceneObjectCyllinder::yTextureVector(const Vector3&)
+{
+	return Vector3::up;
+}

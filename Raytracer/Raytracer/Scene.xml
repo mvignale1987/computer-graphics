@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scene renderMethod="raytrace">
   <backgroundColor>#000000</backgroundColor>
-  <resolution>800 600</resolution>
-  <outputDir>C:\windows\temp\Raytracer</outputDir>
+  <resolution>1920 1920</resolution>
+  <outputDir>%DESKTOP%\Raytracer</outputDir>
   <rayDepth>3</rayDepth>
   <superSampling>2</superSampling>
 
@@ -38,7 +38,7 @@
 
   <!-- Materiales de los objetos -->
   <materials>
-    <material id="red">
+    <material id="red" normalMap="brickwall-normal.png">
       <ambientColor>#800000</ambientColor>
       <ambientCoefficient>0.1</ambientCoefficient>
       <diffuseColor>#800000</diffuseColor>
@@ -50,7 +50,13 @@
       <diffuseColor>#008000</diffuseColor>
       <diffuseCoefficient>0.9</diffuseCoefficient>
     </material>
-    <material id="white">
+    <material id="white" texture="brickwall.jpg" normalMap="brickwall-normal.png">
+      <ambientColor>#FFFFFF</ambientColor>
+      <ambientCoefficient>0.1</ambientCoefficient>
+      <diffuseColor>#FFFFFF</diffuseColor>
+      <diffuseCoefficient>0.9</diffuseCoefficient>
+    </material>
+    <material id="whiteMarble" texture="marble.jpg">
       <ambientColor>#FFFFFF</ambientColor>
       <ambientCoefficient>0.1</ambientCoefficient>
       <diffuseColor>#FFFFFF</diffuseColor>
@@ -116,10 +122,10 @@
       <position>-20  0   0</position>
     </quad>
     <quad id="planeVertical1">
-      <position>0  30   0</position>
       <position>0  30  50</position>
       <position>0   0  50</position>
       <position>0   0   0</position>
+      <position>0  30   0</position>
     </quad>
     <quad id="planeVertical2">
       <position>0   0   0</position>
@@ -212,106 +218,106 @@
     <object def="planeBack" material="white"/>
 
      <!--Cara superior del prisma--> 
-    <object def="triangleHorizontal1" material="white">
+    <object def="triangleHorizontal1" material="whiteMarble">
       <position>-16 10 10</position>
     </object>
-    <object def="triangleHorizontal2" material="white">
+    <object def="triangleHorizontal2" material="whiteMarble">
       <position>-16 10 10</position>
     </object>
-    <object def="triangleHorizontal1" material="white">
+    <object def="triangleHorizontal1" material="whiteMarble">
       <position>-6 10 10</position>
     </object>
-    <object def="triangleHorizontal2" material="white">
+    <object def="triangleHorizontal2" material="whiteMarble">
       <position>-6 10 10</position>
     </object>
-    <object def="triangleHorizontal1" material="white">
+    <object def="triangleHorizontal1" material="whiteMarble">
       <position>4 10 10</position>
     </object>
-    <object def="triangleHorizontal2" material="white">
+    <object def="triangleHorizontal2" material="whiteMarble">
       <position>4 10 10</position>
     </object>
-    <object def="triangleHorizontal1" material="white">
+    <object def="triangleHorizontal1" material="whiteMarble">
       <position>-16 10 20</position>
     </object>
-    <object def="triangleHorizontal2" material="white">
+    <object def="triangleHorizontal2" material="whiteMarble">
       <position>-16 10 20</position>
     </object>
-    <object def="triangleHorizontal1" material="white">
+    <object def="triangleHorizontal1" material="whiteMarble">
       <position>-6 10 20</position>
     </object>
-    <object def="triangleHorizontal2" material="white">
+    <object def="triangleHorizontal2" material="whiteMarble">
       <position>-6 10 20</position>
     </object>
-    <object def="triangleHorizontal1" material="white">
+    <object def="triangleHorizontal1" material="whiteMarble">
       <position>4 10 20</position>
     </object>
-    <object def="triangleHorizontal2" material="white">
+    <object def="triangleHorizontal2" material="whiteMarble">
       <position>4 10 20</position>
     </object>
-    <object def="triangleHorizontal3" material="white">
+    <object def="triangleHorizontal3" material="whiteMarble">
       <position>-16 10 25</position>
     </object>
-    <object def="triangleHorizontal4" material="white">
+    <object def="triangleHorizontal4" material="whiteMarble">
       <position>-16 10 25</position>
     </object>
-    <object def="triangleHorizontal3" material="white">
+    <object def="triangleHorizontal3" material="whiteMarble">
       <position>-6 10 25</position>
     </object>
-    <object def="triangleHorizontal4" material="white">
+    <object def="triangleHorizontal4" material="whiteMarble">
       <position>-6 10 25</position>
     </object>
-    <object def="triangleHorizontal3" material="white">
+    <object def="triangleHorizontal3" material="whiteMarble">
       <position>4 10 25</position>
     </object>
-    <object def="triangleHorizontal4" material="white">
+    <object def="triangleHorizontal4" material="whiteMarble">
       <position>4 10 25</position>
     </object>
 
      <!--Cara frontal del prisma--> 
-    <object def="triangleVertical1" material="white">
+    <object def="triangleVertical1" material="whiteMarble">
       <position>4 0 10</position>
     </object>
-    <object def="triangleVertical2" material="white">
+    <object def="triangleVertical2" material="whiteMarble">
       <position>4 0 10</position>
     </object>
-    <object def="triangleVertical1" material="white">
+    <object def="triangleVertical1" material="whiteMarble">
       <position>-6 0 10</position>
     </object>
-    <object def="triangleVertical2" material="white">
+    <object def="triangleVertical2" material="whiteMarble">
       <position>-6 0 10</position>
     </object>
-    <object def="triangleVertical1" material="white">
+    <object def="triangleVertical1" material="whiteMarble">
       <position>-16 0 10</position>
     </object>
-    <object def="triangleVertical2" material="white">
+    <object def="triangleVertical2" material="whiteMarble">
       <position>-16 0 10</position>
     </object>
 
      <!--Cara izquierda del prisma (no se ve)--> 
-    <object def="triangleLateral1" material="white">
+    <object def="triangleLateral1" material="whiteMarble">
       <position>-16 0 10</position>
     </object>
-    <object def="triangleLateral2" material="white">
+    <object def="triangleLateral2" material="whiteMarble">
       <position>-16 0 10</position>
     </object>
-    <object def="triangleLateral1" material="white">
+    <object def="triangleLateral1" material="whiteMarble">
       <position>-16 0 20</position>
     </object>
-    <object def="triangleLateral2" material="white">
+    <object def="triangleLateral2" material="whiteMarble">
       <position>-16 0 20</position>
     </object>
 
      <!--Cara derecha del prisma (no se ve)--> 
-    <object def="triangleLateral1" material="white">
+    <object def="triangleLateral1" material="whiteMarble">
       <position>14 0 10</position>
     </object>
-    <object def="triangleLateral2" material="white">
+    <object def="triangleLateral2" material="whiteMarble">
       <position>14 0 10</position>
     </object>
-    <object def="triangleLateral1" material="white">
+    <object def="triangleLateral1" material="whiteMarble">
       <position>14 0 20</position>
     </object>
-    <object def="triangleLateral2" material="white">
+    <object def="triangleLateral2" material="whiteMarble">
       <position>14 0 20</position>
     </object>
   </objects> 

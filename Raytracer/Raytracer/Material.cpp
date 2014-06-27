@@ -14,7 +14,12 @@ Material::Material():
 	m_refractive(false),
 	m_refractionIndex(1),
 	m_transparency(1),
-	texture(NULL)
+	texture(NULL),
+	textureWidth(0),
+	textureHeight(0),
+	normalMap(NULL),
+	normalMapWidth(0),
+	normalMapHeight(0)
 {
 }
 
@@ -31,7 +36,8 @@ Material::Material(
 	bool refractive,
 	float refractionIndex,
 	float transparency,
-	std::string texturePath
+	std::string texturePath,
+	std::string normalMapPath
 ):
 	m_id(id),
 	m_ambientColor(ambientColor),
@@ -44,7 +50,13 @@ Material::Material(
 	m_mirrored(mirrored),
 	m_refractive(refractive),
 	m_refractionIndex(refractionIndex),
-	m_transparency(transparency)
+	m_transparency(transparency),
+	texture(NULL),
+	textureWidth(0),
+	textureHeight(0),
+	normalMap(NULL),
+	normalMapWidth(0),
+	normalMapHeight(0)
 {
 	if(ambientCoefficient < 0 || ambientCoefficient > 1)
 		throw std::out_of_range("ambientCoefficient must be betweeen 0 and 1");
@@ -61,30 +73,40 @@ Material::Material(
 
 	if(!texturePath.empty())
 	{
-		const char *filename = texturePath.c_str();
-		texture = NULL;
-		FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
-		// check the file signature and deduce its format
-		// (the second argument is currently not used by FreeImage)
-		fif = FreeImage_GetFileType(filename, 0);
-		if(fif == FIF_UNKNOWN) {
-			// no signature ?
-			// try to guess the file format from the file extension
-			fif = FreeImage_GetFIFFromFilename(filename);
-		}
-		// check that the plugin has reading capabilities ...
-		if((fif != FIF_UNKNOWN) && FreeImage_FIFSupportsReading(fif)) {
-			// ok, let's load the file
-			texture = FreeImage_Load(fif, filename);
-			// unless a bad file format, we are done !
-		}
-
-		if(texture == NULL)
-			throw std::invalid_argument("Couldn't load texture '" + texturePath + "'");
-
-		textureWidth = FreeImage_GetWidth(texture);
-		textureHeight = FreeImage_GetHeight(texture);
+		loadTexture(texturePath, texture, textureWidth, textureHeight);
 	}
+	if(!normalMapPath.empty())
+	{
+		loadTexture(normalMapPath, normalMap, normalMapWidth, normalMapHeight);
+	}
+}
+
+
+void Material::loadTexture(const std::string& path, FIBITMAP *& bitmap, unsigned int& width, unsigned int& height)
+{
+	const char *filename = path.c_str();
+	bitmap = NULL;
+	FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
+	// check the file signature and deduce its format
+	// (the second argument is currently not used by FreeImage)
+	fif = FreeImage_GetFileType(filename, 0);
+	if(fif == FIF_UNKNOWN) {
+		// no signature ?
+		// try to guess the file format from the file extension
+		fif = FreeImage_GetFIFFromFilename(filename);
+	}
+	// check that the plugin has reading capabilities ...
+	if((fif != FIF_UNKNOWN) && FreeImage_FIFSupportsReading(fif)) {
+		// ok, let's load the file
+		bitmap = FreeImage_Load(fif, filename);
+		// unless a bad file format, we are done !
+	}
+
+	if(bitmap == NULL)
+		throw std::invalid_argument("Couldn't load texture '" + path + "'");
+
+	width = FreeImage_GetWidth(bitmap);
+	height = FreeImage_GetHeight(bitmap);
 }
 
 std::string	Material::id() const
@@ -172,5 +194,34 @@ Vector3 Material::getColorAt(const Vector2& uv) const
 		float g = res.rgbGreen / 255.0f;
 		float b = res.rgbBlue / 255.0f;
 		return Vector3(r, g, b);
+	}
+}
+
+bool Material::hasNormalMap() const
+{
+	return normalMap != NULL;
+}
+
+Vector3 Material::getNormalAt(const Vector2& uv) const
+{
+	unsigned x = (unsigned) ceilf(uv.x() * normalMapWidth);
+	unsigned y = (unsigned) ceilf(uv.y() * normalMapHeight);
+
+	RGBQUAD res;
+
+	if(x >= normalMapWidth)
+		x = normalMapWidth - 1;
+	if(y >= normalMapHeight)
+		y = normalMapHeight - 1;
+
+	if(!FreeImage_GetPixelColor(normalMap, x, y, &res))
+	{
+		return Vector3::zero;
+	} else
+	{
+		float u = res.rgbRed / 128.0f - 1.0f;
+		float v = res.rgbGreen / 128.0f - 1.0f;
+		float w = res.rgbBlue / 128.0f - 1.0f;
+		return Vector3(u, v, w);
 	}
 }

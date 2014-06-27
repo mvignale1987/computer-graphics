@@ -6,7 +6,9 @@ SceneObjectTriangle::SceneObjectTriangle(Material *material, const Vector3& v0, 
 	v0(v0), v1(v1), v2(v2)
 {
 	u = v1 - v0;
+	unormalized = u.normalized();
     v = v2 - v0;
+	vnormalized = v.normalized();
 	m_normal = u.cross(v);
 	if(m_normal == Vector3::zero)
 		throw std::invalid_argument("Triangle is degenerate");
@@ -77,6 +79,16 @@ Vector2 SceneObjectTriangle::textureCoordinatesAt(const Vector3& point)
 	float texCoordY = (APxAB.length() / 2.0f) / area;
 
 	return Vector2(texCoordX, texCoordY);
+}
+
+Vector3 SceneObjectTriangle::xTextureVector(const Vector3&)
+{
+	return unormalized;
+}
+
+Vector3 SceneObjectTriangle::yTextureVector(const Vector3&)
+{
+	return vnormalized;
 }
 
 Vector3 SceneObjectTriangle::a() const 

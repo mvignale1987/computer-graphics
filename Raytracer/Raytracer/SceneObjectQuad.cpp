@@ -86,7 +86,17 @@ Vector3 SceneObjectQuad::normal()
 Vector2 SceneObjectQuad::textureCoordinatesAt(const Vector3& point)
 {
 	Vector3 p = point - v0;
-	return Vector2((p * u) / lengthU, (p * v) / lengthV);
+	return Vector2((p * v) / lengthV, (p * u) / lengthU);
+}
+
+Vector3 SceneObjectQuad::xTextureVector(const Vector3&)
+{
+	return v;
+}
+
+Vector3 SceneObjectQuad::yTextureVector(const Vector3&)
+{
+	return u;
 }
 
 std::vector<Vector3>& SceneObjectQuad::vertexs()

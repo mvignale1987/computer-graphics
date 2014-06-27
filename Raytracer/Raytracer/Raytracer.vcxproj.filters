@@ -214,6 +214,15 @@
     <Image Include="basketball.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="marble.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="brickwall.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="brickwall-normal.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Raytracer.rc">

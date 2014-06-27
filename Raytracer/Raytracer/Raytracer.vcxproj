@@ -147,8 +147,11 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="basketball.png" />
+    <Image Include="brickwall-normal.png" />
+    <Image Include="brickwall.jpg" />
     <Image Include="chessboard.png" />
     <Image Include="icon.png" />
+    <Image Include="marble.jpg" />
     <None Include="raytracer.ico" />
   </ItemGroup>
   <ItemGroup>
