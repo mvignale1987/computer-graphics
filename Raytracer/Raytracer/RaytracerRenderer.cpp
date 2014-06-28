@@ -221,6 +221,11 @@ void RaytracerRenderer::processBlock(const ImageBlock& block)
 	{
 		for(unsigned int x = block.x(); x < maxX; ++x)
 		{
+			if(x == 129 && y == 186)
+			{
+				x = x + 0;
+			}
+
 			Ray r = getRay((int)x, (int)y);
 			unsigned int position = y * bufferWidth + x;
 			Vector3  ambient, diffuse, total;

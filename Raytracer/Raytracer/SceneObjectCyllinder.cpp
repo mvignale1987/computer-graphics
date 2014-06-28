@@ -64,10 +64,17 @@ Intersection SceneObjectCyllinder::intersection(const Ray& ray)
 		if (y1 >= 0 && y1 <= height)		// checks if we intersect the whole cyllinder or just the finite part
 		{
 			return Intersection(this, t1);			
-		}
-		else
-		{
+		} 
+		
+		t0 = -o.y() / d.y();
+		t1 = (height - o.y()) / d.y();
+
+		if(t1 < 0)
 			return Intersection::noIntersection;
+		if(t0 < -0.01f && t1 > 0.01f)
+			return Intersection(this, t1);
+		else {
+			return Intersection(this, t0);
 		}
     }
     // else the intersection point is at t0 OR AT THE CAP!!!!
@@ -103,17 +110,14 @@ Intersection SceneObjectCyllinder::intersection(const Ray& ray)
 }
 }
 
-Vector3 SceneObjectCyllinder::normalAt(const Ray& r, const Vector3& point)
+Vector3 SceneObjectCyllinder::normalAt(const Ray&, const Vector3& point)
 {
-	
 	if (point.y() > center.y() && point.y() < center.y()+height)
 		return point + Vector3(point.x()/radius,0.0f,point.z()/radius);
-	else if (point.y() == center.y())
+	else if (fabs(point.y() - center.y()) < 0.01f)
 		return point + Vector3::down;
-	else if (point.y() == center.y()+height)
+	else
 		return point + Vector3::up;
-	
-		
 }
 
 AABB SceneObjectCyllinder::aabb()
@@ -121,9 +125,14 @@ AABB SceneObjectCyllinder::aabb()
 	return m_aabb;
 }
 
-Vector2 SceneObjectCyllinder::textureCoordinatesAt(const Vector3&)
+Vector2 SceneObjectCyllinder::textureCoordinatesAt(const Vector3&point)
 {
-	return Vector2::zero;
+	float x = point.x() - center.x();
+	float z = point.z() - center.z();
+
+	float s = acosf(x / radius) / (2.0f * ((float) M_PI));
+	float t = z / height;
+	return Vector2(s, t);
 }
 
 Vector3 SceneObjectCyllinder::xTextureVector(const Vector3&)
