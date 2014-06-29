@@ -3,23 +3,37 @@
 
 SceneObjectCyllinder::SceneObjectCyllinder(Material *material, const Vector3& center, float radius, float height):
 	SceneObject(material),
-	center(center),
-	radius(radius),
-	height(height),
-	m_aabb(center.x() - radius, center.y() - height, center.z() - radius, 
-		center.x() + radius, center.y() + height, center.z() + radius)
+	m_center(center),
+	m_radius(radius),
+	m_height(height),
+	m_aabb(m_center.x() - m_radius, m_center.y() - m_height, m_center.z() - m_radius, 
+		m_center.x() + m_radius, m_center.y() + m_height, m_center.z() + m_radius)
 {
+}
+
+Vector3 SceneObjectCyllinder::center() const
+{
+	return m_center;
+}
+float   SceneObjectCyllinder::radius() const
+{
+	return m_radius;
+}
+
+float   SceneObjectCyllinder::height() const
+{
+	return m_height;
 }
 
 Intersection SceneObjectCyllinder::intersection(const Ray& ray)
 {
 	//Compute A, B and C coefficients
 	Vector3 d = ray.direction();
-	Vector3 o = ray.origin() - center;
+	Vector3 o = ray.origin() - m_center;
 	//we will use the rect equations for the ray to intersect the cyllinder
 	float a = d.x()*d.x() + d.z()*d.z();
 	float b = 2 * o.x() * d.x() + 2 * o.z() * d.z();
-	float c = o.x()*o.x() + o.z()*o.z() - (radius * radius);
+	float c = o.x()*o.x() + o.z()*o.z() - (m_radius * m_radius);
 
 	 //Find discriminant
     float disc = b * b - 4 * a * c;
@@ -61,13 +75,13 @@ Intersection SceneObjectCyllinder::intersection(const Ray& ray)
     if (t0 < -0.01f && t1 > 0.01f)
     {
 		float y1 =  o.y() + t1*d.y();	//evaluate the ray on desired t value
-		if (y1 >= 0 && y1 <= height)		// checks if we intersect the whole cyllinder or just the finite part
+		if (y1 >= 0 && y1 <= m_height)		// checks if we intersect the whole cyllinder or just the finite part
 		{
 			return Intersection(this, t1);			
 		} 
 		
 		t0 = -o.y() / d.y();
-		t1 = (height - o.y()) / d.y();
+		t1 = (m_height - o.y()) / d.y();
 
 		if(t1 < 0)
 			return Intersection::noIntersection;
@@ -83,10 +97,10 @@ Intersection SceneObjectCyllinder::intersection(const Ray& ray)
 		
 		float y0 =  o.y() + t0*d.y();
 		float y1 =  o.y() + t1*d.y();
-		if (y0 <= height && y1 >= height || y1 <= height && y0 >= height) // here we should improve the angle of the cap
+		if (y0 <= m_height && y1 >= m_height || y1 <= m_height && y0 >= m_height) // here we should improve the angle of the cap
 		{
 			//SPECIAL UPPER CAP INTERSECTION
-			float t3 = (height -  o.y()) / d.y();
+			float t3 = (m_height -  o.y()) / d.y();
 			return Intersection(this, t3);		
 		}
 		if (y0 <= 0 && y1 >= 0 /*|| y1 <= 0 && y0 >= 0*/)
@@ -95,7 +109,7 @@ Intersection SceneObjectCyllinder::intersection(const Ray& ray)
 			float t3 = (0.0f -  o.y()) / d.y();
 			return Intersection(this, t3);		
 		}
-		if (y0 >= 0 && y0 <= height )
+		if (y0 >= 0 && y0 <= m_height )
 		{
 			return Intersection(this, t0);		
 		}
@@ -112,9 +126,9 @@ Intersection SceneObjectCyllinder::intersection(const Ray& ray)
 
 Vector3 SceneObjectCyllinder::normalAt(const Ray&, const Vector3& point)
 {
-	if (point.y() > center.y() && point.y() < center.y()+height)
-		return point + Vector3(point.x()/radius,0.0f,point.z()/radius);
-	else if (fabs(point.y() - center.y()) < 0.01f)
+	if (point.y() > m_center.y() && point.y() < m_center.y()+m_height)
+		return point + Vector3(point.x()/m_radius,0.0f,point.z()/m_radius);
+	else if (fabs(point.y() - m_center.y()) < 0.01f)
 		return point + Vector3::down;
 	else
 		return point + Vector3::up;
@@ -127,11 +141,11 @@ AABB SceneObjectCyllinder::aabb()
 
 Vector2 SceneObjectCyllinder::textureCoordinatesAt(const Vector3&point)
 {
-	float x = point.x() - center.x();
-	float z = point.z() - center.z();
+	float x = point.x() - m_center.x();
+	float z = point.z() - m_center.z();
 
-	float s = acosf(x / radius) / (2.0f * ((float) M_PI));
-	float t = z / height;
+	float s = acosf(x / m_radius) / (2.0f * ((float) M_PI));
+	float t = z / m_height;
 	return Vector2(s, t);
 }
 

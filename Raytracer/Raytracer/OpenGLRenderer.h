@@ -6,6 +6,7 @@ class Camera;
 class SceneObjectSphere;
 class SceneObjectQuad;
 class SceneObjectTriangle;
+class SceneObjectCyllinder;
 
 class OpenGLRenderer: public Renderer
 {
@@ -18,6 +19,7 @@ public:
 private:
 	Camera getCorrectedCamera();
 	void renderSphere(SceneObjectSphere *sphere);
+	void renderCyllinder(SceneObjectCyllinder *cyllinder);
 	void renderQuad(SceneObjectQuad *quad);
 	void renderTriangle(SceneObjectTriangle *triangle);
 };

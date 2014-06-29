@@ -6,6 +6,7 @@
 #include "SceneObjectSphere.h"
 #include "SceneObjectQuad.h"
 #include "SceneObjectTriangle.h"
+#include "SceneObjectCyllinder.h"
 
 using namespace std;
 
@@ -54,10 +55,10 @@ void OpenGLRenderer::init()
 		Light light = lights[i];
 		glLight(lightEnum, GL_AMBIENT, light.ambientColor() , 1);
 		glLight(lightEnum, GL_DIFFUSE, light.diffuseColor(), 1);
-		glLight(lightEnum, GL_POSITION, -scene().camera().position() + light.position(), 1);
+		glLight(lightEnum, GL_POSITION, -light.position(), 1);
 		glLightf(lightEnum, GL_CONSTANT_ATTENUATION, 0);
-		glLightf(lightEnum, GL_LINEAR_ATTENUATION, light.linearAttenuation() / 10.0f);
-		glLightf(lightEnum, GL_QUADRATIC_ATTENUATION, light.quadAttenuation() / 10.0f);
+		glLightf(lightEnum, GL_LINEAR_ATTENUATION, light.linearAttenuation() / 5.0f);
+		glLightf(lightEnum, GL_QUADRATIC_ATTENUATION, light.quadAttenuation() / 5.0f);
 	}
 }
 
@@ -95,6 +96,7 @@ void OpenGLRenderer::renderNextFrame()
 	Camera cam = getCorrectedCamera();
 	gluLookAt(cam.position(), cam.lookAt(), cam.up());
 
+	glScalef(-1.0f, 1.0f, 1.0f);
 	glTranslate(-cam.position());
 
 	vector<SceneObject *> objects = scene().objects();
@@ -111,6 +113,11 @@ void OpenGLRenderer::renderNextFrame()
 		SceneObjectSphere *sphere = dynamic_cast<SceneObjectSphere *> (*it);
 		if(sphere){
 			renderSphere(sphere);
+			continue;
+		}
+		SceneObjectCyllinder *cyllinder = dynamic_cast<SceneObjectCyllinder *> (*it);
+		if(cyllinder){
+			renderCyllinder(cyllinder);
 			continue;
 		}
 		SceneObjectQuad *quad = dynamic_cast<SceneObjectQuad *> (*it);
@@ -133,6 +140,17 @@ void OpenGLRenderer::renderSphere(SceneObjectSphere *sphere)
 	{
 		glTranslate(sphere->center());
 		glutSolidSphere(sphere->radius(), 32, 32);
+	}
+	glPopMatrix();
+}
+
+void OpenGLRenderer::renderCyllinder(SceneObjectCyllinder *cyllinder)
+{
+	glPushMatrix();
+	{
+		glTranslate(cyllinder->center());
+		glRotate(90.0f, Vector3::left);
+		glutSolidCylinder(cyllinder->radius(), cyllinder->height(), 32, 32);
 	}
 	glPopMatrix();
 }
